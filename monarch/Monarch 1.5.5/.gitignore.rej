@@ -1,0 +1,9 @@
+diff a/.gitignore b/.gitignore	(rejected hunks)
+@@ -1,6 +1,7 @@
+ node_modules
+ .idea
+ dist
++production
+ docs
+ documentation
+ assets-concat
