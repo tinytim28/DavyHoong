@@ -1,0 +1,12 @@
+
+# Created by https://www.gitignore.io/api/netbeans
+
+### NetBeans ###
+Savvy0.2/nbproject/private/
+Savvy0.2/build/
+Savvy0.2/nbbuild/
+Savvy0.2/dist/
+Savvy0.2/nbdist/
+Savvy0.2/.nb-gradle/
+
+# End of https://www.gitignore.io/api/netbeans
