@@ -5,6 +5,8 @@
  */
 package DAO;
 
+import java.sql.Date;
+
 /**
  *
  * @author Timothy
