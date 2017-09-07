@@ -16,13 +16,23 @@ public class Prospects {
     private String aName;
     private String pContact;
     private Date firstContact;
+    private String remarks;
     
-    public Prospects (String pName, String aName, String pContact, Date firstContact){
+    public Prospects (String pName, String aName, String pContact, Date firstContact, String remarks){
         
         this.pName = pName;
         this.aName = aName;
         this.pContact = pContact;
         this.firstContact = firstContact;
+        this.remarks = remarks;
+    }
+    
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+    
+    public String getRemarks() {
+        return remarks;
     }
     
     public String getpName() {

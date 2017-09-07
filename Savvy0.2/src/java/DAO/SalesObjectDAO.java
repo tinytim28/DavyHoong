@@ -132,4 +132,25 @@ public class SalesObjectDAO {
         }
 
     }
+    
+    public void updateSale(String agentName, Date dateClose, String customerName, String caseType, double expectedFYC, String remarks) {
+
+        try {
+
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Update `sales` SET `expectedFYC`='" + expectedFYC + "', `remarks`='" + remarks + "'  where `agentName` = '" + agentName + "' and `caseType` = '"+ caseType +"' and `customerName` = '" + customerName + "'");             
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //rs.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                //Logger.getLogger(CompanyDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }

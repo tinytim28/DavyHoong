@@ -166,6 +166,41 @@ public class SalesServlet extends HttpServlet {
                 }
 
                 //System.out.println(transJsonObj);      
+            } else if (type.equals("updateSales")) {
+
+                String agentName = "";
+                String customerName = "";
+                double expectedFYC = 0.0;
+                String caseType = "";
+                Date convert = null;
+                String remarks = "";
+   
+
+                try {                        
+                    //changed this part as well, same as above, chage the variable names accordingly and remove those thats not needed
+                    agentName = request.getParameter("agentName");
+                    customerName = request.getParameter("customerNam");
+                    expectedFYC = Double.parseDouble(request.getParameter("pContact"));
+                    remarks = request.getParameter("remarks");
+                    
+                    String year = request.getParameter("year");
+                    String month = request.getParameter("month");
+                    String day = request.getParameter("day");
+                    String combined = "" + year + month + day;
+                    
+                    convert = validateDateTime(combined, "yyyyMMdd");
+                    java.sql.Date dateClose = new java.sql.Date(convert.getDate());
+                    
+                    
+
+                    SalesObjectDAO sDAO = new SalesObjectDAO();
+                    sDAO.updateSale(agentName, dateClose, customerName, caseType, expectedFYC, remarks);
+                    
+                    response.getWriter().write("updated Sale Line Item");
+                    toReturn.put("success", "success");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } 
         }
         
