@@ -1,0 +1,49 @@
+/* ----- HEADER ----- */
+
+.page-title {
+	text-align:left;
+	background: #f8f8f8 url(assets/img/pattern.jpg) left top repeat;
+	-moz-box-shadow:
+        0 5px 15px 0 rgba(0,0,0,.05) inset,
+        0 -5px 15px 0 rgba(0,0,0,.05) inset;
+	-webkit-box-shadow:
+        0 5px 15px 0 rgba(0,0,0,.05) inset,
+        0 -5px 15px 0 rgba(0,0,0,.05) inset;
+	box-shadow:
+        0 5px 15px 0 rgba(0,0,0,.05) inset,
+        0 -5px 15px 0 rgba(0,0,0,.05) inset;
+	margin-top: 0;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+	padding-top: 30px;
+	padding-right: 0;
+	padding-bottom: 35px;
+	padding-left: 0;
+}
+
+.page-title h2 {
+	display: inline;
+	margin-left: 10px;
+	font-family: "Roboto", Arial, sans-serif;
+	font-size: 24px;
+	color: #5d5d5d;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .7);
+	vertical-align: middle;
+	text-align: left;
+}
+
+.page-title p {
+    display: inline;
+    margin-left: 5px;
+    font-size: 14px;
+    font-style: italic;
+    vertical-align: middle;
+}
+
+.page-title-icon {
+    margin-left: 20px;
+    font-size: 46px;
+    color: #ccc;
+    vertical-align: middle;
+}

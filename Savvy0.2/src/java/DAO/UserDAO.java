@@ -50,8 +50,8 @@ public class UserDAO {
                 String lastName = result.getString("lastName");
                 String username = result.getString("username");
                 String password = result.getString("password");
-                String isAdmin = result.getString("isAdmin");
-                users.add(new User(firstName, lastName, username, password, isAdmin));
+                String usertype = result.getString("usertype");
+                users.add(new User(firstName, lastName, username, password, usertype));
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -81,8 +81,8 @@ public class UserDAO {
                 String lastName = result.getString("lastName");
                 String username = result.getString("username");
                 String password = result.getString("password");
-                String isAdmin = result.getString("isAdmin");
-                user = new User(firstName, lastName, username, password, isAdmin);
+                String usertype = result.getString("usertype");
+                user = new User(firstName, lastName, username, password, usertype);
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -94,11 +94,11 @@ public class UserDAO {
     }
     
     
-    public void createUser( String username, String password, String firstName, String lastName, String isAdmin ) {
+    public void createUser( String username, String password, String firstName, String lastName, String usertype ) {
         //  lookupList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO `user` (`username`, `password`, `firstname`, `lastname`, `isAdmin`) VALUES"
+            stmt = conn.prepareStatement("INSERT INTO `user` (`username`, `password`, `firstname`, `lastname`, `usertype`) VALUES"
                     + "(?,?,?,?,?)");
             //conn.setAutoCommit(false);
 
@@ -106,7 +106,7 @@ public class UserDAO {
             stmt.setString(2, password);
             stmt.setString(3, firstName);
             stmt.setString(4, lastName);
-            stmt.setString(5, isAdmin);
+            stmt.setString(5, usertype);
             stmt.execute();
 
         } catch (Exception e) {
@@ -201,12 +201,12 @@ public class UserDAO {
         return isAuthenticated;
     }
     
-    public void updateUserWithNewPw(String username, String firstName, String lastName, String isAdmin, String password) {
+    public void updateUserWithNewPw(String username, String firstName, String lastName, String usertype, String password) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `user` SET `firstname`='" + firstName + "', `lastname`='" + lastName + "',  `isAdmin`='" + isAdmin + "', `password` = '" + password + "'  where `username` = '" + username + "'");             
+            stmt = conn.prepareStatement("Update `user` SET `firstname`='" + firstName + "', `lastname`='" + lastName + "',  `usertype`='" + usertype + "', `password` = '" + password + "'  where `username` = '" + username + "'");             
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -225,12 +225,12 @@ public class UserDAO {
 
     }
     
-    public void updateUser(String username, String firstName, String lastName, String isAdmin) {
+    public void updateUser(String username, String firstName, String lastName, String usertype) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `user` SET `firstname`='" + firstName + "', `lastName`='" + lastName + "', `isAdmin`='" + isAdmin + "'  where `username` = '" + username + "'");
+            stmt = conn.prepareStatement("Update `user` SET `firstname`='" + firstName + "', `lastName`='" + lastName + "', `usertype`='" + usertype + "'  where `username` = '" + username + "'");
             stmt.executeUpdate();
 
         } catch (Exception e) {

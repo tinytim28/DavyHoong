@@ -15,14 +15,14 @@ public class User {
     private String lastName;
     private String username;
     private String password;
-    private String isAdmin;  // 3 levels, Admin, Manager, Agent
+    private String usertype;  // 3 levels, Admin, Manager, Agent
     
-    public User ( String firstName, String lastName, String username, String password, String isAdmin ) {
+    public User ( String firstName, String lastName, String username, String password, String usertype ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
-        this.isAdmin = isAdmin;
+        this.usertype = usertype;
     }
     
     public void setFirstName( String firstName ) {
@@ -41,8 +41,8 @@ public class User {
         this.password = password;
     }
     
-    public void setAdmin ( String isAdmin ) {
-        this.isAdmin = isAdmin;
+    public void setAdmin ( String usertype ) {
+        this.usertype = usertype;
     }
     
     public String getFirstName() {
@@ -62,6 +62,6 @@ public class User {
     }
     
     public String checkAdmin() {
-        return isAdmin;
+        return usertype;
     }
 }

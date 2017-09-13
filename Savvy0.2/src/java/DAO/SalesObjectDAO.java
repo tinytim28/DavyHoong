@@ -37,7 +37,7 @@ public class SalesObjectDAO {
             while (result.next()) {
                 String name = result.getString("agentName");
                 Date dateClose = result.getDate("dateClose");
-                String customerName = result.getString("isAdmin");
+                String customerName = result.getString("usertype");
                 String caseType = result.getString("caseType");
                 double expectedFYC = result.getDouble("expectedFYC");
                 String remarks = result.getString("remarks");

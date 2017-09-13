@@ -106,7 +106,7 @@ function refresh() {
       htmlcode += "<td class='username' id='username" + count + "'>" + strings[i] + "<\/td>";
       htmlcode += "<td class='firstname' id='firstname" + count + "'>" + strings[i + 1] + "<\/td>";
       htmlcode += "<td class='lastname' id='lastname" + count + "'>" + strings[i + 2] + "<\/td>";
-      htmlcode += "<td id='isAdmin" + count + "'>" + strings[i + 3] + "<\/td>";
+      htmlcode += "<td id='usertype" + count + "'>" + strings[i + 3] + "<\/td>";
       htmlcode += "<td><button id='viewusersales' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-eye-open' aria-hidden='true'><\/span> View<\/button><\/td>";
 
       htmlcode += "<\/tr>";

@@ -54,13 +54,13 @@ public class UserServlet extends HttpServlet {
                 String password = request.getParameter("password");
                 String firstName = request.getParameter("firstName");
                 String lastName = request.getParameter("lastName");
-                String isAdmin = request.getParameter("isAdmin");
+                String usertype = request.getParameter("usertype");
                 String pwHash = UserDAO.generateHash(password);
 
                 //System.out.println("crating user with " + username);
 
                 UserDAO u = new UserDAO();
-                u.createUser(username, pwHash, firstName, lastName, isAdmin);
+                u.createUser(username, pwHash, firstName, lastName, usertype);
                 toReturn.put("success", "success");
                 write(response, toReturn);
             } else if (type.equals("login")) {
@@ -131,7 +131,6 @@ public class UserServlet extends HttpServlet {
                 String firstName = "";
                 String lastName = "";
                 String usertype = "";
-                String isAdmin = "";
                 String password = "";   
 
                 try {                        
@@ -139,10 +138,10 @@ public class UserServlet extends HttpServlet {
                     username = request.getParameter("username");
                     firstName = request.getParameter("firstName");
                     lastName = request.getParameter("lastName");
-                    usertype = request.getParameter("isAdmin");
+                    usertype = request.getParameter("usertype");
                     if(usertype!=null){
                       if(usertype.equals("Admin")){
-                           isAdmin = "Admin";
+                           usertype = "Admin";
                         }
                     }
                     password = request.getParameter("password");            
@@ -150,9 +149,9 @@ public class UserServlet extends HttpServlet {
                     UserDAO uDAO = new UserDAO();
                     if (password != null && !password.trim().equals("")) {                    
                         String pwHash = UserDAO.generateHash(password);
-                        uDAO.updateUserWithNewPw( username, firstName,lastName, isAdmin, pwHash);
+                        uDAO.updateUserWithNewPw( username, firstName,lastName, usertype, pwHash);
                     } else {
-                        uDAO.updateUser(username, firstName, lastName, isAdmin);
+                        uDAO.updateUser(username, firstName, lastName, usertype);
                     }
                     response.getWriter().write("updated user");
                     toReturn.put("success", "success");
