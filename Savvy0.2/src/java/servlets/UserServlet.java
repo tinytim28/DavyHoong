@@ -43,6 +43,8 @@ public class UserServlet extends HttpServlet {
         Map<String, Object> toReturn = new HashMap<String, Object>();
         String type = request.getParameter("type");
         
+        HttpSession session = request.getSession();
+        
         if(type != null)    {
             if (type.equals("create")) {
                 //i changed this part, so you gotta change on the UI side,
@@ -55,12 +57,25 @@ public class UserServlet extends HttpServlet {
                 String firstName = request.getParameter("firstName");
                 String lastName = request.getParameter("lastName");
                 String usertype = request.getParameter("usertype");
+                String manager="";
                 String pwHash = UserDAO.generateHash(password);
+                
+                User current = (User) session.getAttribute("currentUser");
+                
+                
+                // Baically, if admin is creating, it will auto set the manager column in DB to Manager, if its manager creating, it will set manager
+                // to Manager's first and last name
+                
+                if ( current.checkAdmin().equals("Admin")) {
+                    manager = "Manager";
+                } else if (current.checkAdmin().equals("Manager")) {
+                    manager = "" + current.getFirstName() + " " + current.getLastName().toUpperCase();
+                }
 
                 //System.out.println("crating user with " + username);
 
                 UserDAO u = new UserDAO();
-                u.createUser(username, pwHash, firstName, lastName, usertype);
+                u.createUser(username, pwHash, firstName, lastName, usertype, manager);
                 toReturn.put("success", "success");
                 write(response, toReturn);
             } else if (type.equals("login")) {
@@ -72,7 +87,6 @@ public class UserServlet extends HttpServlet {
 
                 if (login) {
                     User user = uDAO.retrieve(username);
-                    HttpSession session = request.getSession();
                     session.setAttribute("loginUser", user);
 
                 }
@@ -85,7 +99,22 @@ public class UserServlet extends HttpServlet {
                 try {
                     /* TODO output your page here. You may use following sample code. */
                     UserDAO userDAO = new UserDAO();
-                    ArrayList<String> list = userDAO.retrieveUserInfo();
+                    String teamRetrieve ="";
+                    User current = (User) session.getAttribute("currentUser");
+                    
+                    
+                    //Basically what i did is to take from the current user to check who is the manager or if the user is a manager himself
+                    // Admin can retrieve managers
+                    // managers will retrieve those whose 'manager' column has their first and last name inside. 
+                    // i altered the DAO codes to take in a string called teamRetrieve, it will only retrieve those under the manager
+                    if ( current.checkAdmin().equals("Admin")) {
+                        teamRetrieve = "Manager";
+                    }else {
+                        teamRetrieve = "" + current.getFirstName() + " " + current.getLastName().toUpperCase();
+                    }
+                    
+                    
+                    ArrayList<String> list = userDAO.retrieveUserInfo(teamRetrieve);
                     String output = "";
                     for (String s : list) {
                         output += s + ",";
@@ -131,7 +160,8 @@ public class UserServlet extends HttpServlet {
                 String firstName = "";
                 String lastName = "";
                 String usertype = "";
-                String password = "";   
+                String password = ""; 
+                String manager = "";
 
                 try {                        
                     //changed this part as well, same as above, chage the variable names accordingly and remove those thats not needed
@@ -139,6 +169,8 @@ public class UserServlet extends HttpServlet {
                     firstName = request.getParameter("firstName");
                     lastName = request.getParameter("lastName");
                     usertype = request.getParameter("usertype");
+                    manager = request.getParameter("manager");
+                    
                     if(usertype!=null){
                       if(usertype.equals("Admin")){
                            usertype = "Admin";
@@ -151,7 +183,7 @@ public class UserServlet extends HttpServlet {
                         String pwHash = UserDAO.generateHash(password);
                         uDAO.updateUserWithNewPw( username, firstName,lastName, usertype, pwHash);
                     } else {
-                        uDAO.updateUser(username, firstName, lastName, usertype);
+                        uDAO.updateUser(username, firstName, lastName, usertype, manager);
                     }
                     response.getWriter().write("updated user");
                     toReturn.put("success", "success");

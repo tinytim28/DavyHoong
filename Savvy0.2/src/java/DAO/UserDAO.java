@@ -51,7 +51,8 @@ public class UserDAO {
                 String username = result.getString("username");
                 String password = result.getString("password");
                 String usertype = result.getString("usertype");
-                users.add(new User(firstName, lastName, username, password, usertype));
+                String manager = result.getString("manager");
+                users.add(new User(firstName, lastName, username, password, usertype, manager));
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -82,7 +83,8 @@ public class UserDAO {
                 String username = result.getString("username");
                 String password = result.getString("password");
                 String usertype = result.getString("usertype");
-                user = new User(firstName, lastName, username, password, usertype);
+                String manager = result.getString("manager");
+                user = new User(firstName, lastName, username, password, usertype, manager);
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -94,11 +96,11 @@ public class UserDAO {
     }
     
     
-    public void createUser( String username, String password, String firstName, String lastName, String usertype ) {
+    public void createUser( String username, String password, String firstName, String lastName, String usertype, String manager ) {
         //  lookupList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO `user` (`username`, `password`, `firstname`, `lastname`, `usertype`) VALUES"
+            stmt = conn.prepareStatement("INSERT INTO `user` (`username`, `password`, `firstname`, `lastname`, `usertype`, `manager`) VALUES"
                     + "(?,?,?,?,?)");
             //conn.setAutoCommit(false);
 
@@ -107,6 +109,7 @@ public class UserDAO {
             stmt.setString(3, firstName);
             stmt.setString(4, lastName);
             stmt.setString(5, usertype);
+            stmt.setString(6, manager);
             stmt.execute();
 
         } catch (Exception e) {
@@ -225,12 +228,12 @@ public class UserDAO {
 
     }
     
-    public void updateUser(String username, String firstName, String lastName, String usertype) {
+    public void updateUser(String username, String firstName, String lastName, String usertype, String manager) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `user` SET `firstname`='" + firstName + "', `lastName`='" + lastName + "', `usertype`='" + usertype + "'  where `username` = '" + username + "'");
+            stmt = conn.prepareStatement("Update `user` SET `firstname`='" + firstName + "', `lastName`='" + lastName + "', `manager`='" + manager + "',`usertype`='" + usertype + "'  where `username` = '" + username + "'");
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -247,19 +250,22 @@ public class UserDAO {
 
     }
     
-    public ArrayList<String> retrieveUserInfo() {
+    public ArrayList<String> retrieveUserInfo( String teamRetrieve ) {
         ArrayList<String> lookupStringList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
-            String query = "SELECT * from user;";
+            String query = "SELECT * from user where `manager` = '" + teamRetrieve + "'";
             stmt = conn.prepareStatement(query);
             result = stmt.executeQuery();
 
             while (result.next()) {
+                
                 lookupStringList.add(result.getString(1));
                 lookupStringList.add(result.getString(3));
                 lookupStringList.add(result.getString(4));
                 lookupStringList.add(result.getString(5));
+                lookupStringList.add(result.getString(6));
+                
                 
             }
         } catch (Exception e) {
