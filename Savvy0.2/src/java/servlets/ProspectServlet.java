@@ -33,7 +33,8 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 /**
  *
  * @author Timothy
@@ -60,30 +61,26 @@ public class ProspectServlet extends HttpServlet {
                 // creation of sales object for individual agents
                 HttpSession session = request.getSession();        
                 User loginUser = (User)session.getAttribute("loginUser");
-                String aName = loginUser.getFirstName() + " " + loginUser.getLastName();
+                String username = loginUser.getUsername();
                 String pName = request.getParameter("pName");
                 String pContact = request.getParameter("pContact");
-                String year = request.getParameter("year");
-                String month = request.getParameter("month");
-                String day = request.getParameter("day");
-                String dateCombined = "" + year + month + day;
+                String firstContactString = request.getParameter("firstContact");
+                java.util.Date date = null;
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+                try{
                 
-                Date convert = null;
-                try {
-                    convert = validateDateTime(dateCombined, "yyyyMMdd");
-                } catch (ParseException e) {
-                    
-                } catch (NumberFormatException e) {
+                    date = sdf1.parse(firstContactString);
+                
+                }catch(ParseException e){
                     
                 }
-
+                java.sql.Date firstContact = new java.sql.Date(date.getTime()); 
                 String remarks = request.getParameter("remarks");
-                java.sql.Date firstContact = new java.sql.Date(convert.getDate());
 
                 //System.out.println("crating user with " + username);
 
                 ProspectsDAO p = new ProspectsDAO();
-                p.createProspect(pName, aName, pContact, firstContact, remarks);
+                p.createProspect(pName, username, pContact, firstContact, remarks);
                 toReturn.put("success", "success");
                 write(response, toReturn);
                 
@@ -92,12 +89,12 @@ public class ProspectServlet extends HttpServlet {
                 // retrieve done by admin to view that employees current sales that he is working on
                 HttpSession session = request.getSession();        
                 User loginUser = (User)session.getAttribute("loginUser");
-                String agentName = loginUser.getFirstName() + " " + loginUser.getLastName();
+                String username = loginUser.getUsername();
                 
                 try {
                     /* TODO output your page here. You may use following sample code. */
                     ProspectsDAO pDAO = new ProspectsDAO();
-                    ArrayList<String> list = pDAO.retrieveIndividualSales(agentName);
+                    ArrayList<String> list = pDAO.retrieveIndividualSales(username);
                     String output = "";
                     for (String s : list) {
                         output += s + ",";
@@ -126,14 +123,14 @@ public class ProspectServlet extends HttpServlet {
                 }
 
                 String pName = "";
-                String aName = "";
+                String username = "";
 
                 try {
                     pName = transJsonObj.getString("pName");
-                    aName = transJsonObj.getString("aName");
+                    username = transJsonObj.getString("username");
 
                     ProspectsDAO pDAO = new ProspectsDAO();
-                    pDAO.deleteProspect(pName,aName);
+                    pDAO.deleteProspect(pName,username);
 
                     response.getWriter().write("updated Prospects");
                 } catch (JSONException ex) {
@@ -144,7 +141,7 @@ public class ProspectServlet extends HttpServlet {
             } else if (type.equals("updateProspect")) {
 
                 String pName = "";
-                String aName = "";
+                String username = "";
                 String pContact = "";
                 Date convert = null;
                 String remarks = "";
@@ -153,7 +150,7 @@ public class ProspectServlet extends HttpServlet {
                 try {                        
                     //changed this part as well, same as above, chage the variable names accordingly and remove those thats not needed
                     pName = request.getParameter("pName");
-                    aName = request.getParameter("aName");
+                    username = request.getParameter("username");
                     pContact = request.getParameter("pContact");
                     remarks = request.getParameter("remarks");
                     
@@ -168,7 +165,7 @@ public class ProspectServlet extends HttpServlet {
                     
 
                     ProspectsDAO pDAO = new ProspectsDAO();
-                    pDAO.updateProspect(pName, aName, pContact, firstContact, remarks);
+                    pDAO.updateProspect(pName, username, pContact, firstContact, remarks);
                     
                     response.getWriter().write("updated Prospect");
                     toReturn.put("success", "success");

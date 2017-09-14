@@ -72,7 +72,7 @@ $(document).ready(function() {
     // send json to servlet
     $.ajax({
       type: "POST",
-      url: "/Savvy/UserServlet",
+      url: "/Savvy0.2/UserServlet",
       datatype: 'json',
       data: data,
       success: function(data) {
@@ -152,7 +152,7 @@ $(document).ready(function() {
       }
 
       $.ajax({
-        url: '/Savvy/UserServlet',
+        url: '/Savvy0.2/UserServlet',
         type: 'POST',
         dataType: 'json',
         data: data,
@@ -236,7 +236,7 @@ $(document).ready(function() {
       // send json to servlet
       $.ajax({
         type: "POST",
-        url: "/Savvy/UserServlet?type=deleteUser",
+        url: "/Savvy0.2/UserServlet?type=deleteUser",
         contentType: "application/json",
         dataType: "json",
         data: parameters

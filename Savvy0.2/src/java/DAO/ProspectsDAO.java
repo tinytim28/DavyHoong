@@ -28,20 +28,19 @@ public class ProspectsDAO {
     private PreparedStatement stmt;
     
     
-    public ArrayList<Prospects> retrieveAllByAgent( String agentName ) {
+    public ArrayList<Prospects> retrieveAllByAgent( String username ) {
         prospects = new ArrayList<>();
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Select * from prospects where aName like  '" + agentName + "'");
+            stmt = conn.prepareStatement("Select * from prospects where username like  '" + username + "'");
             result = stmt.executeQuery();
             while (result.next()) {
                 String pName = result.getString("pName");
-                String aName = result.getString("aName");
                 String pContact = result.getString("pContact");
                 Date firstContact = result.getDate("firstContact");
                 String remarks = result.getString("remarks");
                 
-                prospects.add(new Prospects(pName, aName, pContact, firstContact, remarks));
+                prospects.add(new Prospects(pName, username, pContact, firstContact, remarks));
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -53,11 +52,11 @@ public class ProspectsDAO {
     }
     
     
-    public ArrayList<String> retrieveIndividualSales( String agentName ) {
+    public ArrayList<String> retrieveIndividualSales( String username ) {
         ArrayList<String> lookupStringList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
-            String query = "SELECT * from prospects where aName like '" + agentName + "'";
+            String query = "SELECT * from prospects where username like '" + username + "'";
             stmt = conn.prepareStatement(query);
             result = stmt.executeQuery();
 
@@ -84,15 +83,15 @@ public class ProspectsDAO {
     }
     
     
-    public void createProspect( String pName, String aName, String pContact, Date firstContact, String remarks ) {
+    public void createProspect( String pName, String username, String pContact, Date firstContact, String remarks ) {
         //  lookupList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO `prospects` (`pName`, `aName`, `pContact` , `firstContact`, `remarks`) VALUES"
-                    + "(?,?,?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO `prospects` (`pName`, `username`, `pContact` , `firstContact`, `remarks`) VALUES"
+                    + "(?,?,?,?,?)");
 
             stmt.setString(1, pName);
-            stmt.setString(2, aName);
+            stmt.setString(2, username);
             stmt.setString(3, pContact);
             stmt.setDate(4, firstContact);
             stmt.setString(5, remarks);
@@ -112,11 +111,11 @@ public class ProspectsDAO {
     }
     
     
-    public void deleteProspect(String pName, String aName) {
+    public void deleteProspect(String pName, String username) {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("DELETE from prospects where pName ='" + pName + "' AND aName = '" + aName + "' " );
+            stmt = conn.prepareStatement("DELETE from prospects where pName ='" + pName + "' AND username = '" + username + "' " );
 
             stmt.executeUpdate();
 
@@ -134,12 +133,12 @@ public class ProspectsDAO {
 
     }
     
-    public void updateProspect(String pName, String aName, String pContact, Date firstContact, String remarks) {
+    public void updateProspect(String pName, String username, String pContact, Date firstContact, String remarks) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `prospects` SET `pContact`='" + pContact + "', `remarks`='" + remarks + "',  `firstContact`='" + firstContact + "' where `pName` = '" + pName + "' and `aName` = '" + aName + "'");             
+            stmt = conn.prepareStatement("Update `prospects` SET `pContact`='" + pContact + "', `remarks`='" + remarks + "',  `firstContact`='" + firstContact + "' where `pName` = '" + pName + "' and `username` = '" + username + "'");             
             stmt.executeUpdate();
 
         } catch (Exception e) {

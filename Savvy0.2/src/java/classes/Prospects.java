@@ -13,15 +13,15 @@ import java.sql.Date;
  */
 public class Prospects {
     private String pName;
-    private String aName;
+    private String username;
     private String pContact;
     private Date firstContact;
     private String remarks;
     
-    public Prospects (String pName, String aName, String pContact, Date firstContact, String remarks){
+    public Prospects (String pName, String username, String pContact, Date firstContact, String remarks){
         
         this.pName = pName;
-        this.aName = aName;
+        this.username = username;
         this.pContact = pContact;
         this.firstContact = firstContact;
         this.remarks = remarks;
@@ -44,11 +44,11 @@ public class Prospects {
     }
 
     public String getaName() {
-        return aName;
+        return username;
     }
 
-    public void setaName(String aName) {
-        this.aName = aName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getpContact() {

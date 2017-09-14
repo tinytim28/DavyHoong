@@ -59,7 +59,7 @@
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
                 <ul class="nav">
-                    <li><a id="update_schedule" class="loadPage">Update Schedule</a></li>
+                    <li><a id="addprospects" class="loadPage">Add Prospect</a></li>
                     <li><a id="addsales" class="loadPage">Add Sales</a></li>                        
                 </ul>  
             </div>
