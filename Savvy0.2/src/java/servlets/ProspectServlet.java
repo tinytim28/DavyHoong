@@ -35,6 +35,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author Timothy
@@ -55,42 +56,41 @@ public class ProspectServlet extends HttpServlet {
             throws ServletException, IOException {
         Map<String, Object> toReturn = new HashMap<String, Object>();
         String type = request.getParameter("type");
-        
-        if(type != null)    {
+
+        if (type != null) {
             if (type.equals("create")) {
                 // creation of sales object for individual agents
-                HttpSession session = request.getSession();        
-                User loginUser = (User)session.getAttribute("loginUser");
+                HttpSession session = request.getSession();
+                User loginUser = (User) session.getAttribute("loginUser");
                 String username = loginUser.getUsername();
                 String pName = request.getParameter("pName");
                 String pContact = request.getParameter("pContact");
                 String firstContactString = request.getParameter("firstContact");
                 java.util.Date date = null;
-                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
-                try{
-                
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+
                     date = sdf1.parse(firstContactString);
-                
-                }catch(ParseException e){
-                    
+
+                } catch (ParseException e) {
+
                 }
-                java.sql.Date firstContact = new java.sql.Date(date.getTime()); 
+                java.sql.Date firstContact = new java.sql.Date(date.getTime());
                 String remarks = request.getParameter("remarks");
 
                 //System.out.println("crating user with " + username);
-
                 ProspectsDAO p = new ProspectsDAO();
                 p.createProspect(pName, username, pContact, firstContact, remarks);
                 toReturn.put("success", "success");
                 write(response, toReturn);
-                
+
             } else if (type.equals("retrieveProspectsByAgent")) {
                 // This is to retrieve an individual user's sales,
                 // retrieve done by admin to view that employees current sales that he is working on
-                HttpSession session = request.getSession();        
-                User loginUser = (User)session.getAttribute("loginUser");
+                HttpSession session = request.getSession();
+                User loginUser = (User) session.getAttribute("loginUser");
                 String username = loginUser.getUsername();
-                
+
                 try {
                     /* TODO output your page here. You may use following sample code. */
                     ProspectsDAO pDAO = new ProspectsDAO();
@@ -130,7 +130,7 @@ public class ProspectServlet extends HttpServlet {
                     username = transJsonObj.getString("username");
 
                     ProspectsDAO pDAO = new ProspectsDAO();
-                    pDAO.deleteProspect(pName,username);
+                    pDAO.deleteProspect(pName, username);
 
                     response.getWriter().write("updated Prospects");
                 } catch (JSONException ex) {
@@ -141,32 +141,31 @@ public class ProspectServlet extends HttpServlet {
             } else if (type.equals("updateProspect")) {
 
                 String pName = "";
-                String username = "";
                 String pContact = "";
-                Date convert = null;
+                java.util.Date date = null;
                 String remarks = "";
-   
-
-                try {                        
+                HttpSession session = request.getSession();
+                User loginUser = (User) session.getAttribute("loginUser");
+                String username = loginUser.getUsername();
+                try {
                     //changed this part as well, same as above, chage the variable names accordingly and remove those thats not needed
                     pName = request.getParameter("pName");
-                    username = request.getParameter("username");
                     pContact = request.getParameter("pContact");
                     remarks = request.getParameter("remarks");
-                    
-                    String year = request.getParameter("year");
-                    String month = request.getParameter("month");
-                    String day = request.getParameter("day");
-                    String combined = "" + year + month + day;
-                    
-                    convert = validateDateTime(combined, "yyyyMMdd");
-                    java.sql.Date firstContact = new java.sql.Date(convert.getDate());
-                    
-                    
+                    String firstContactString = request.getParameter("firstContact");
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
 
-                    ProspectsDAO pDAO = new ProspectsDAO();
-                    pDAO.updateProspect(pName, username, pContact, firstContact, remarks);
+                        date = sdf1.parse(firstContactString);
+
+                    } catch (ParseException e) {
+
+                    }
+                    java.sql.Date firstContact = new java.sql.Date(date.getTime());
                     
+                    ProspectsDAO pDAO = new ProspectsDAO();
+                    pDAO.updateProspect(pName,username,pContact, firstContact, remarks);
+
                     response.getWriter().write("updated Prospect");
                     toReturn.put("success", "success");
                 } catch (Exception e) {
@@ -175,13 +174,13 @@ public class ProspectServlet extends HttpServlet {
             }
         }
     }
-    
+
     public static Date validateDateTime(String dateTime, String format) throws ParseException {
         DateFormat df = new SimpleDateFormat(format);
         df.setLenient(false);
         return df.parse(dateTime);
     }
-    
+
     private void write(HttpServletResponse response, Map<String, Object> map) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -138,7 +138,7 @@ public class ProspectsDAO {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `prospects` SET `pContact`='" + pContact + "', `remarks`='" + remarks + "',  `firstContact`='" + firstContact + "' where `pName` = '" + pName + "' and `username` = '" + username + "'");             
+            stmt = conn.prepareStatement("Update `prospects` SET `pContact`='" + pContact + "', `remarks`='" + remarks + "',  `firstContact`='" + firstContact + "' ,`pName` = '" + pName + "' where `username` = '" + username + "'");             
             stmt.executeUpdate();
 
         } catch (Exception e) {

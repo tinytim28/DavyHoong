@@ -59,8 +59,8 @@
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
                 <ul class="nav">
-                    <li><a id="addprospects" class="loadPage">Add Prospect</a></li>
-                    <li><a id="addsales" class="loadPage">Add Sales</a></li>                        
+                    <li><a id="addprospects" class="loadPage">Prospects</a></li>
+                    <li><a id="view_sales_in_progress" class="loadPage">Sales</a></li>                        
                 </ul>  
             </div>
         </div>

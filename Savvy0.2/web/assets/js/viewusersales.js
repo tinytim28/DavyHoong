@@ -31,9 +31,9 @@ function refresh() {
 
     var count = 1;
     for (var i = 0; i < strings.length; i += 6) {
-      agentName = strings[i];
+      username = strings[i];
       htmlcode += "<tr class='record' id='" + count + "'>";
-      htmlcode += "<td class='agentName' id='agentName" + count + "'>" + strings[i] + "<\/td>";
+      htmlcode += "<td class='username' id='username" + count + "'>" + strings[i] + "<\/td>";
       htmlcode += "<td class='dateOpen' id='dateOpen" + count + "'>" + strings[i + 1] + "<\/td>";
       htmlcode += "<td class='appointments' id='appointments" + count + "'>" + strings[i + 2] + "<\/td>";
       htmlcode += "<td class='customerName' id='customerName" + count + "'>" + strings[i + 3] + "<\/td>";

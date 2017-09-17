@@ -3,8 +3,161 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-$(document).ready(function () {
+//start of jquery
+$(document).ready(function () {  
+    //start of edit/update prospect
+    $("#showUpdateProspectModal").on("hide", function () { // remove the event listeners when the dialog is dismissed
+        $("#showUpdateProspectModal a.btn").off("click");
+    });
 
+    $("#showUpdateProspectModal").on("hidden", function () { // remove the actual elements from the DOM when fully hidden
+        $("#showUpdateProspectModal").remove();
+    });
+
+
+    $("table").on('click', '#EditProspect', function () {
+        showUpdateProspectModal();
+        var edit = $(this).attr("name");
+        //alert(edit);
+        var tr = document.getElementById(edit);
+        var tds = tr.getElementsByTagName("td");
+        //alert(tds.length);
+        for (var i = 0; i < tds.length; i++) {
+            switch (i) {
+                case 0:
+                    var pName = $("#pName" + edit).text();
+                    $("#pName_update").val(pName);
+                    break;
+                case 1:
+                    var pContact_update = $("#pContact" + edit).text();
+                    $("#pContact_update").val(pContact_update);
+                    break;
+                case 2:
+                    var firstContact = $("#firstContact" + edit).text();
+                    $("#firstContact_update").val(firstContact);
+                    break;
+                case 3:
+                    var remarks = $("#remarks" + edit).text();
+                    $("#remarks_update").val(remarks);
+                    break;
+            }
+        }
+    });
+
+    $("#UpdateProspect").click(function () {
+        var pName = document.getElementById("pName_update").value;
+        var pContact = document.getElementById("pContact_update").value;
+        var firstContact = document.getElementById("firstContact_update").value;
+        var remarks = document.getElementById("remarks_update").value;
+
+        // disable search button and clear table
+        $("#showUpdateProspectModal").modal('hide');
+
+        var data = {
+            pName: pName,
+            pContact: pContact,
+            firstContact: firstContact,
+            remarks: remarks,
+            type: "updateProspect"
+        }
+        // send json to servlet
+        $.ajax({
+            type: "POST",
+            url: "/Savvy0.2/ProspectServlet",
+            datatype: 'json',
+            data: data,
+            success: function (data) {
+                refresh();
+                showSuccessModal("Successfully updated prospect!");
+
+
+            },
+            error: function (xhr, status, error) {
+                alert(error);
+            }
+        });
+
+
+
+    });
+    
+    //end of edit/update prospect
+    
+    //start of add sales
+    $("#showAddSaleModal").on("hide", function () { // remove the event listeners when the dialog is dismissed
+        $("#showAddSaleModal a.btn").off("click");
+    });
+
+    $("#showAddSaleModal").on("hidden", function () { // remove the actual elements from the DOM when fully hidden
+        $("#showAddSaleModal").remove();
+    });
+
+
+    $("table").on('click', '#AddSale', function () {
+        showAddSaleModal();
+        var edit = $(this).attr("name");
+        //alert(edit);
+        var tr = document.getElementById(edit);
+        var tds = tr.getElementsByTagName("td");
+        //alert(tds.length);
+        for (var i = 0; i < tds.length; i++) {
+            switch (i) {
+                case 0:
+                    var pName = $("#pName" + edit).text();
+                    $("#pName_forsale").val(pName);
+                    break;
+            }
+        }
+    });
+    
+    $('#ExpectedFYC').on('input', function () {
+        document.getElementById("createSalesButton").disabled = false;
+    });
+
+    $('#salesremarks').on('input', function () {
+        document.getElementById("createSalesButton").disabled = false;
+    });
+
+    $("#createSalesButton").click(function () {
+        var pName = document.getElementById("pName_forsale").value;
+        var caseType = document.getElementById("caseType").value;
+        var expectedFYC = document.getElementById("expectedFYC").value;
+        var salesremarks = document.getElementById("salesremarks").value;
+        
+        // disable search button and clear table
+        $("#showAddSaleModal").modal('hide');
+
+        var data = {
+            pName: pName,
+            caseType: caseType,
+            expectedFYC: expectedFYC,
+            salesremarks: salesremarks,
+            type: "create"
+        };
+        // send json to servlet
+        $.ajax({
+            type: "POST",
+            url: "/Savvy0.2/SalesServlet",
+            datatype: 'json',
+            data: data,
+            success: function (data) {
+                refresh();
+                showSuccessModal("Successfully added sale!");
+
+
+            },
+            error: function (xhr, status, error) {
+                alert(error);
+            }
+        });
+
+
+
+    });
+    
+    //end of add sales
+    
+    //start of add prospect
     $("#AddProspect").click(function () {
         $("#AddNewProspect").modal("show");
     });
@@ -51,6 +204,7 @@ $(document).ready(function () {
                     $("#trans_table").html("");
                     refresh();
                     showSuccessModal("New prospect has been created successfully.");
+                    refresh();
                 } else {
                     showErrorModal("Creation Failed.");
                 }
@@ -61,10 +215,12 @@ $(document).ready(function () {
         });
 
     });
-
+    //end of add prospect
 
     refresh(); // by default
 
+
+    //start of delete prospect
     $("table").on('click', '#DeleteProspect', function () {
         var del = $(this).attr("name");
         $("#myModal").modal({// wire up the actual modal functionality and show the dialog
@@ -100,10 +256,12 @@ $(document).ready(function () {
             refresh();
 
         });
-
+        refresh();
     });
-
+    //end of delete prospect
 });
+//end of jquery
+
 
 function showSuccessModal(successMessage) {
     document.getElementById("successMsg").innerHTML = successMessage;
@@ -129,7 +287,7 @@ function refresh() {
         if (responseJson) {
             htmlcode += "<tr>";
             htmlcode += "<th>Prospects Name<\/th>";
-            htmlcode += "<th>User Name<\/th>";
+            htmlcode += "<th hidden>User Name<\/th>";
             htmlcode += "<th>Prospect's Contact<\/th>";
             htmlcode += "<th>First Contacted<\/th>";
             htmlcode += "<th>Remarks<\/th>";
@@ -141,11 +299,11 @@ function refresh() {
             for (var i = 0; i < strings.length; i += 5) {
                 htmlcode += "<tr class='record' id='" + count + "'>";
                 htmlcode += "<td class='pName' id='pName" + count + "'>" + strings[i] + "<\/td>";
-                htmlcode += "<td class='username' id='username" + count + "'>" + strings[i + 1] + "<\/td>";
+                htmlcode += "<td hidden class='username' id='username" + count + "'>" + strings[i + 1] + "<\/td>";
                 htmlcode += "<td class='pContact' id='pContact" + count + "'>" + strings[i + 2] + "<\/td>";
                 htmlcode += "<td class='firstContact' id='firstContact" + count + "'>" + strings[i + 3] + "<\/td>";
                 htmlcode += "<td class='remarks' id='remarks" + count + "'>" + strings[i + 4] + "<\/td>";
-                htmlcode += "<td><button id='EditProspect' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button>  <button id='DeleteProspect' type='button' class='btn btn-xs btn-danger' name='" + count + "'><span class='glyphicon glyphicon-trash' aria-hidden='true'><\/span> Delete<\/button><\/td>";
+                htmlcode += "<td><button id='AddSale' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-plus' aria-hidden='true'><\/span> Add Sale<\/button><button id='EditProspect' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button>  <button id='DeleteProspect' type='button' class='btn btn-xs btn-danger' name='" + count + "'><span class='glyphicon glyphicon-trash' aria-hidden='true'><\/span> Delete<\/button><\/td>";
                 htmlcode += "<\/tr>";
                 count++;
             }
@@ -156,7 +314,11 @@ function refresh() {
     });
 }
 
-function showUpdateUserModal() {
-    $('#showUpdateUserModal').modal('show');
+function showUpdateProspectModal() {
+    $('#showUpdateProspectModal').modal('show');
+}
+
+function showAddSaleModal() {
+    $('#showAddSaleModal').modal('show');
 }
 

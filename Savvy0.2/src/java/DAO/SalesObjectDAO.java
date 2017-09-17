@@ -28,20 +28,20 @@ public class SalesObjectDAO {
     private ResultSet result;
     private PreparedStatement stmt;
     
-    public ArrayList<SalesObject> retrieveAllByAgent( String agentName ) {
+    public ArrayList<SalesObject> retrieveAllByAgent( String username ) {
          sales = new ArrayList<>();
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Select * from sales where agentName like  '" + agentName + "'");
+            stmt = conn.prepareStatement("Select * from sales where username like  '" + username + "'");
             result = stmt.executeQuery();
             while (result.next()) {
-                String name = result.getString("agentName");
+                String name = result.getString("username");
+                String pName = result.getString("pName");
                 Date dateClose = result.getDate("dateClose");
-                String customerName = result.getString("usertype");
                 String caseType = result.getString("caseType");
                 double expectedFYC = result.getDouble("expectedFYC");
                 String remarks = result.getString("remarks");
-                sales.add(new SalesObject(name, dateClose, customerName, caseType, expectedFYC, remarks));
+                sales.add(new SalesObject(name,  pName,dateClose, caseType, expectedFYC, remarks));
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -52,18 +52,23 @@ public class SalesObjectDAO {
         return sales;
     }
     
-    public ArrayList<String> retrieveIndividualSales( String agentName ) {
+    public ArrayList<String> retrieveIndividualSales( String username ) {
         ArrayList<String> lookupStringList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
-            String query = "SELECT * from sales where agentName like '" + agentName + "'";
+            String query = "SELECT * from sales where username like '" + username + "'";
             stmt = conn.prepareStatement(query);
             result = stmt.executeQuery();
 
             while (result.next()) {
                 lookupStringList.add(result.getString(1));
-                lookupStringList.add("" + result.getDate(2));
-                lookupStringList.add(result.getString(3));
+                lookupStringList.add(result.getString(2));
+                Date dateCheck = result.getDate(3);
+                if(dateCheck==null){
+                    lookupStringList.add("Work in Progress!");
+                }else{
+                    lookupStringList.add(""+dateCheck);
+                }
                 lookupStringList.add(result.getString(4));
                 lookupStringList.add("" + result.getDouble(5));
                 lookupStringList.add(result.getString(6));
@@ -83,16 +88,16 @@ public class SalesObjectDAO {
         return lookupStringList;
     }
     
-    public void createSale( String agentName, Date dateClose, String customerName, String caseType, double expectedFYC, String remarks ) {
+    public void createSale( String username, Date dateClose, String pName, String caseType, double expectedFYC, String remarks ) {
         //  lookupList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO `sales` (`agentName`, `dateClose`, `customerName` , `caseType`, `expectedFYC`, `remarks`) VALUES"
+            stmt = conn.prepareStatement("INSERT INTO `sales` (`username`, `dateClose`, `pName` , `caseType`, `expectedFYC`, `remarks`) VALUES"
                     + "(?,?,?,?,?,?)");
 
-            stmt.setString(1, agentName);
+            stmt.setString(1, username);
             stmt.setDate(2, dateClose);
-            stmt.setString(3, customerName);
+            stmt.setString(3, pName);
             stmt.setString(4, caseType);
             stmt.setDouble(5, expectedFYC);
             stmt.setString(6, remarks);
@@ -111,11 +116,11 @@ public class SalesObjectDAO {
         }
     }
     
-    public void deleteSale(String customerName, String caseType) {
+    public void deleteSale(String pName, String caseType) {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("DELETE from sales where customerName ='" + customerName + "' AND caseType = '" + caseType + "' " );
+            stmt = conn.prepareStatement("DELETE from sales where pName ='" + pName + "' AND caseType = '" + caseType + "' " );
 
             stmt.executeUpdate();
 
@@ -133,12 +138,12 @@ public class SalesObjectDAO {
 
     }
     
-    public void updateSale(String agentName, Date dateClose, String customerName, String caseType, double expectedFYC, String remarks) {
+    public void updateSale(String username,String pName, Date dateClose,  String caseType, double expectedFYC, String remarks) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `sales` SET `expectedFYC`='" + expectedFYC + "', `remarks`='" + remarks + "'  where `agentName` = '" + agentName + "' and `caseType` = '"+ caseType +"' and `customerName` = '" + customerName + "'");             
+            stmt = conn.prepareStatement("Update `sales` SET `expectedFYC`='" + expectedFYC + "', `remarks`='" + remarks + "'  where `username` = '" + username + "' and `caseType` = '"+ caseType +"' and `pName` = '" + pName + "'");             
             stmt.executeUpdate();
 
         } catch (Exception e) {

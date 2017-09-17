@@ -4,10 +4,60 @@
         <title></title>
     </head>
     <body>
-        <h1 class="page-header" style="color:#937851">View Sales In Progress</h1>
+        <h1 class="page-header" style="color:#937851">Goals</h1>
+        <button class="btn btn-primary" id="AddProspect" style="display: initial" type="button"><span aria-hidden="true" class="glyphicon glyphicon-user"></span> &nbsp;Add New Prospect</button> 
         <table class="table table-striped col-md-12 well" id="trans_table_main">
             <tbody id="trans_table"></tbody>
-        </table>       
+        </table>
+        <!--Add Prospect-->
+        <div aria-hidden="true" class="modal fade" id="AddNewProspect" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" class="close" data-dismiss="modal" type="button">X</button>
+                        <h4 id="myModalLabel">Add New Prospect</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal well" id="newProspect" name="newProspect" style="padding-bottom: 0px;">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Prospect Name <font color="red">*</font></label>
+                                <div class="col-sm-7">
+                                    <input class="form-control" id="pName" name="pName" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"> Prospect Contact <font color="red">*</font></label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="pContact" name="pContact" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">First Contacted <font color="red">*</font></label>
+                                <div class="col-sm-5">                                          
+                                    <div class='input-group date' id='dateTimePicker'>
+                                        <input type='text' class="form-control" id='firstContact' name='firstContact' />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>                            
+                                </div>
+                            </div>  
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"> Remarks <font color="red">*</font></label>
+                                <div class="col-sm-7">
+                                    <input class="form-control input-large" id="remarks" name="remarks" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-9 control-label"></label>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary" disabled id="createButton" type="button">Create</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-12">
@@ -48,7 +98,7 @@
                 </div>
             </div>
         </div>
-        <!-- delete sales -->
+        <!-- delete prospect -->
         <div aria-hidden="true" class="modal fade" id="myModal" role="dialog" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -58,7 +108,7 @@
                         <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
                     </div>
                     <div class="modal-body">
-                        <p>You are about to delete a sale, this procedure is irreversible.</p>
+                        <p>You are about to delete a prospect, this procedure is irreversible.</p>
                         <p>Do you want to proceed?</p>
                     </div>
                     <!-- dialog buttons -->
@@ -68,53 +118,38 @@
                 </div>
             </div>
         </div>
-        <!--update sales-->
-        <div aria-hidden="true" class="modal fade" id="showUpdateSaleModal" role="dialog" tabindex="-1">
+        <!--update prospect-->
+        <div aria-hidden="true" class="modal fade" id="showUpdateProspectModal" role="dialog" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button aria-hidden="true" class="close" data-dismiss="modal" type="button">X</button>
-                        <h4 id="myModalLabel">Update Sale</h4>
+                        <h4 id="myModalLabel">Update Prospect</h4>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal well" id="sale_form" name="sale_form" style="padding-bottom: 0px;">
+                        <form class="form-horizontal well" id="prospect_form" name="prospect_form" style="padding-bottom: 0px;">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Prospect Name <font color="red">*</font></label>
                                 <div class="col-sm-7">
-                                    <input class="form-control" id="pName_update" name="pName_update" type="text" disabled>
+                                    <input class="form-control" id="pName_update" name="pName_update" type="text">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Case Type <font color="red">*</font></label>
-                                <div class="col-sm-7">
-                                    <select class="form-control" id='caseType_update' name="caseType_update">
-                                        <option value=''>
-                                            -- Select Sales Type --
-                                        </option>
-                                        <option value="Life">
-                                            Life
-                                        </option>
-                                        <option value="Investment">
-                                            Investment
-                                        </option>
-                                        <option value="Medical">
-                                            Medical
-                                        </option>
-                                        <option value="Retirement">
-                                            Retirement
-                                        </option>
-                                        <option value="Others">
-                                            Others
-                                        </option>   
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label"> Expected FYC <font color="red">*</font></label>
+                                <label class="col-sm-3 control-label"> Prospect Contact <font color="red">*</font></label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="expectedFYC_update" name="expectedFYC_update" type="text">
+                                    <input class="form-control" id="pContact_update" name="pContact_update" type="text">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">First Contacted <font color="red">*</font></label>
+                                <div class="col-sm-5">                                          
+                                    <div class='input-group date' id='dateTimePicker1'>
+                                        <input type='text' class="form-control" id='firstContact_update' name='firstContact' />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>                            
+                                </div>
+                            </div>  
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"> Remarks <font color="red">*</font></label>
                                 <div class="col-sm-7">
@@ -124,7 +159,7 @@
                             <div class="form-group">
                                 <label class="col-sm-9 control-label"></label>
                                 <div class="col-sm-3">
-                                    <button class="btn btn-primary" id="UpdateSale" type="button">Update</button>
+                                    <button class="btn btn-primary" id="UpdateProspect" type="button">Update</button>
                                 </div>
                             </div>
                         </form>
@@ -138,7 +173,7 @@
         <script src="assets/js/jquery-ui.min.js"></script> 
         <script src="assets/js/jquery-1.11.1.min.js" type="text/javascript"></script> 
         <script src="assets/js/bootstrap.min.js"></script>
-        <script src="assets/js/view_sales_in_progress.js"></script>
+        <script src="assets/js/add_prospects.js"></script>
         <script src="assets/js/moment-with-locales.min.js"></script>
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script type="text/javascript">

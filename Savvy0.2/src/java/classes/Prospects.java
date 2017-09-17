@@ -43,7 +43,7 @@ public class Prospects {
         this.pName = pName;
     }
 
-    public String getaName() {
+    public String getusername() {
         return username;
     }
 

@@ -40,7 +40,7 @@ public class UserServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Map<String, Object> toReturn = new HashMap<String, Object>();
+        Map<String, Object> toReturn = new HashMap<>();
         String type = request.getParameter("type");
         
         HttpSession session = request.getSession();
@@ -57,7 +57,7 @@ public class UserServlet extends HttpServlet {
                 String firstName = request.getParameter("firstName");
                 String lastName = request.getParameter("lastName");
                 String usertype = request.getParameter("usertype");
-                String manager="";
+                String manager= request.getParameter("manager");
                 String pwHash = UserDAO.generateHash(password);
                 
                 User current = (User) session.getAttribute("currentUser");
@@ -66,7 +66,7 @@ public class UserServlet extends HttpServlet {
                 // Baically, if admin is creating, it will auto set the manager column in DB to Manager, if its manager creating, it will set manager
                 // to Manager's first and last name
                 
-                if ( current.checkAdmin().equals("Admin")) {
+                if (current.checkAdmin().equals("Admin")) {
                     manager = "Manager";
                 } else if (current.checkAdmin().equals("Manager")) {
                     manager = "" + current.getFirstName() + " " + current.getLastName().toUpperCase();
@@ -99,7 +99,7 @@ public class UserServlet extends HttpServlet {
                 try {
                     /* TODO output your page here. You may use following sample code. */
                     UserDAO userDAO = new UserDAO();
-                    String teamRetrieve ="";
+                    String teamRetrieve;
                     User current = (User) session.getAttribute("currentUser");
                     
                     
@@ -136,14 +136,10 @@ public class UserServlet extends HttpServlet {
                 try {
                     transJsonObj = new JSONObject(request.getReader().readLine());
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (IOException | JSONException e) {
                 }
-
-                String username = "";
-
                 try {
-                    username = transJsonObj.getString("username");
+                    String username = transJsonObj.getString("username");
 
                     UserDAO uDAO = new UserDAO();
                     uDAO.deleteUser(username);
@@ -155,28 +151,20 @@ public class UserServlet extends HttpServlet {
 
                 //System.out.println(transJsonObj);      
             } else if (type.equals("updateUser")) {
-
-                String username = "";
-                String firstName = "";
-                String lastName = "";
-                String usertype = "";
-                String password = ""; 
-                String manager = "";
-
                 try {                        
                     //changed this part as well, same as above, chage the variable names accordingly and remove those thats not needed
-                    username = request.getParameter("username");
-                    firstName = request.getParameter("firstName");
-                    lastName = request.getParameter("lastName");
-                    usertype = request.getParameter("usertype");
-                    manager = request.getParameter("manager");
+                    String username = request.getParameter("username");
+                    String firstName = request.getParameter("firstName");
+                    String lastName = request.getParameter("lastName");
+                    String usertype = request.getParameter("usertype");
+                    String manager = request.getParameter("manager");
                     
                     if(usertype!=null){
                       if(usertype.equals("Admin")){
                            usertype = "Admin";
                         }
                     }
-                    password = request.getParameter("password");            
+                    String password = request.getParameter("password");            
 
                     UserDAO uDAO = new UserDAO();
                     if (password != null && !password.trim().equals("")) {                    
@@ -188,7 +176,6 @@ public class UserServlet extends HttpServlet {
                     response.getWriter().write("updated user");
                     toReturn.put("success", "success");
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         }

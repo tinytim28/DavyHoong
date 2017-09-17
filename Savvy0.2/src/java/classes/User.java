@@ -18,7 +18,7 @@ public class User {
     private String usertype;  // 3 levels, Admin, Manager, Agent
     private String manager;
     
-    public User ( String firstName, String lastName, String username, String password, String usertype, String magager ) {
+    public User ( String firstName, String lastName, String username, String password, String usertype, String manager ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

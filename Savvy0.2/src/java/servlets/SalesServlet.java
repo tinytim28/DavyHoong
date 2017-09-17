@@ -54,48 +54,35 @@ public class SalesServlet extends HttpServlet {
             throws ServletException, IOException {
         Map<String, Object> toReturn = new HashMap<String, Object>();
         String type = request.getParameter("type");
-        
-        if(type != null)    {
+
+        if (type != null) {
             if (type.equals("create")) {
                 // creation of sales object for individual agents
-                HttpSession session = request.getSession();        
-                User loginUser = (User)session.getAttribute("loginUser");
-                String agentName = loginUser.getFirstName() + " " + loginUser.getLastName();
-                String year = request.getParameter("year");
-                String month = request.getParameter("month");
-                String day = request.getParameter("day");
-                String dateCombined = "" + year + month + day;
-                
-                Date dateClose = null;
-                try {
-                    dateClose = validateDateTime(dateCombined, "yyyyMMdd");
-                } catch (ParseException e) {
-                    
-                } catch (NumberFormatException e) {
-                    
-                }
-                String customerName = request.getParameter("customerName");
+                HttpSession session = request.getSession();
+                User loginUser = (User) session.getAttribute("loginUser");
+                String username = loginUser.getUsername();
+                java.sql.Date dateClose = null;
+
+                String pName = request.getParameter("pName");
                 String caseType = request.getParameter("caseType");
                 double expectedFYC = Double.parseDouble(request.getParameter("expectedFYC"));
-                String remarks = request.getParameter("remarks");
-                java.sql.Date dateInput = new java.sql.Date(dateClose.getDate());
+                String remarks = request.getParameter("salesremarks");
 
                 //System.out.println("crating user with " + username);
-
                 SalesObjectDAO s = new SalesObjectDAO();
-                s.createSale(agentName, dateInput, customerName, caseType, expectedFYC, remarks);
+                s.createSale(username, dateClose, pName, caseType, expectedFYC, remarks);
                 toReturn.put("success", "success");
                 write(response, toReturn);
-                
+
             } else if (type.equals("adminRetrieveSales")) {
                 // This is to retrieve an individual user's sales,
                 // retrieve done by admin to view that employees current sales that he is working on
-                String agentName = request.getParameter("agentName");
-                
+                String username = request.getParameter("username");
+
                 try {
                     /* TODO output your page here. You may use following sample code. */
                     SalesObjectDAO salesDAO = new SalesObjectDAO();
-                    ArrayList<String> list = salesDAO.retrieveIndividualSales(agentName);
+                    ArrayList<String> list = salesDAO.retrieveIndividualSales(username);
                     String output = "";
                     for (String s : list) {
                         output += s + ",";
@@ -115,14 +102,14 @@ public class SalesServlet extends HttpServlet {
             } else if (type.equals("retrieveAllByAgent")) {
                 // This is to retrieve an individual user's sales,
                 // retrieve done by admin to view that employees current sales that he is working on
-                HttpSession session = request.getSession();        
-                User loginUser = (User)session.getAttribute("loginUser");
-                String agentName = loginUser.getFirstName() + " " + loginUser.getLastName();
-                
+                HttpSession session = request.getSession();
+                User loginUser = (User) session.getAttribute("loginUser");
+                String username = loginUser.getUsername();
+
                 try {
                     /* TODO output your page here. You may use following sample code. */
                     SalesObjectDAO salesDAO = new SalesObjectDAO();
-                    ArrayList<String> list = salesDAO.retrieveIndividualSales(agentName);
+                    ArrayList<String> list = salesDAO.retrieveIndividualSales(username);
                     String output = "";
                     for (String s : list) {
                         output += s + ",";
@@ -150,15 +137,15 @@ public class SalesServlet extends HttpServlet {
                     e.printStackTrace();
                 }
 
-                String customerName = "";
+                String pName = "";
                 String caseType = "";
 
                 try {
-                    customerName = transJsonObj.getString("customerName");
+                    pName = transJsonObj.getString("pName");
                     caseType = transJsonObj.getString("caseType");
 
                     SalesObjectDAO sDAO = new SalesObjectDAO();
-                    sDAO.deleteSale(customerName, caseType);
+                    sDAO.deleteSale(pName, caseType);
 
                     response.getWriter().write("updated Sales");
                 } catch (JSONException ex) {
@@ -168,44 +155,61 @@ public class SalesServlet extends HttpServlet {
                 //System.out.println(transJsonObj);      
             } else if (type.equals("updateSales")) {
 
-                String agentName = "";
-                String customerName = "";
-                double expectedFYC = 0.0;
-                String caseType = "";
-                Date convert = null;
-                String remarks = "";
-   
-
-                try {                        
+                try {
                     //changed this part as well, same as above, chage the variable names accordingly and remove those thats not needed
-                    agentName = request.getParameter("agentName");
-                    customerName = request.getParameter("customerNam");
-                    expectedFYC = Double.parseDouble(request.getParameter("pContact"));
-                    remarks = request.getParameter("remarks");
-                    
-                    String year = request.getParameter("year");
-                    String month = request.getParameter("month");
-                    String day = request.getParameter("day");
-                    String combined = "" + year + month + day;
-                    
-                    convert = validateDateTime(combined, "yyyyMMdd");
-                    java.sql.Date dateClose = new java.sql.Date(convert.getDate());
-                    
-                    
-
+                    HttpSession session = request.getSession();
+                    User loginUser = (User) session.getAttribute("loginUser");
+                    String username = loginUser.getUsername();
+                    String pName = request.getParameter("pName");
+                    double expectedFYC = Double.parseDouble(request.getParameter("pContact"));
+                    String caseType = request.getParameter("caseType");
+                    String remarks = request.getParameter("remarks");
+                    java.sql.Date dateClose = null;
                     SalesObjectDAO sDAO = new SalesObjectDAO();
-                    sDAO.updateSale(agentName, dateClose, customerName, caseType, expectedFYC, remarks);
-                    
+                    sDAO.updateSale(username,  pName, dateClose, caseType, expectedFYC, remarks);
+
                     response.getWriter().write("updated Sale Line Item");
                     toReturn.put("success", "success");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } 
+            } else if (type.equals("closeSale")) {
+
+                try {
+                    //changed this part as well, same as above, chage the variable names accordingly and remove those thats not needed
+                    HttpSession session = request.getSession();
+                    User loginUser = (User) session.getAttribute("loginUser");
+                    String username = loginUser.getUsername();
+                    String pName = request.getParameter("pName");
+                    double expectedFYC = Double.parseDouble(request.getParameter("pContact"));
+                    String caseType = request.getParameter("caseType");
+                    String remarks = request.getParameter("remarks");
+
+                    String dateCloseString = request.getParameter("dateClose");
+                    java.util.Date date = null;
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+
+                        date = sdf1.parse(dateCloseString);
+
+                    } catch (ParseException e) {
+
+                    }
+                    java.sql.Date dateClose = new java.sql.Date(date.getTime());
+
+                    SalesObjectDAO sDAO = new SalesObjectDAO();
+                    sDAO.updateSale(username,  pName,dateClose, caseType, expectedFYC, remarks);
+
+                    response.getWriter().write("updated Sale Line Item");
+                    toReturn.put("success", "success");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        
+
     }
-    
+
     public static Date validateDateTime(String dateTime, String format) throws ParseException {
         DateFormat df = new SimpleDateFormat(format);
         df.setLenient(false);
@@ -250,7 +254,7 @@ public class SalesServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
     private void write(HttpServletResponse response, Map<String, Object> map) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

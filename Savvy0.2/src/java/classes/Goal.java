@@ -10,24 +10,24 @@ package classes;
  * @author Timothy
  */
 public class Goal {
-    private String aName;
+    private String username;
     private double yTarget;
     private double aTarget;
     private int recruits;
 
-    public Goal(String aName, double yTarget, double aTarget, int recruits) {
-        this.aName = aName;
+    public Goal(String username, double yTarget, double aTarget, int recruits) {
+        this.username = username;
         this.yTarget = yTarget;
         this.aTarget = aTarget;
         this.recruits = recruits;
     }
     
-    public String getaName() {
-        return aName;
+    public String getusername() {
+        return username;
     }
 
-    public void setaName(String aName) {
-        this.aName = aName;
+    public void setusername(String username) {
+        this.username = username;
     }
 
     public double getyTarget() {

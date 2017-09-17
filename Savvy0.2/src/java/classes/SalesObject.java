@@ -13,25 +13,25 @@ import java.sql.Date;
  */
 public class SalesObject {
     
-    private String agentName;
+    private String username;
+    private String pName;
     private Date dateClose;
-    private String customerName;
     private String caseType;
     private double expectedFYC;
     private String remarks;
     
-    public SalesObject ( String agentName, Date dateClose, String customerName, String caseType, double expectedFYC, String remarks ) {
-        this.agentName = agentName;
+    public SalesObject ( String username,  String pName,Date dateClose, String caseType, double expectedFYC, String remarks ) {
+        this.username = username;
+        this.pName = pName;
         this.dateClose = dateClose;
-        this.customerName = customerName;
         this.caseType = caseType;
         this.expectedFYC = expectedFYC;
         this.remarks = remarks;
         
     }
 
-    public String getAgentName() {
-        return agentName;
+    public String getusername() {
+        return username;
     }
 
     public Date getDateClose() {
@@ -39,8 +39,8 @@ public class SalesObject {
     }
 
 
-    public String getCustomerName() {
-        return customerName;
+    public String getpName() {
+        return pName;
     }
 
     public String getCaseType() {
@@ -55,8 +55,8 @@ public class SalesObject {
         return remarks;
     }
 
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
+    public void setusername(String username) {
+        this.username = username;
     }
 
     public void setDateClose(Date dateClose) {
@@ -64,8 +64,8 @@ public class SalesObject {
     }
 
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setpName(String pName) {
+        this.pName = pName;
     }
 
     public void setCaseType(String caseType) {
