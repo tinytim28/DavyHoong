@@ -92,9 +92,6 @@
                     <option value="Manager">
                       Manager
                     </option>
-                    <option value="Financial Adviser">
-                      Financial Adviser
-                    </option>
                   </select>
                 </div>
               </div>

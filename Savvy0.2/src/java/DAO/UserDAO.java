@@ -100,14 +100,14 @@ public class UserDAO {
         //  lookupList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO `user` (`username`, `password`, `firstname`, `lastname`, `usertype`, `manager`) VALUES"
-                    + "(?,?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO `user` (`firstname`, `lastname`, `username`, `password`, `usertype`, `manager`) VALUES"
+                    + "(?,?,?,?,?,?)");
             //conn.setAutoCommit(false);
 
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            stmt.setString(3, firstName);
-            stmt.setString(4, lastName);
+            stmt.setString(1, firstName);
+            stmt.setString(2, lastName);
+            stmt.setString(3, username);
+            stmt.setString(4, password);
             stmt.setString(5, usertype);
             stmt.setString(6, manager);
             stmt.execute();
@@ -128,7 +128,7 @@ public class UserDAO {
     public void changePassword(User user, String password) { 
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update user set password = '" + password + "' where StudentID like '" + user.getUsername() + "'");
+            stmt = conn.prepareStatement("Update user set password = '" + password + "' where username like '" + user.getUsername() + "'");
             stmt.executeUpdate();
 
             if (conn != null) {
@@ -261,8 +261,8 @@ public class UserDAO {
             while (result.next()) {
                 
                 lookupStringList.add(result.getString(1));
+                lookupStringList.add(result.getString(2));
                 lookupStringList.add(result.getString(3));
-                lookupStringList.add(result.getString(4));
                 lookupStringList.add(result.getString(5));
                 lookupStringList.add(result.getString(6));
                 

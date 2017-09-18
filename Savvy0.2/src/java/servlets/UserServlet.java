@@ -57,11 +57,10 @@ public class UserServlet extends HttpServlet {
                 String firstName = request.getParameter("firstName");
                 String lastName = request.getParameter("lastName");
                 String usertype = request.getParameter("usertype");
-                String manager= request.getParameter("manager");
                 String pwHash = UserDAO.generateHash(password);
                 
-                User current = (User) session.getAttribute("currentUser");
-                
+                User current = (User) session.getAttribute("loginUser");
+                String manager = "";
                 
                 // Baically, if admin is creating, it will auto set the manager column in DB to Manager, if its manager creating, it will set manager
                 // to Manager's first and last name
@@ -100,7 +99,7 @@ public class UserServlet extends HttpServlet {
                     /* TODO output your page here. You may use following sample code. */
                     UserDAO userDAO = new UserDAO();
                     String teamRetrieve;
-                    User current = (User) session.getAttribute("currentUser");
+                    User current = (User) session.getAttribute("loginUser");
                     
                     
                     //Basically what i did is to take from the current user to check who is the manager or if the user is a manager himself

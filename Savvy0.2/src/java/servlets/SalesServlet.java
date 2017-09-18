@@ -93,7 +93,7 @@ public class SalesServlet extends HttpServlet {
                     if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
                         json = output.substring(0, output.length() - 1);
                     }
-
+                    toReturn.put("success", "success");
                     response.getWriter().write(json);
 
                 } finally {
@@ -147,7 +147,7 @@ public class SalesServlet extends HttpServlet {
                     SalesObjectDAO sDAO = new SalesObjectDAO();
                     sDAO.deleteSale(pName, caseType);
 
-                    response.getWriter().write("updated Sales");
+                    response.getWriter().write("Deleted Sale");
                 } catch (JSONException ex) {
                     //Logger.getLogger(admincontrol.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -181,10 +181,7 @@ public class SalesServlet extends HttpServlet {
                     User loginUser = (User) session.getAttribute("loginUser");
                     String username = loginUser.getUsername();
                     String pName = request.getParameter("pName");
-                    double expectedFYC = Double.parseDouble(request.getParameter("pContact"));
                     String caseType = request.getParameter("caseType");
-                    String remarks = request.getParameter("remarks");
-
                     String dateCloseString = request.getParameter("dateClose");
                     java.util.Date date = null;
                     SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -198,9 +195,9 @@ public class SalesServlet extends HttpServlet {
                     java.sql.Date dateClose = new java.sql.Date(date.getTime());
 
                     SalesObjectDAO sDAO = new SalesObjectDAO();
-                    sDAO.updateSale(username,  pName,dateClose, caseType, expectedFYC, remarks);
+                    sDAO.closeSale(username,  pName,dateClose, caseType);
 
-                    response.getWriter().write("updated Sale Line Item");
+                    response.getWriter().write("closed Sale Line Item");
                     toReturn.put("success", "success");
                 } catch (Exception e) {
                     e.printStackTrace();

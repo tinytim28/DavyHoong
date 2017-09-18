@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 $(document).ready(function() {
-
+//start of update user
   $("#showUpdateUserModal").on("hide", function() { // remove the event listeners when the dialog is dismissed
     $("#showUpdateUserModal a.btn").off("click");
   });
@@ -89,9 +89,9 @@ $(document).ready(function() {
     
     
   });
+//end of update user
 
-
-
+//start of add user
   $("#AddNewUser").click(function() {
     $("#AddNewUserModal").modal("show");
   });
@@ -162,6 +162,7 @@ $(document).ready(function() {
             $("#trans_table").html("");
             refresh();
             showSuccessModal("New user has been created successfully.");
+            $("#AddNewUserModal").modal("hide");
           } else {
             showErrorModal("Creation Failed.");
           }
@@ -174,7 +175,9 @@ $(document).ready(function() {
       showErrorModal(err);
     }
   })
-
+  // end of add user
+  
+  //start of change password
   $("#confirmPassword").blur(function() {
     var passwordNew = document.getElementById("passwordNew").value;
     var confirmPassword = document.getElementById("confirmPassword").value;
@@ -209,12 +212,12 @@ $(document).ready(function() {
       }
     }
   });
-
+// end of change password
   refresh(); // by default
 
+//start of delete user
   $("table").on('click', '#DeleteUser', function() {
     var del = $(this).attr("name");
-    alert(del);
     $("#myModal").modal({ // wire up the actual modal functionality and show the dialog
       "backdrop": "static",
       "keyboard": true,
@@ -224,7 +227,6 @@ $(document).ready(function() {
       $("#myModal").modal('hide'); // dismiss the dialog
 
       var username = $("#username" + del).text();
-      alert(username);
 
       // set request parameters
       var parameters = {
@@ -249,7 +251,7 @@ $(document).ready(function() {
       
     });
   });
-
+//end of delete user
 
 });
 
@@ -274,6 +276,7 @@ function showErrorModal(errorMessage) {
   $('#errorModal').modal('show');
 }
 
+//start of view users
 function refresh() {
   $.get("/Savvy0.2/UserServlet?type=retrieveUser", {
     "_": $.now()
@@ -287,16 +290,18 @@ function refresh() {
     htmlcode += "<th>First Name<\/th>";
     htmlcode += "<th>Last Name<\/th>";
     htmlcode += "<th>User Type<\/th>";
+    htmlcode += "<th>Manager<\/th>";
     htmlcode += "<th>Action<\/th>";
     htmlcode += "<\/tr>";
 
     var count = 1;
-    for (var i = 0; i < strings.length; i += 4) {
+    for (var i = 0; i < strings.length; i += 5) {
       htmlcode += "<tr class='record' id='" + count + "'>";
       htmlcode += "<td class='username' id='username" + count + "'>" + strings[i] + "<\/td>";
       htmlcode += "<td class='firstname' id='firstname" + count + "'>" + strings[i + 1] + "<\/td>";
       htmlcode += "<td class='lastname' id='lastname" + count + "'>" + strings[i + 2] + "<\/td>";
       htmlcode += "<td id='usertype" + count + "'>" + strings[i + 3] + "<\/td>";
+      htmlcode += "<td id='manager" + count + "'>" + strings[i + 4] + "<\/td>";
       htmlcode += "<td><button id='EditUser' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button> <button id='DeleteUser' type='button' class='btn btn-xs btn-danger' name='" + count + "'><span class='glyphicon glyphicon-trash' aria-hidden='true'><\/span> Delete<\/button><\/td>";
 
       htmlcode += "<\/tr>";
@@ -306,6 +311,7 @@ function refresh() {
     $("#trans_table").html(htmlcode);
   });
 }
+//end of view users
 
 function showUpdateUserModal() {
   $('#showUpdateUserModal').modal('show');

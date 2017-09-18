@@ -204,6 +204,7 @@ $(document).ready(function () {
                     $("#trans_table").html("");
                     refresh();
                     showSuccessModal("New prospect has been created successfully.");
+                    $("#AddNewProspect").modal("hide");
                     refresh();
                 } else {
                     showErrorModal("Creation Failed.");

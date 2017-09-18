@@ -158,4 +158,25 @@ public class SalesObjectDAO {
             }
         }
     }
+    
+    public void closeSale(String username,String pName, Date dateClose,  String caseType) {
+
+        try {
+
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Update `sales` SET `dateClose`='" + dateClose + "'  where `username` = '" + username + "' and `caseType` = '"+ caseType +"' and `pName` = '" + pName + "'");             
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //rs.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                //Logger.getLogger(CompanyDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }
