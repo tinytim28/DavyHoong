@@ -297,7 +297,12 @@ $(document).ready(function () {
                     htmlcode += "<\/select>";
                     $("#view_sales_table").html(htmlcode);
                     
+                }else{
+                    htmlcode += "<tr>";
+                    htmlcode += "<th>User has not uploaded any sales!<\/th>";
+                    htmlcode += "<\/tr>";
                 }
+                
             $("#view_sales_table").html(htmlcode);    
             },
             error: function (xhr, status, error) {
