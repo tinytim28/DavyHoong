@@ -271,7 +271,6 @@ $(document).ready(function () {
             success: function (data) {
                 var strings = data.split(",");
                 var htmlcode = "";
-                alert(username);
                 if (data) {
                     htmlcode += "<tr>";
                     htmlcode += "<th hidden>Username<\/th>";
@@ -299,11 +298,12 @@ $(document).ready(function () {
                     $("#view_sales_table").html(htmlcode);
                     
                 }
-                
+            $("#view_sales_table").html(htmlcode);    
             },
             error: function (xhr, status, error) {
                 alert(error);
             }
+            
         });
         viewUserSaleModal();
     });
