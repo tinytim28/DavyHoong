@@ -15,21 +15,21 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.Date;
-
+import java.time.*;
 
 /**
  *
  * @author Timothy
  */
 public class SalesObjectDAO {
-    
+
     private ArrayList<SalesObject> sales;
     private Connection conn;
     private ResultSet result;
     private PreparedStatement stmt;
-    
-    public ArrayList<SalesObject> retrieveAllByAgent( String username ) {
-         sales = new ArrayList<>();
+
+    public ArrayList<SalesObject> retrieveAllByAgent(String username) {
+        sales = new ArrayList<>();
         try {
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("Select * from sales where username like  '" + username + "'");
@@ -41,7 +41,7 @@ public class SalesObjectDAO {
                 String caseType = result.getString("caseType");
                 double expectedFYC = result.getDouble("expectedFYC");
                 String remarks = result.getString("remarks");
-                sales.add(new SalesObject(name,  pName,dateClose, caseType, expectedFYC, remarks));
+                sales.add(new SalesObject(name, pName, dateClose, caseType, expectedFYC, remarks));
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -51,8 +51,8 @@ public class SalesObjectDAO {
         }
         return sales;
     }
-    
-    public ArrayList<String> retrieveIndividualSales( String username ) {
+
+    public ArrayList<String> retrieveIndividualSales(String username) {
         ArrayList<String> lookupStringList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
@@ -64,15 +64,15 @@ public class SalesObjectDAO {
                 lookupStringList.add(result.getString(1));
                 lookupStringList.add(result.getString(2));
                 Date dateCheck = result.getDate(3);
-                if(dateCheck==null){
+                if (dateCheck == null) {
                     lookupStringList.add("Work in Progress!");
-                }else{
-                    lookupStringList.add(""+dateCheck);
+                } else {
+                    lookupStringList.add("" + dateCheck);
                 }
                 lookupStringList.add(result.getString(4));
                 lookupStringList.add("" + result.getDouble(5));
                 lookupStringList.add(result.getString(6));
-                
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,8 +87,8 @@ public class SalesObjectDAO {
         }
         return lookupStringList;
     }
-    
-    public void createSale( String username, Date dateClose, String pName, String caseType, double expectedFYC, String remarks ) {
+
+    public void createSale(String username, Date dateClose, String pName, String caseType, double expectedFYC, String remarks) {
         //  lookupList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
@@ -115,12 +115,12 @@ public class SalesObjectDAO {
             }
         }
     }
-    
+
     public void deleteSale(String pName, String caseType) {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("DELETE from sales where pName ='" + pName + "' AND caseType = '" + caseType + "' " );
+            stmt = conn.prepareStatement("DELETE from sales where pName ='" + pName + "' AND caseType = '" + caseType + "' ");
 
             stmt.executeUpdate();
 
@@ -137,13 +137,13 @@ public class SalesObjectDAO {
         }
 
     }
-    
-    public void updateSale(String username,String pName, Date dateClose,  String caseType, double expectedFYC, String remarks) {
+
+    public void updateSale(String username, String pName, Date dateClose, String caseType, double expectedFYC, String remarks) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `sales` SET `expectedFYC`='" + expectedFYC + "', `remarks`='" + remarks + "'  where `username` = '" + username + "' and `caseType` = '"+ caseType +"' and `pName` = '" + pName + "'");             
+            stmt = conn.prepareStatement("Update `sales` SET `expectedFYC`='" + expectedFYC + "', `remarks`='" + remarks + "'  where `username` = '" + username + "' and `caseType` = '" + caseType + "' and `pName` = '" + pName + "'");
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -158,13 +158,13 @@ public class SalesObjectDAO {
             }
         }
     }
-    
-    public void closeSale(String username,String pName, Date dateClose,  String caseType) {
+
+    public void closeSale(String username, String pName, Date dateClose, String caseType) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `sales` SET `dateClose`='" + dateClose + "'  where `username` = '" + username + "' and `caseType` = '"+ caseType +"' and `pName` = '" + pName + "'");             
+            stmt = conn.prepareStatement("Update `sales` SET `dateClose`='" + dateClose + "'  where `username` = '" + username + "' and `caseType` = '" + caseType + "' and `pName` = '" + pName + "'");
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -178,5 +178,89 @@ public class SalesObjectDAO {
                 //Logger.getLogger(CompanyDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public Double getUserPastThreeMonthsSalesTotal(String username) {
+        Double total = 0.0;
+
+        LocalDate now = LocalDate.now();
+        String year = now.toString().substring(0, 4);
+        Month currentMonth = now.getMonth();
+        String startMonth = "" + currentMonth.minus(3).getValue();
+        String endMonth = "" + currentMonth.getValue();
+
+        if (startMonth.length() < 2) {
+            startMonth = "0" + startMonth;
+        }
+        if (endMonth.length() < 2) {
+            endMonth = "0" + endMonth;
+        }
+
+        String yearStart = "" + year + "-" + startMonth + "-01";
+        String yearEnd = "" + year + "-" + endMonth + "-01";
+
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT SUM(expectedFYC) as 'sumOfFYC' from sales where '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "' and username = '" + username + "'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                total = result.getDouble("sumOfFYC");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return total;
+    }
+    
+    public int getUserPastThreeMonthsTotalDeals(String username) {
+        int total = 0;
+
+        LocalDate now = LocalDate.now();
+        String year = now.toString().substring(0, 4);
+        Month currentMonth = now.getMonth();
+        String startMonth = "" + currentMonth.minus(3).getValue();
+        String endMonth = "" + currentMonth.getValue();
+
+        if (startMonth.length() < 2) {
+            startMonth = "0" + startMonth;
+        }
+        if (endMonth.length() < 2) {
+            endMonth = "0" + endMonth;
+        }
+
+        String yearStart = "" + year + "-" + startMonth + "-01";
+        String yearEnd = "" + year + "-" + endMonth + "-01";
+
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT count(*) as 'totalDeals' from sales where '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "' and username = '" + username + "'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                total = result.getInt("totalDeals");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return total;
     }
 }

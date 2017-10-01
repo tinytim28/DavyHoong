@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -152,6 +154,48 @@ public class ProspectsDAO {
                 //Logger.getLogger(CompanyDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public int getUserPastThreeMonthsTotalProspects(String username) {
+        int total = 0;
+
+        LocalDate now = LocalDate.now();
+        String year = now.toString().substring(0, 4);
+        Month currentMonth = now.getMonth();
+        String startMonth = "" + currentMonth.minus(3).getValue();
+        String endMonth = "" + currentMonth.getValue();
+
+        if (startMonth.length() < 2) {
+            startMonth = "0" + startMonth;
+        }
+        if (endMonth.length() < 2) {
+            endMonth = "0" + endMonth;
+        }
+
+        String yearStart = "" + year + "-" + startMonth + "-01";
+        String yearEnd = "" + year + "-" + endMonth + "-01";
+
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT count(*) as 'totalProspects' from prospects where '" + yearStart + "' <= firstContact and firstContact < '" + yearEnd + "' and username = '" + username + "'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                total = result.getInt("totalProspects");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return total;
     }
 }
     
