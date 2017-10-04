@@ -179,6 +179,8 @@ public class SalesObjectDAO {
             }
         }
     }
+    
+    //MANGER METHODS FOR HOUSEKEEPING
 
     public Double getUserPastThreeMonthsSalesTotal(String username) {
         Double total = 0.0;
@@ -249,6 +251,191 @@ public class SalesObjectDAO {
 
             while (result.next()) {
                 total = result.getInt("totalDeals");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return total;
+    }
+    
+    
+    public double getTeamTotalSalesOneMonth(String managerName) {
+        double total = 0.0;
+        int yearInt = 0;
+        LocalDate now = LocalDate.now();
+        String year = now.toString().substring(0, 4);
+        Month currentMonth = now.getMonth();
+        String startMonth = "" + currentMonth.getValue();
+        String endMonth = "" + currentMonth.plus(1).getValue();
+        
+        if (currentMonth.getValue() == 12 ) {
+            yearInt = Integer.parseInt(year) + 1;
+            year = "" + yearInt;
+        }
+
+        if (startMonth.length() < 2) {
+            startMonth = "0" + startMonth;
+        }
+        if (endMonth.length() < 2) {
+            endMonth = "0" + endMonth;
+        }
+
+        String yearStart = "" + year + "-" + startMonth + "-01";
+        String yearEnd = "" + year + "-" + endMonth + "-01";
+
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT sum(expectedFYC) as 'selected' FROM sales s INNER JOIN user u ON s.username = u.username WHERE u.manager = '" + managerName + "' and dateClose IS NOT NULL and '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                total = result.getDouble("selected");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return total;
+    }
+    
+    
+    public double getTeamTotalSalesYTD(String managerName) {
+        double total = 0.0;
+        int yearInt = 0;
+        LocalDate now = LocalDate.now();
+        String year = now.toString().substring(0, 4);
+        Month currentMonth = now.getMonth();
+        String endMonth = "" + currentMonth.plus(1).getValue();
+        
+        if (currentMonth.getValue() == 12 ) {
+            yearInt = Integer.parseInt(year) + 1;
+            year = "" + yearInt;
+        }
+
+        if (endMonth.length() < 2) {
+            endMonth = "0" + endMonth;
+        }
+
+        String yearStart = "" + year + "-01-01";
+        String yearEnd = "" + year + "-" + endMonth + "-01";
+
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT sum(expectedFYC) as 'selected' FROM sales s INNER JOIN user u ON s.username = u.username WHERE u.manager = '" + managerName + "' and dateClose IS NOT NULL and '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                total = result.getDouble("selected");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return total;
+    }
+    
+    //AGENT METHODS FOR HOUSEKEEPING
+    
+    public double getIndividualTotalSalesOneMonth(String username) {
+        double total = 0.0;
+        int yearInt = 0;
+        LocalDate now = LocalDate.now();
+        String year = now.toString().substring(0, 4);
+        Month currentMonth = now.getMonth();
+        String startMonth = "" + currentMonth.getValue();
+        String endMonth = "" + currentMonth.plus(1).getValue();
+        
+        if (currentMonth.getValue() == 12 ) {
+            yearInt = Integer.parseInt(year) + 1;
+            year = "" + yearInt;
+        }
+
+        if (startMonth.length() < 2) {
+            startMonth = "0" + startMonth;
+        }
+        if (endMonth.length() < 2) {
+            endMonth = "0" + endMonth;
+        }
+
+        String yearStart = "" + year + "-" + startMonth + "-01";
+        String yearEnd = "" + year + "-" + endMonth + "-01";
+
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "select sum(expectedFYC) as 'selected' from sales where username ='" + username + "' and '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "' and dateClose IS NOT NULL";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                total = result.getDouble("selected");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return total;
+    }
+    
+    
+    public double getIndividualTotalSalesYTD(String username) {
+        double total = 0.0;
+        int yearInt = 0;
+        LocalDate now = LocalDate.now();
+        String year = now.toString().substring(0, 4);
+        Month currentMonth = now.getMonth();
+        String endMonth = "" + currentMonth.plus(1).getValue();
+        
+        if (currentMonth.getValue() == 12 ) {
+            yearInt = Integer.parseInt(year) + 1;
+            year = "" + yearInt;
+        }
+
+        if (endMonth.length() < 2) {
+            endMonth = "0" + endMonth;
+        }
+
+        String yearStart = "" + year + "-01-01";
+        String yearEnd = "" + year + "-" + endMonth + "-01";
+
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "select sum(expectedFYC) as 'selected' from sales where username ='" + username + "' and '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "' and dateClose IS NOT NULL";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                total = result.getDouble("selected");
             }
         } catch (Exception e) {
             e.printStackTrace();
