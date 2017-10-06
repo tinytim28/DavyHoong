@@ -7,6 +7,7 @@ package servlets;
 
 import DAO.ProspectsDAO;
 import DAO.SalesObjectDAO;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -40,42 +42,111 @@ public class ForecastServlet extends HttpServlet {
         String type = request.getParameter("type");
 
         if (type != null) {
-            if (type.equals("forecastAgent")) {
+            if (type.equals("forecastAgentTwelveMonths")) {
                 // creation of sales object for individual agents
                 String username = request.getParameter("username");
-                
+
                 LocalDate now = LocalDate.now();
                 Month currentMonth = now.getMonth();
-                String xAxis = "";
-                
-                for ( int i = 1; i <= 12; i++ ) {
-                    String s = currentMonth.plus(i).toString();
-                    xAxis += s + ",";
+                String XYaxis = "";
+
+                ArrayList<Integer> months = new ArrayList<Integer>();
+
+                for (int i = 1; i <= 12; i++) {
+                    Month tempMonth = currentMonth.plus(i);
+                    int monthValue = tempMonth.getValue();
+                    String s = tempMonth.toString();
+                    s = Character.toUpperCase(s.charAt(0)) + s.substring(1, s.length()).toLowerCase();
+                    months.add(monthValue);
+                    XYaxis += s + ",";
                 }
-            
-                
+
                 try {
-                    
+
                     ProspectsDAO pDAO = new ProspectsDAO();
                     SalesObjectDAO sDAO = new SalesObjectDAO();
                     double ThreeMonthsSales = sDAO.getUserPastThreeMonthsSalesTotal(username);
                     int ThreeMonthsDeals = sDAO.getUserPastThreeMonthsTotalDeals(username);
                     int ThreeMonthsProspects = pDAO.getUserPastThreeMonthsTotalProspects(username);
-                    
+
                     double avgMonthlyProspects = (double) (ThreeMonthsProspects) / 3;
                     double avgDealSize = ThreeMonthsSales / ThreeMonthsDeals;
                     double closingRatio = (double) ThreeMonthsDeals / (double) ThreeMonthsProspects;
-                    
-                    
-                    
-                    
-                    
-                } catch(Exception e) {
+
+                    double forecastedDealsClosedMonthly = closingRatio * avgMonthlyProspects;
+
+                    if (forecastedDealsClosedMonthly < 1) {
+                        forecastedDealsClosedMonthly = 1.0;
+                    }
+
+                    double forecastedMonthlySales = forecastedDealsClosedMonthly * avgDealSize;
+                    double toAdd = 0.0;
+
+                    for (int a = 0; a <= 11; a++) {
+
+                        int pointer = months.get(a);
+
+                        double multiplier;
+                        switch (pointer) {
+                            case 1:
+                                multiplier = 0.0;
+                                break;
+                            case 2:
+                                multiplier = 0.0;
+                                break;
+                            case 3:
+                                multiplier = 0.0;
+                                break;
+                            case 4:
+                                multiplier = 0.0;
+                                break;
+                            case 5:
+                                multiplier = 0.0;
+                                break;
+                            case 6:
+                                multiplier = 0.0;
+                                break;
+                            case 7:
+                                multiplier = 0.0;
+                                break;
+                            case 8:
+                                multiplier = 0.0;
+                                break;
+                            case 9:
+                                multiplier = 0.0;
+                                break;
+                            case 10:
+                                multiplier = 0.0;
+                                break;
+                            case 11:
+                                multiplier = 0.0;
+                                break;
+                            case 12:
+                                multiplier = 0.0;
+                                break;
+                            default:
+                                multiplier = 0.0;
+                                break;
+                        }
+
+                        toAdd = forecastedMonthlySales * multiplier;
+                        XYaxis += "" + toAdd + ",";
+
+                        String json = "";
+                        //   System.out.println("json" + json);
+                        if (XYaxis.length() > 0 && XYaxis.charAt(XYaxis.length() - 1) == ',') {
+                            json = XYaxis.substring(0, XYaxis.length() - 1);
+                        }
+                        
+                        response.getWriter().write(json);
+
+                    }
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
-                    
+
                 }
-                
 
             }
         }
@@ -120,4 +191,9 @@ public class ForecastServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void write(HttpServletResponse response, Map<String, Object> map) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(new Gson().toJson(map));
+    }
 }
