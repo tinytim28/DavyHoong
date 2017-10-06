@@ -62,7 +62,6 @@ public class ForecastServlet extends HttpServlet {
                     int ThreeMonthsDeals = sDAO.getUserPastThreeMonthsTotalDeals(username);
                     int ThreeMonthsProspects = pDAO.getUserPastThreeMonthsTotalProspects(username);
                     
-                    double avgMonthlySales = ThreeMonthsSales / 3;
                     double avgMonthlyProspects = (double) (ThreeMonthsProspects) / 3;
                     double avgDealSize = ThreeMonthsSales / ThreeMonthsDeals;
                     double closingRatio = (double) ThreeMonthsDeals / (double) ThreeMonthsProspects;
