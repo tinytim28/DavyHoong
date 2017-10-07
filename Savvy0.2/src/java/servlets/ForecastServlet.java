@@ -51,6 +51,7 @@ public class ForecastServlet extends HttpServlet {
                 String XYaxis = "";
 
                 ArrayList<Integer> months = new ArrayList<Integer>();
+                double totalProjectedComissions = 0.0;
 
                 for (int i = 1; i <= 12; i++) {
                     Month tempMonth = currentMonth.plus(i);
@@ -89,58 +90,172 @@ public class ForecastServlet extends HttpServlet {
                         double multiplier;
                         switch (pointer) {
                             case 1:
-                                multiplier = 0.0;
+                                multiplier = 1.25;
                                 break;
                             case 2:
-                                multiplier = 0.0;
+                                multiplier = 0.65;
                                 break;
                             case 3:
-                                multiplier = 0.0;
+                                multiplier = 1.5;
                                 break;
                             case 4:
-                                multiplier = 0.0;
+                                multiplier = 1.0;
                                 break;
                             case 5:
-                                multiplier = 0.0;
+                                multiplier = 1.25;
                                 break;
                             case 6:
-                                multiplier = 0.0;
+                                multiplier = 1.5;
                                 break;
                             case 7:
-                                multiplier = 0.0;
+                                multiplier = 0.85;
                                 break;
                             case 8:
-                                multiplier = 0.0;
+                                multiplier = 0.95;
                                 break;
                             case 9:
-                                multiplier = 0.0;
+                                multiplier = 1.20;
                                 break;
                             case 10:
-                                multiplier = 0.0;
+                                multiplier = 1.1;
                                 break;
                             case 11:
-                                multiplier = 0.0;
+                                multiplier = 1.25;
                                 break;
                             case 12:
+                                multiplier = 1.75;
+                                break;
+                            default:
                                 multiplier = 0.0;
+                                break;
+                        }
+                        
+                        totalProjectedComissions = totalProjectedComissions + toAdd;
+                        toAdd = forecastedMonthlySales * multiplier;
+                        XYaxis += "" + toAdd + ",";
+
+                    }
+
+                    String json = "";
+                    //   System.out.println("json" + json);
+                    if (XYaxis.length() > 0 && XYaxis.charAt(XYaxis.length() - 1) == ',') {
+                        json = XYaxis.substring(0, XYaxis.length() - 1);
+                    }
+                    
+                    json = json + "," + totalProjectedComissions;
+
+                    response.getWriter().write(json);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+
+                }
+
+            } else if (type.equals("forecastAgentToEndYear")) {
+                // creation of sales object for individual agents
+                String username = request.getParameter("username");
+
+                LocalDate now = LocalDate.now();
+                Month currentMonth = now.getMonth();
+                int startMonth = currentMonth.getValue() + 1;
+                String XYaxis = "";
+
+                ArrayList<Integer> months = new ArrayList<Integer>();
+                double totalProjectedComissions = 0.0;
+
+                for (int i = startMonth; i <= 12; i++) {
+                    Month tempMonth = currentMonth.plus(i);
+                    int monthValue = tempMonth.getValue();
+                    String s = tempMonth.toString();
+                    s = Character.toUpperCase(s.charAt(0)) + s.substring(1, s.length()).toLowerCase();
+                    months.add(monthValue);
+                    XYaxis += s + ",";
+                }
+
+                try {
+
+                    ProspectsDAO pDAO = new ProspectsDAO();
+                    SalesObjectDAO sDAO = new SalesObjectDAO();
+                    double ThreeMonthsSales = sDAO.getUserPastThreeMonthsSalesTotal(username);
+                    int ThreeMonthsDeals = sDAO.getUserPastThreeMonthsTotalDeals(username);
+                    int ThreeMonthsProspects = pDAO.getUserPastThreeMonthsTotalProspects(username);
+
+                    double avgMonthlyProspects = (double) (ThreeMonthsProspects) / 3;
+                    double avgDealSize = ThreeMonthsSales / ThreeMonthsDeals;
+                    double closingRatio = (double) ThreeMonthsDeals / (double) ThreeMonthsProspects;
+
+                    double forecastedDealsClosedMonthly = closingRatio * avgMonthlyProspects;
+
+                    if (forecastedDealsClosedMonthly < 1) {
+                        forecastedDealsClosedMonthly = 1.0;
+                    }
+
+                    double forecastedMonthlySales = forecastedDealsClosedMonthly * avgDealSize;
+                    double toAdd = 0.0;
+
+                    for (int a = 0; a <= 11; a++) {
+
+                        int pointer = months.get(a);
+
+                        double multiplier;
+                        switch (pointer) {
+                            case 1:
+                                multiplier = 1.25;
+                                break;
+                            case 2:
+                                multiplier = 0.65;
+                                break;
+                            case 3:
+                                multiplier = 1.5;
+                                break;
+                            case 4:
+                                multiplier = 1.0;
+                                break;
+                            case 5:
+                                multiplier = 1.25;
+                                break;
+                            case 6:
+                                multiplier = 1.5;
+                                break;
+                            case 7:
+                                multiplier = 0.85;
+                                break;
+                            case 8:
+                                multiplier = 0.95;
+                                break;
+                            case 9:
+                                multiplier = 1.20;
+                                break;
+                            case 10:
+                                multiplier = 1.1;
+                                break;
+                            case 11:
+                                multiplier = 1.25;
+                                break;
+                            case 12:
+                                multiplier = 1.75;
                                 break;
                             default:
                                 multiplier = 0.0;
                                 break;
                         }
 
+                        totalProjectedComissions = totalProjectedComissions + toAdd;
                         toAdd = forecastedMonthlySales * multiplier;
                         XYaxis += "" + toAdd + ",";
 
-                        String json = "";
-                        //   System.out.println("json" + json);
-                        if (XYaxis.length() > 0 && XYaxis.charAt(XYaxis.length() - 1) == ',') {
-                            json = XYaxis.substring(0, XYaxis.length() - 1);
-                        }
-                        
-                        response.getWriter().write(json);
-
                     }
+
+                    String json = "";
+                    //   System.out.println("json" + json);
+                    if (XYaxis.length() > 0 && XYaxis.charAt(XYaxis.length() - 1) == ',') {
+                        json = XYaxis.substring(0, XYaxis.length() - 1);
+                    }
+                    
+                    json = json + "," + totalProjectedComissions;
+
+                    response.getWriter().write(json);
 
                 } catch (Exception e) {
                     e.printStackTrace();

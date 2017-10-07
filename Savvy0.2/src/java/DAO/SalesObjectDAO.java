@@ -186,8 +186,15 @@ public class SalesObjectDAO {
         Double total = 0.0;
 
         LocalDate now = LocalDate.now();
-        String year = now.toString().substring(0, 4);
+        String endYear = now.toString().substring(0, 4); 
+        String startYear = now.toString().substring(0, 4);
         Month currentMonth = now.getMonth();
+        
+        if (currentMonth.getValue() <= 3 ) {
+            startYear = "" + (Integer.parseInt(startYear) - 1);
+        }
+        
+        
         String startMonth = "" + currentMonth.minus(3).getValue();
         String endMonth = "" + currentMonth.getValue();
 
@@ -198,8 +205,8 @@ public class SalesObjectDAO {
             endMonth = "0" + endMonth;
         }
 
-        String yearStart = "" + year + "-" + startMonth + "-01";
-        String yearEnd = "" + year + "-" + endMonth + "-01";
+        String yearStart = "" + startYear + "-" + startMonth + "-01";
+        String yearEnd = "" + endYear + "-" + endMonth + "-01";
 
         try {
             conn = ConnectionManager.getConnection();
@@ -228,8 +235,15 @@ public class SalesObjectDAO {
         int total = 0;
 
         LocalDate now = LocalDate.now();
-        String year = now.toString().substring(0, 4);
+        String endYear = now.toString().substring(0, 4); 
+        String startYear = now.toString().substring(0, 4);
         Month currentMonth = now.getMonth();
+        
+        if (currentMonth.getValue() <= 3 ) {
+            startYear = "" + (Integer.parseInt(startYear) - 1);
+        }
+        
+        
         String startMonth = "" + currentMonth.minus(3).getValue();
         String endMonth = "" + currentMonth.getValue();
 
@@ -240,8 +254,8 @@ public class SalesObjectDAO {
             endMonth = "0" + endMonth;
         }
 
-        String yearStart = "" + year + "-" + startMonth + "-01";
-        String yearEnd = "" + year + "-" + endMonth + "-01";
+        String yearStart = "" + startYear + "-" + startMonth + "-01";
+        String yearEnd = "" + endYear + "-" + endMonth + "-01";
 
         try {
             conn = ConnectionManager.getConnection();
@@ -272,13 +286,14 @@ public class SalesObjectDAO {
         int yearInt = 0;
         LocalDate now = LocalDate.now();
         String year = now.toString().substring(0, 4);
+        String endYear = now.toString().substring(0, 4);
         Month currentMonth = now.getMonth();
         String startMonth = "" + currentMonth.getValue();
         String endMonth = "" + currentMonth.plus(1).getValue();
         
         if (currentMonth.getValue() == 12 ) {
-            yearInt = Integer.parseInt(year) + 1;
-            year = "" + yearInt;
+            int tempYear = Integer.parseInt(year) + 1;
+            endYear = "" + tempYear;
         }
 
         if (startMonth.length() < 2) {
@@ -289,7 +304,7 @@ public class SalesObjectDAO {
         }
 
         String yearStart = "" + year + "-" + startMonth + "-01";
-        String yearEnd = "" + year + "-" + endMonth + "-01";
+        String yearEnd = "" + endYear + "-" + endMonth + "-01";
 
         try {
             conn = ConnectionManager.getConnection();
@@ -320,12 +335,13 @@ public class SalesObjectDAO {
         int yearInt = 0;
         LocalDate now = LocalDate.now();
         String year = now.toString().substring(0, 4);
+        String endYear = now.toString().substring(0, 4);
         Month currentMonth = now.getMonth();
         String endMonth = "" + currentMonth.plus(1).getValue();
         
         if (currentMonth.getValue() == 12 ) {
-            yearInt = Integer.parseInt(year) + 1;
-            year = "" + yearInt;
+            int tempYear = Integer.parseInt(year) + 1;
+            endYear = "" + tempYear;
         }
 
         if (endMonth.length() < 2) {
@@ -333,7 +349,7 @@ public class SalesObjectDAO {
         }
 
         String yearStart = "" + year + "-01-01";
-        String yearEnd = "" + year + "-" + endMonth + "-01";
+        String yearEnd = "" + endYear + "-" + endMonth + "-01";
 
         try {
             conn = ConnectionManager.getConnection();
@@ -365,13 +381,14 @@ public class SalesObjectDAO {
         int yearInt = 0;
         LocalDate now = LocalDate.now();
         String year = now.toString().substring(0, 4);
+        String endYear = now.toString().substring(0, 4);
         Month currentMonth = now.getMonth();
         String startMonth = "" + currentMonth.getValue();
         String endMonth = "" + currentMonth.plus(1).getValue();
         
         if (currentMonth.getValue() == 12 ) {
-            yearInt = Integer.parseInt(year) + 1;
-            year = "" + yearInt;
+            int tempYear = Integer.parseInt(year) + 1;
+            endYear = "" + tempYear;
         }
 
         if (startMonth.length() < 2) {
@@ -382,7 +399,7 @@ public class SalesObjectDAO {
         }
 
         String yearStart = "" + year + "-" + startMonth + "-01";
-        String yearEnd = "" + year + "-" + endMonth + "-01";
+        String yearEnd = "" + endYear + "-" + endMonth + "-01";
 
         try {
             conn = ConnectionManager.getConnection();
@@ -413,12 +430,13 @@ public class SalesObjectDAO {
         int yearInt = 0;
         LocalDate now = LocalDate.now();
         String year = now.toString().substring(0, 4);
+        String endYear = now.toString().substring(0, 4);
         Month currentMonth = now.getMonth();
         String endMonth = "" + currentMonth.plus(1).getValue();
         
         if (currentMonth.getValue() == 12 ) {
-            yearInt = Integer.parseInt(year) + 1;
-            year = "" + yearInt;
+            int tempYear = Integer.parseInt(year) + 1;
+            endYear = "" + tempYear;
         }
 
         if (endMonth.length() < 2) {
@@ -426,7 +444,7 @@ public class SalesObjectDAO {
         }
 
         String yearStart = "" + year + "-01-01";
-        String yearEnd = "" + year + "-" + endMonth + "-01";
+        String yearEnd = "" + endYear + "-" + endMonth + "-01";
 
         try {
             conn = ConnectionManager.getConnection();

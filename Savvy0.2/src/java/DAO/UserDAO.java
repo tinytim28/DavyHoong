@@ -282,4 +282,27 @@ public class UserDAO {
         return lookupStringList;
     }
     
+    public ArrayList<String> retrieveTeamUsernames (String managerName) {
+        ArrayList<String> output = new ArrayList<>();
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Select username from user where username like '" + managerName + "'");
+            result = stmt.executeQuery();
+            while (result.next()) {
+                
+                String username = result.getString("username");
+                
+                output.add(username);
+            }
+            if (conn != null) {
+                ConnectionManager.close(conn, stmt, result);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return output;
+    }
+    
 }
