@@ -210,7 +210,7 @@ public class SalesObjectDAO {
 
         try {
             conn = ConnectionManager.getConnection();
-            String query = "SELECT SUM(expectedFYC) as 'sumOfFYC' from sales where '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "' and username = '" + username + "'";
+            String query = "SELECT SUM(expectedFYC) as 'sumOfFYC' from sales where '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "' and username = '" + username + "' and dateClose IS NOT NULL";
             stmt = conn.prepareStatement(query);
             result = stmt.executeQuery();
 
@@ -259,7 +259,7 @@ public class SalesObjectDAO {
 
         try {
             conn = ConnectionManager.getConnection();
-            String query = "SELECT count(*) as 'totalDeals' from sales where '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "' and username = '" + username + "'";
+            String query = "SELECT count(*) as 'totalDeals' from sales where '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "' and username = '" + username + "' and dateClose IS NOT NULL";
             stmt = conn.prepareStatement(query);
             result = stmt.executeQuery();
 
