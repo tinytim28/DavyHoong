@@ -129,7 +129,7 @@ public class ForecastServlet extends HttpServlet {
                                 multiplier = 0.0;
                                 break;
                         }
-                        
+
                         totalProjectedComissions = totalProjectedComissions + toAdd;
                         toAdd = forecastedMonthlySales * multiplier;
                         XYaxis += "" + toAdd + ",";
@@ -141,7 +141,7 @@ public class ForecastServlet extends HttpServlet {
                     if (XYaxis.length() > 0 && XYaxis.charAt(XYaxis.length() - 1) == ',') {
                         json = XYaxis.substring(0, XYaxis.length() - 1);
                     }
-                    
+
                     json = json + "," + totalProjectedComissions;
 
                     response.getWriter().write(json);
@@ -252,7 +252,7 @@ public class ForecastServlet extends HttpServlet {
                     if (XYaxis.length() > 0 && XYaxis.charAt(XYaxis.length() - 1) == ',') {
                         json = XYaxis.substring(0, XYaxis.length() - 1);
                     }
-                    
+
                     json = json + "," + totalProjectedComissions;
 
                     response.getWriter().write(json);

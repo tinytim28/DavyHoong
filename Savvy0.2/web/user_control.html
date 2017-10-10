@@ -1,8 +1,3 @@
-<%@page import="classes.User"%><%
-    User loginUser = (User) session.getAttribute("loginUser");
-    String usertype = loginUser.checkAdmin();
-
-%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,13 +5,8 @@
     </head>
     <body>
         <h1 class="page-header" style="color:black">User Control</h1>
-        <%   if (usertype.equals("Manager")) {
-          // a.   Admin only add managers and financial advisers     
-                // b.   Manager add financial advisers and see their stuff
-                // c.   Financial advisers add prospects and goals
-        %> <button class="btn btn-primary" id="AddNewUser" style="display: initial" type="button"><span aria-hidden="true" class="glyphicon glyphicon-user"></span> &nbsp;Add New User</button> <%
-            }
-        %><br>
+        <button class="btn btn-primary" id="AddNewUser" style="display: initial" type="button"><span aria-hidden="true" class="glyphicon glyphicon-user"></span> &nbsp;Add New User</button> 
+        <br>
         <br>
         <div class="row">
             <div class="col-md-12">
