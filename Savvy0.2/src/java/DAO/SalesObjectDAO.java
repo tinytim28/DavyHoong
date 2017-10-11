@@ -143,7 +143,7 @@ public class SalesObjectDAO {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `sales` SET `expectedFYC`='" + expectedFYC + "', `remarks`='" + remarks + "'  where `username` = '" + username + "' and `caseType` = '" + caseType + "' and `pName` = '" + pName + "'");
+            stmt = conn.prepareStatement("Update `sales` SET `expectedFYC`='" + expectedFYC + "', `remarks`='" + remarks + "'  where `username` = '" + username + "' and `caseType` = '" + caseType + "' and `pName` = '" + pName + "' and dateClose IS NOT NULL");
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -164,7 +164,7 @@ public class SalesObjectDAO {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `sales` SET `dateClose`='" + dateClose + "'  where `username` = '" + username + "' and `caseType` = '" + caseType + "' and `pName` = '" + pName + "'");
+            stmt = conn.prepareStatement("Update `sales` SET `dateClose`='" + dateClose + "'  where `username` = '" + username + "' and `caseType` = '" + caseType + "' and `pName` = '" + pName + "' and dateClose IS NOT NULL");
             stmt.executeUpdate();
 
         } catch (Exception e) {
