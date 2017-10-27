@@ -179,22 +179,20 @@ public class SalesObjectDAO {
             }
         }
     }
-    
-    //MANGER METHODS FOR HOUSEKEEPING
 
+    //MANGER METHODS FOR HOUSEKEEPING
     public Double getUserPastThreeMonthsSalesTotal(String username) {
         Double total = 0.0;
 
         LocalDate now = LocalDate.now();
-        String endYear = now.toString().substring(0, 4); 
+        String endYear = now.toString().substring(0, 4);
         String startYear = now.toString().substring(0, 4);
         Month currentMonth = now.getMonth();
-        
-        if (currentMonth.getValue() <= 3 ) {
+
+        if (currentMonth.getValue() <= 3) {
             startYear = "" + (Integer.parseInt(startYear) - 1);
         }
-        
-        
+
         String startMonth = "" + currentMonth.minus(3).getValue();
         String endMonth = "" + currentMonth.getValue();
 
@@ -230,20 +228,19 @@ public class SalesObjectDAO {
         }
         return total;
     }
-    
+
     public int getUserPastThreeMonthsTotalDeals(String username) {
         int total = 0;
 
         LocalDate now = LocalDate.now();
-        String endYear = now.toString().substring(0, 4); 
+        String endYear = now.toString().substring(0, 4);
         String startYear = now.toString().substring(0, 4);
         Month currentMonth = now.getMonth();
-        
-        if (currentMonth.getValue() <= 3 ) {
+
+        if (currentMonth.getValue() <= 3) {
             startYear = "" + (Integer.parseInt(startYear) - 1);
         }
-        
-        
+
         String startMonth = "" + currentMonth.minus(3).getValue();
         String endMonth = "" + currentMonth.getValue();
 
@@ -279,8 +276,7 @@ public class SalesObjectDAO {
         }
         return total;
     }
-    
-    
+
     public double getTeamTotalSalesOneMonth(String managerName) {
         double total = 0.0;
         int yearInt = 0;
@@ -290,8 +286,8 @@ public class SalesObjectDAO {
         Month currentMonth = now.getMonth();
         String startMonth = "" + currentMonth.getValue();
         String endMonth = "" + currentMonth.plus(1).getValue();
-        
-        if (currentMonth.getValue() == 12 ) {
+
+        if (currentMonth.getValue() == 12) {
             int tempYear = Integer.parseInt(year) + 1;
             endYear = "" + tempYear;
         }
@@ -328,8 +324,7 @@ public class SalesObjectDAO {
         }
         return total;
     }
-    
-    
+
     public double getTeamTotalSalesYTD(String managerName) {
         double total = 0.0;
         int yearInt = 0;
@@ -338,8 +333,8 @@ public class SalesObjectDAO {
         String endYear = now.toString().substring(0, 4);
         Month currentMonth = now.getMonth();
         String endMonth = "" + currentMonth.plus(1).getValue();
-        
-        if (currentMonth.getValue() == 12 ) {
+
+        if (currentMonth.getValue() == 12) {
             int tempYear = Integer.parseInt(year) + 1;
             endYear = "" + tempYear;
         }
@@ -373,9 +368,8 @@ public class SalesObjectDAO {
         }
         return total;
     }
-    
+
     //AGENT METHODS FOR HOUSEKEEPING
-    
     public double getIndividualTotalSalesOneMonth(String username) {
         double total = 0.0;
         int yearInt = 0;
@@ -385,8 +379,8 @@ public class SalesObjectDAO {
         Month currentMonth = now.getMonth();
         String startMonth = "" + currentMonth.getValue();
         String endMonth = "" + currentMonth.plus(1).getValue();
-        
-        if (currentMonth.getValue() == 12 ) {
+
+        if (currentMonth.getValue() == 12) {
             int tempYear = Integer.parseInt(year) + 1;
             endYear = "" + tempYear;
         }
@@ -423,8 +417,9 @@ public class SalesObjectDAO {
         }
         return total;
     }
+
     
-    
+
     public double getIndividualTotalSalesYTD(String username) {
         double total = 0.0;
         int yearInt = 0;
@@ -433,8 +428,8 @@ public class SalesObjectDAO {
         String endYear = now.toString().substring(0, 4);
         Month currentMonth = now.getMonth();
         String endMonth = "" + currentMonth.plus(1).getValue();
-        
-        if (currentMonth.getValue() == 12 ) {
+
+        if (currentMonth.getValue() == 12) {
             int tempYear = Integer.parseInt(year) + 1;
             endYear = "" + tempYear;
         }
@@ -467,5 +462,133 @@ public class SalesObjectDAO {
             }
         }
         return total;
+    }
+    
+    public ArrayList<String> retrieveTeamSalesMonthAny (String managerName, String month) {
+        ArrayList<String> output = new ArrayList<>();
+        
+        ArrayList<String> usernames = new ArrayList<>();
+        ArrayList<Double> fyc = new ArrayList<>();
+        double total = 0.0;
+        
+        LocalDate now = LocalDate.now();
+        String yearStart = now.toString().substring(0, 4);
+        String yearEnd = now.toString().substring(0, 4);
+        String startMonth = "";
+        String endMonth = "";
+        
+        if ( month.length() < 2 ) {
+            startMonth = "0" + month;
+        } else {
+            startMonth = "" + month;
+        }
+        
+        if (month.equals("12")) {
+            int tempYear = Integer.parseInt(yearEnd) + 1;
+            yearEnd = "" + tempYear;
+            endMonth = "01";
+        } else if (Integer.parseInt(month) < 10 ) {
+            int temp = Integer.parseInt(month) + 1;
+            endMonth = "0" + temp;
+        } else {
+            int temp = Integer.parseInt(month) + 1;
+            endMonth = "" + temp;
+        }
+        
+        String dateStart = "" + yearStart + "-" + startMonth + "-01";
+        String dateEnd = "" +  yearEnd + "-" + endMonth + "-01";
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("select username, sum(expectedFYC) as totalSales from sales where username in (select username from user where manager = '"+ managerName +"') and dateClose IS NOT NULL and '"+ dateStart + "' <= dateClose and dateClose < '"+ dateEnd +"' group by username order by totalSales desc");
+            result = stmt.executeQuery();
+            while (result.next()) {
+                String username = result.getString("username");
+                double totalSales = result.getDouble("totalSales");
+                
+                usernames.add(username);
+                fyc.add(totalSales);
+                
+            }
+            
+            for ( int i = 0; i < usernames.size(); i++ ) {
+                String current = usernames.get(i);
+                output.add(current);
+            }
+            
+            for ( int j = 0; j < fyc.size(); j++ ) {
+                double currentFigure = fyc.get(j);
+                total = total + currentFigure;
+                String toAdd = "" + currentFigure;
+                output.add(toAdd);
+            }
+            
+            String last = "" + total;
+            output.add(last);
+            
+            if (conn != null) {
+                ConnectionManager.close(conn, stmt, result);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return output;
+    }
+    
+    
+    public ArrayList<String> retrieveTeamSalesMonthYTD (String managerName) {
+        ArrayList<String> output = new ArrayList<>();
+        
+        ArrayList<String> usernames = new ArrayList<>();
+        ArrayList<Double> fyc = new ArrayList<>();
+        double total = 0.0;
+        
+        LocalDate now = LocalDate.now();
+        String year = now.toString().substring(0, 4);
+        Month currentMonth = now.getMonth();
+        String endMonth = "" + currentMonth.getValue();
+        
+        
+        
+        String dateStart = "" + year + "-01-01";
+        String dateEnd = "" +  year+ "-" + endMonth + "-01";
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("select username, sum(expectedFYC) as totalSales from sales where username in (select username from user where manager = '"+ managerName +"') and dateClose IS NOT NULL and '"+ dateStart + "' <= dateClose and dateClose < '"+ dateEnd +"' group by username order by totalSales desc");
+            result = stmt.executeQuery();
+            while (result.next()) {
+                String username = result.getString("username");
+                double totalSales = result.getDouble("totalSales");
+                
+                usernames.add(username);
+                fyc.add(totalSales);
+                
+            }
+            
+            for ( int i = 0; i < usernames.size(); i++ ) {
+                String current = usernames.get(i);
+                output.add(current);
+            }
+            
+            for ( int j = 0; j < fyc.size(); j++ ) {
+                double currentFigure = fyc.get(j);
+                total = total + currentFigure;
+                String toAdd = "" + currentFigure;
+                output.add(toAdd);
+            }
+            
+            String last = "" + total;
+            output.add(last);
+            
+            if (conn != null) {
+                ConnectionManager.close(conn, stmt, result);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return output;
     }
 }

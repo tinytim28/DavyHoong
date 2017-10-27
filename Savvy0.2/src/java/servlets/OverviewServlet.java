@@ -44,27 +44,64 @@ public class OverviewServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         Map<String, Object> toReturn = new HashMap<String, Object>();
         String type = request.getParameter("type");
-        
-        if (type != null ) {
-            if (type.equals("managerTeamOverviewCurrentMonth")) {
+
+        if (type != null) {
+            if (type.equals("managerTeamOverviewOneMonth")) {
+
+                String month = "";
+                if (request.getParameter("month") == null) {
+                    LocalDate now = LocalDate.now();
+                    Month currentMonth = now.getMonth();
+                    month = "" + currentMonth.getValue();
+                } else {
+                    month = request.getParameter("month");
+                }
+
+                HttpSession session = request.getSession();
+                UserDAO uDAO = new UserDAO();
+                SalesObjectDAO sDAO = new SalesObjectDAO();
+                User loginUser = (User) session.getAttribute("loginUser");
+                String managerName = "" + loginUser.getFirstName() + " " + loginUser.getLastName().toUpperCase();
+
+                ArrayList<String> toShow = sDAO.retrieveTeamSalesMonthAny(managerName, month);
+
+                String output = "";
+                for (String s : toShow) {
+                    output += s + ",";
+                }
+
+                String json = "";
+                //   System.out.println("json" + json);
+                if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
+                    json = output.substring(0, output.length() - 1);
+                }
+                toReturn.put("success", "success");
+                response.getWriter().write(json);
+
+            } else if (type.equals("managerTeamOverviewYTD")) {
+                
                 
                 HttpSession session = request.getSession();
                 UserDAO uDAO = new UserDAO();
                 SalesObjectDAO sDAO = new SalesObjectDAO();
                 User loginUser = (User) session.getAttribute("loginUser");
                 String managerName = "" + loginUser.getFirstName() + " " + loginUser.getLastName().toUpperCase();
-                
-                ArrayList<String> teamUsernames = uDAO.retrieveTeamUsernames(managerName);
-                HashMap<String,Double> currentComissions = new HashMap<>();
-                
-                for ( int i = 0; i < teamUsernames.size()-1; i++ ) {
-                    String pointerUsername = teamUsernames.get(i);
-                    double pointerSales = sDAO.getIndividualTotalSalesOneMonth(pointerUsername);
-                    currentComissions.put(pointerUsername,pointerSales);
+
+                ArrayList<String> toShow = sDAO.retrieveTeamSalesMonthYTD(managerName);
+
+                String output = "";
+                for (String s : toShow) {
+                    output += s + ",";
                 }
-                
-            } else if (type.equals("managerSingleOverviewCurrentMonth")) {
-                
+
+                String json = "";
+                //   System.out.println("json" + json);
+                if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
+                    json = output.substring(0, output.length() - 1);
+                }
+                toReturn.put("success", "success");
+                response.getWriter().write(json);
+            
             }
         }
     }
@@ -107,7 +144,7 @@ public class OverviewServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
     private void write(HttpServletResponse response, Map<String, Object> map) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
