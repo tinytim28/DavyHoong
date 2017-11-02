@@ -79,8 +79,7 @@ public class OverviewServlet extends HttpServlet {
                 response.getWriter().write(json);
 
             } else if (type.equals("managerTeamOverviewYTD")) {
-                
-                
+
                 HttpSession session = request.getSession();
                 UserDAO uDAO = new UserDAO();
                 SalesObjectDAO sDAO = new SalesObjectDAO();
@@ -101,7 +100,102 @@ public class OverviewServlet extends HttpServlet {
                 }
                 toReturn.put("success", "success");
                 response.getWriter().write(json);
-            
+
+            } else if (type.equals("managerRetrieveCaseBreakdownYTD")) {
+
+                HttpSession session = request.getSession();
+                UserDAO uDAO = new UserDAO();
+                SalesObjectDAO sDAO = new SalesObjectDAO();
+                User loginUser = (User) session.getAttribute("loginUser");
+                String managerName = "" + loginUser.getFirstName() + " " + loginUser.getLastName().toUpperCase();
+
+                LocalDate now = LocalDate.now();
+                String year = "" + now.getYear();
+                String yearStart = year + "-01-01";
+
+                Month currentMonth = now.getMonth();
+                int monthEnd = currentMonth.minus(1).getValue();
+                String monthEndString = "" + monthEnd;
+
+                if (monthEndString.length() < 2) {
+                    monthEndString = "0" + monthEndString;
+                }
+                String yearEnd = "" + now.getYear() + "-" + monthEndString + "-01";
+
+                ArrayList<String> toShow = sDAO.getCaseBreakdownYTD(managerName, yearStart, yearEnd);
+
+                String output = "";
+                for (String s : toShow) {
+                    output += s + ",";
+                }
+
+                String json = "";
+                //   System.out.println("json" + json);
+                if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
+                    json = output.substring(0, output.length() - 1);
+                }
+                toReturn.put("success", "success");
+                response.getWriter().write(json);
+
+            } else if (type.equals("managerRetrieveCaseBreakdownMonth")) {
+
+                String month = "";
+                LocalDate now = LocalDate.now();
+                
+                if (request.getParameter("month") == null) {
+                    Month currentMonth = now.getMonth();
+                    month = "" + currentMonth.getValue();
+                } else {
+                    month = request.getParameter("month");
+                }
+
+                String yearStart = now.toString().substring(0, 4);
+                String yearEnd = now.toString().substring(0, 4);
+
+                String startMonth = "";
+                String endMonth = "";
+
+                if (month.length() < 2) {
+                    startMonth = "0" + month;
+                } else {
+                    startMonth = "" + month;
+                }
+
+                if (month.equals("12")) {
+                    int tempYear = Integer.parseInt(yearEnd) + 1;
+                    yearEnd = "" + tempYear;
+                    endMonth = "01";
+                } else if (Integer.parseInt(month) < 10) {
+                    int temp = Integer.parseInt(month) + 1;
+                    endMonth = "0" + temp;
+                } else {
+                    int temp = Integer.parseInt(month) + 1;
+                    endMonth = "" + temp;
+                }
+
+                String dateStart = "" + yearStart + "-" + startMonth + "-01";
+                String dateEnd = "" + yearEnd + "-" + endMonth + "-01";
+
+                HttpSession session = request.getSession();
+                UserDAO uDAO = new UserDAO();
+                SalesObjectDAO sDAO = new SalesObjectDAO();
+                User loginUser = (User) session.getAttribute("loginUser");
+                String managerName = "" + loginUser.getFirstName() + " " + loginUser.getLastName().toUpperCase();
+                
+                ArrayList<String> toShow = sDAO.getCaseBreakdownYTD(managerName, yearStart, yearEnd);
+
+                String output = "";
+                for (String s : toShow) {
+                    output += s + ",";
+                }
+
+                String json = "";
+                //   System.out.println("json" + json);
+                if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
+                    json = output.substring(0, output.length() - 1);
+                }
+                toReturn.put("success", "success");
+                response.getWriter().write(json);
             }
         }
     }

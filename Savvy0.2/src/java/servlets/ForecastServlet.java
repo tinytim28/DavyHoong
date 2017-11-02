@@ -90,22 +90,22 @@ public class ForecastServlet extends HttpServlet {
                         double multiplier;
                         switch (pointer) {
                             case 1:
-                                multiplier = 1.25;
+                                multiplier = 1.05;
                                 break;
                             case 2:
-                                multiplier = 0.65;
+                                multiplier = 0.92;
                                 break;
                             case 3:
-                                multiplier = 1.5;
+                                multiplier = 1.10;
                                 break;
                             case 4:
                                 multiplier = 1.0;
                                 break;
                             case 5:
-                                multiplier = 1.25;
+                                multiplier = 0.9;
                                 break;
                             case 6:
-                                multiplier = 1.5;
+                                multiplier = 1.02;
                                 break;
                             case 7:
                                 multiplier = 0.85;
@@ -114,7 +114,7 @@ public class ForecastServlet extends HttpServlet {
                                 multiplier = 0.95;
                                 break;
                             case 9:
-                                multiplier = 1.20;
+                                multiplier = 1.15;
                                 break;
                             case 10:
                                 multiplier = 1.1;
@@ -123,7 +123,7 @@ public class ForecastServlet extends HttpServlet {
                                 multiplier = 1.25;
                                 break;
                             case 12:
-                                multiplier = 1.75;
+                                multiplier = 1.45;
                                 break;
                             default:
                                 multiplier = 0.0;
@@ -158,20 +158,20 @@ public class ForecastServlet extends HttpServlet {
 
                 LocalDate now = LocalDate.now();
                 Month currentMonth = now.getMonth();
-                int startMonth = currentMonth.getValue() + 1;
+                int startMonth = currentMonth.getValue();
                 String XYaxis = "";
 
                 ArrayList<Integer> months = new ArrayList<Integer>();
                 double totalProjectedComissions = 0.0;
 
-                for (int i = startMonth; i <= 12; i++) {
-                    Month tempMonth = currentMonth.plus(i);
-                    int monthValue = tempMonth.getValue();
+                for (int i = startMonth + 1; i <= 12; i++) {
+                    Month tempMonth = Month.of(i);
                     String s = tempMonth.toString();
                     s = Character.toUpperCase(s.charAt(0)) + s.substring(1, s.length()).toLowerCase();
-                    months.add(monthValue);
                     XYaxis += s + ",";
                 }
+
+                System.out.println(XYaxis);
 
                 try {
 
@@ -201,22 +201,22 @@ public class ForecastServlet extends HttpServlet {
                         double multiplier;
                         switch (pointer) {
                             case 1:
-                                multiplier = 1.25;
+                                multiplier = 1.05;
                                 break;
                             case 2:
-                                multiplier = 0.65;
+                                multiplier = 0.92;
                                 break;
                             case 3:
-                                multiplier = 1.5;
+                                multiplier = 1.10;
                                 break;
                             case 4:
                                 multiplier = 1.0;
                                 break;
                             case 5:
-                                multiplier = 1.25;
+                                multiplier = 0.9;
                                 break;
                             case 6:
-                                multiplier = 1.5;
+                                multiplier = 1.02;
                                 break;
                             case 7:
                                 multiplier = 0.85;
@@ -225,7 +225,7 @@ public class ForecastServlet extends HttpServlet {
                                 multiplier = 0.95;
                                 break;
                             case 9:
-                                multiplier = 1.20;
+                                multiplier = 1.15;
                                 break;
                             case 10:
                                 multiplier = 1.1;
@@ -234,7 +234,7 @@ public class ForecastServlet extends HttpServlet {
                                 multiplier = 1.25;
                                 break;
                             case 12:
-                                multiplier = 1.75;
+                                multiplier = 1.45;
                                 break;
                             default:
                                 multiplier = 0.0;

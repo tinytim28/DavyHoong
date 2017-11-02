@@ -591,4 +591,191 @@ public class SalesObjectDAO {
         
         return output;
     }
+    
+    
+    public int retrieveTotalLifeCasesTeam(String managerName, String yearStart, String yearEnd) {
+        int output = 0;
+         
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT count(*) as 'selected' FROM sales s INNER JOIN user u ON s.username = u.username WHERE u.manager = '"+ managerName +"' and dateClose IS NOT NULL and '"+ yearStart +"' <= dateClose and dateClose < '"+ yearEnd +"' and caseType = 'Life'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                output = result.getInt("selected");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
+        return output;
+    }
+    
+    public int retrieveTotalInvestmentCasesTeam(String managerName, String yearStart, String yearEnd) {
+        int output = 0;
+        
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT count(*) as 'selected' FROM sales s INNER JOIN user u ON s.username = u.username WHERE u.manager = '"+ managerName +"' and dateClose IS NOT NULL and '"+ yearStart +"' <= dateClose and dateClose < '"+ yearEnd +"' and caseType = 'Investment'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                output = result.getInt("selected");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
+        return output;
+    }
+    
+    public int retrieveTotalSavingsCasesTeam(String managerName, String yearStart, String yearEnd) {
+        int output = 0;
+         
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT count(*) as 'selected' FROM sales s INNER JOIN user u ON s.username = u.username WHERE u.manager = '"+ managerName +"' and dateClose IS NOT NULL and '"+ yearStart +"' <= dateClose and dateClose < '"+ yearEnd +"' and caseType = 'Savings'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                output = result.getInt("selected");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return output;
+    }
+    
+    public int retrieveTotalHospitalCasesTeam(String managerName, String yearStart, String yearEnd) {
+        int output = 0;
+         
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT count(*) as 'selected' FROM sales s INNER JOIN user u ON s.username = u.username WHERE u.manager = '"+ managerName +"' and dateClose IS NOT NULL and '"+ yearStart +"' <= dateClose and dateClose < '"+ yearEnd +"' and caseType = 'Hospitalisation'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                output = result.getInt("selected");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return output;
+    }
+    
+    public int retrieveTotalRetirementCasesTeam(String managerName, String yearStart, String yearEnd) {
+        int output = 0;
+         
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT count(*) as 'selected' FROM sales s INNER JOIN user u ON s.username = u.username WHERE u.manager = '"+ managerName +"' and dateClose IS NOT NULL and '"+ yearStart +"' <= dateClose and dateClose < '"+ yearEnd +"' and caseType = 'Retirement'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                output = result.getInt("selected");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return output;
+    }
+    
+    public int retrieveTotalOthersCasesTeam(String managerName, String yearStart, String yearEnd) {
+        int output = 0; 
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT count(*) as 'selected' FROM sales s INNER JOIN user u ON s.username = u.username WHERE u.manager = '"+ managerName +"' and dateClose IS NOT NULL and '"+ yearStart +"' <= dateClose and dateClose < '"+ yearEnd +"' and caseType = 'Others'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                output = result.getInt("selected");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return output;
+    }
+    
+    
+    public ArrayList<String> getCaseBreakdownYTD (String managerName, String yearStart, String yearEnd) {
+        
+        ArrayList<String> output = new ArrayList<>();
+        
+        output.add( "" + retrieveTotalLifeCasesTeam(managerName, yearStart, yearEnd));
+        output.add( "" + retrieveTotalInvestmentCasesTeam(managerName, yearStart, yearEnd));
+        output.add( "" + retrieveTotalSavingsCasesTeam(managerName, yearStart, yearEnd));
+        output.add( "" + retrieveTotalHospitalCasesTeam(managerName, yearStart, yearEnd));
+        output.add( "" + retrieveTotalRetirementCasesTeam(managerName, yearStart, yearEnd));
+        output.add( "" + retrieveTotalOthersCasesTeam(managerName, yearStart, yearEnd));
+        
+        return output;
+       
+    }
+    
 }
