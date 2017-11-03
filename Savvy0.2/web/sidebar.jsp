@@ -40,7 +40,8 @@
             <div class="panel-body">
                 <ul class="nav">
                     <li><a id="user_control" class="loadPage">User Control</a></li>              
-                    <li><a id="forecast" class="loadPage">Forecast</a></li>     
+                    <li><a id="forecast" class="loadPage">Forecast</a></li>  
+                    <li><a id="performance" class="loadPage">Performance</a></li>    
                 </ul>  
             </div>
         </div>
