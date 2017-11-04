@@ -30,7 +30,21 @@
                 </div>
             </div>
         </div>
-
+        <div aria-hidden="true" class="modal fade" id="errorModal" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h2>Error</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p id="errorMsg"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" data-dismiss="modal" id="CloseError" type="button">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="contact-us container">
             <div class="row">
                 <h2 class="form-signin-heading">Welcome to Savvy</h2>
@@ -42,12 +56,13 @@
             </div>
         </div><!-- /container -->
 
+
         <!--Login-->
         <div class="modal fade" id="showAddUserModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Ã—</button>
                         <h4 id="myModalLabel">Login</h4>
                     </div>
                     <div class="modal-body">                  
@@ -88,16 +103,16 @@
         <script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
 
         <script>
-                        $(document).ready(function() {
-                            $("#showAddUserModal").on("hide", function() {    // remove the event listeners when the dialog is dismissed
+                        $(document).ready(function () {
+                            $("#showAddUserModal").on("hide", function () {    // remove the event listeners when the dialog is dismissed
                                 $("#showAddUserModal a.btn").off("click");
                             });
 
-                            $("#showAddUserModal").on("hidden", function() {  // remove the actual elements from the DOM when fully hidden
+                            $("#showAddUserModal").on("hidden", function () {  // remove the actual elements from the DOM when fully hidden
                                 $("#showAddUserModal").remove();
                             });
 
-                            $("#login_button").click(function(event) {
+                            $("#login_button").click(function (event) {
                                 var username = document.getElementById("username").value;
                                 var password = document.getElementById("password").value;
 
@@ -110,7 +125,7 @@
                                         type: 'POST',
                                         dataType: 'json',
                                         data: $('#loginForm').serialize(),
-                                        success: function(data) {
+                                        success: function (data) {
                                             if (data.success) {
                                                 $("#showAddUserModal").modal('hide');
                                                 window.location.replace("home.jsp");
@@ -119,12 +134,51 @@
                                                 return;
                                             }
                                         },
-                                        error: function(xhr, status, error) {
+                                        error: function (xhr, status, error) {
                                             alert(xhr.error);
                                         }
                                     });
                                 }
                             });
+                            $('#loginForm').keydown(function (e) {
+                                var key = e.which;
+                                if (key == 13) {
+                                    var username = document.getElementById("username").value;
+                                    var password = document.getElementById("password").value;
+
+                                    if (username.trim() === "" || password.trim() === "") {
+                                        showErrorModal("Please fill in both username and password to login.");
+                                    } else {
+                                        // send json to servlet
+                                        $.ajax({
+                                            url: 'UserServlet',
+                                            type: 'POST',
+                                            dataType: 'json',
+                                            data: $('#loginForm').serialize(),
+                                            success: function (data) {
+                                                if (data.success) {
+                                                    $("#showAddUserModal").modal('hide');
+                                                    window.location.replace("home.jsp");
+                                                } else {
+                                                    showErrorModal("Username and password does not match.");
+                                                    return;
+                                                }
+                                            },
+                                            error: function (xhr, status, error) {
+                                                alert(xhr.error);
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+                            $('#errorModal').keydown(function (e) {
+                                var key = e.which;
+                                if (key == 13) {
+                                    $('#errorModal').modal('hide');
+                                }
+                            });
+
                         });
 
                         function login_image() {
@@ -133,8 +187,11 @@
 
                         function showErrorModal(errorMessage) {
                             document.getElementById("errorMsg").innerHTML = errorMessage;
+                            $('#showAddUserModal').modal('hide');
                             $('#errorModal').modal('show');
                         }
+
+
         </script>
 
     </body>

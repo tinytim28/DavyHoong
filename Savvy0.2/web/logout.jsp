@@ -1,4 +1,4 @@
 <%
     session.removeAttribute("loginUser");
-    response.sendRedirect("index.jsp");
+    response.sendRedirect("index.html");
     %>    
