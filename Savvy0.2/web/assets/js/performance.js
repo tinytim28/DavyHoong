@@ -27,11 +27,91 @@ $(document).ready(function () {
         htmlcode += "<option value=" + temp + ">" + array1[i] + "<\/option>";
 
     }
-    htmlcode += "<\/select>";
-    alert(htmlcode);
+    htmlcode += "<\/select><table><button id='YearToDate' type='button' class='btn btn-xs btn-success' name='YTD'>Year-To-Date<\/button><\/table>";
     $("#trans_table").html(htmlcode);
     display();
 
+
+    $("table").on('click', '#YearToDate', function () {
+        myChart.destroy();
+        myChart2.destroy();
+        var data = {
+            type: "managerTeamOverviewYTD"
+        };
+        $.ajax({
+            type: "POST",
+            url: "/Savvy0.2/OverviewServlet",
+            datatype: 'json',
+            data: data,
+            success: function (responseJson) {
+                var strings = responseJson.split(",");
+                var index = (strings.length - 1) / 2;
+                var labels = [];
+                var dataPoints = [];
+                for (var i = 0; i < index; i++) {
+                    labels[i] = strings[i];
+                }
+                for (var j = index; j < strings.length - 1; j++) {
+                    dataPoints[j - index] = strings[j];
+                }
+                ctx = document.getElementById('smallMyChart1').getContext('2d');
+                ctx2 = document.getElementById('smallMyChart2').getContext('2d');
+                myChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                backgroundColor: [
+                                    "#2ecc71",
+                                    "#3498db",
+                                    "#95a5a6",
+                                    "#9b59b6",
+                                    "#f1c40f",
+                                    "#e74c3c",
+                                    "#34495e"
+                                ],
+                                data: dataPoints
+                            },
+                        ]
+                    }
+                });
+                myChart2 = new Chart(ctx2, {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: 'Closed Sales',
+                                backgroundColor: [
+                                    "#2ecc71",
+                                    "#3498db",
+                                    "#95a5a6",
+                                    "#9b59b6",
+                                    "#f1c40f",
+                                    "#e74c3c",
+                                    "#34495e"
+                                ],
+                                data: dataPoints
+                            }
+                        ]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [{stacked: true}],
+                            yAxes: [{stacked: true}]
+                        }
+                    }
+                });
+
+            },
+            error: function (xhr, status, error) {
+                alert(error);
+            }
+
+        });
+    });
 
 });
 

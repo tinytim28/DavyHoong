@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+var dateCloseTemp = "";
 $(document).ready(function () {
 //start of edit/update sale
     $("#showUpdateSaleModal").on("hide", function () { // remove the event listeners when the dialog is dismissed
@@ -154,10 +155,15 @@ $(document).ready(function () {
                     break;
                 case 2:
                     var dateClose = $("#dateClose" + edit).text();
+                    dateCloseTemp = $("#dateClose").val();
                     $("#dateClose").val(dateClose);
                     break;
             }
         }
+    });
+
+    $('#dateClose').on('input', function () {
+        document.getElementById("ClosingSale").disabled = false;
     });
 
     $("#ClosingSale").click(function () {
@@ -183,8 +189,11 @@ $(document).ready(function () {
             data: data,
             success: function (data) {
                 refresh();
-                showSuccessModal("Successfully closed sale!");
-
+                if (dateCloseTemp === "") {
+                    showSuccessModal("Successfully closed sale!");
+                } else {
+                    showErrorModal("Already Closed!");
+                }
 
             },
             error: function (xhr, status, error) {
@@ -198,7 +207,7 @@ $(document).ready(function () {
 
     //end of closing sale
 
-    
+
 });
 
 
@@ -229,7 +238,11 @@ function refresh() {
                 htmlcode += "<td class='caseType' id='caseType" + count + "'>" + strings[i + 3] + "<\/td>";
                 htmlcode += "<td class='expectedFYC' id='expectedFYC" + count + "'>" + strings[i + 4] + "<\/td>";
                 htmlcode += "<td class='remarks' id='remarks" + count + "'>" + strings[i + 5] + "<\/td>";
-                htmlcode += "<td><button id='CloseSale' type='button' class='btn btn-xs btn-success' name='" + count + "'><span class='glyphicon glyphicon-ok' aria-hidden='true'><\/span> Close<\/button><button id='EditSale' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button>  <button id='DeleteSale' type='button' class='btn btn-xs btn-danger' name='" + count + "'><span class='glyphicon glyphicon-trash' aria-hidden='true'><\/span> Delete<\/button><\/td>";
+                if (strings[i + 2] === "Work in Progress!") {
+                    htmlcode += "<td><button id='CloseSale' type='button' class='btn btn-xs btn-success' name='" + count + "'><span class='glyphicon glyphicon-ok' aria-hidden='true'><\/span> Close<\/button><button id='EditSale' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button>  <button id='DeleteSale' type='button' class='btn btn-xs btn-danger' name='" + count + "'><span class='glyphicon glyphicon-trash' aria-hidden='true'><\/span> Delete<\/button><\/td>";
+                } else {
+                    htmlcode += "<td><button id='CloseSale' disabled type='button' class='btn btn-xs btn-success' name='" + count + "'><span class='glyphicon glyphicon-ok' aria-hidden='true'><\/span> Close<\/button><button id='EditSale' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button>  <button id='DeleteSale' type='button' class='btn btn-xs btn-danger' name='" + count + "'><span class='glyphicon glyphicon-trash' aria-hidden='true'><\/span> Delete<\/button><\/td>";
+                }
                 htmlcode += "<\/tr>";
                 count++;
             }

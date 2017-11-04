@@ -9,7 +9,7 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid" style="padding-left: 0px">
         <div class="navbar-header">
-            <a  href="home.jsp" style="color: black; text-decoration: none; font-size: 18px"><img alt="Brand" src="assets/img/savvy small.png"> Administrator</a>
+            <a  href="home.jsp" style="color: black; text-decoration: none; font-size: 18px"><img alt="Brand" src="assets/img/savvy small.png"></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">                

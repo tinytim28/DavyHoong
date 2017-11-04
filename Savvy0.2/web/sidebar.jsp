@@ -62,7 +62,6 @@
                 <ul class="nav">
                     <li><a id="addprospects" class="loadPage">Prospects</a></li>
                     <li><a id="view_sales_in_progress" class="loadPage">Sales</a></li>
-                    <li><a id="graph" class="loadPage">Graph</a></li>
                 </ul>  
             </div>
         </div>
