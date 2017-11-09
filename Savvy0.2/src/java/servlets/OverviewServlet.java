@@ -182,7 +182,7 @@ public class OverviewServlet extends HttpServlet {
                 User loginUser = (User) session.getAttribute("loginUser");
                 String managerName = "" + loginUser.getFirstName() + " " + loginUser.getLastName().toUpperCase();
                 
-                ArrayList<String> toShow = sDAO.getCaseBreakdownYTD(managerName, yearStart, yearEnd);
+                ArrayList<String> toShow = sDAO.getCaseBreakdownYTD(managerName, dateStart, dateEnd);
 
                 String output = "";
                 for (String s : toShow) {
