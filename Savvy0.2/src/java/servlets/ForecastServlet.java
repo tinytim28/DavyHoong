@@ -137,7 +137,7 @@ public class ForecastServlet extends HttpServlet {
                             XYaxis += "" + toAdd + ",";
 
                         }
-                    } else if (ThreeMonthsSales >= 10000.0 && ThreeMonthsSales < 14000.0 ) {
+                    } else if (ThreeMonthsSales >= 10000.0 && ThreeMonthsSales < 15000.0 ) {
                         
                         for (int a = 0; a <= 11; a++) {
 
