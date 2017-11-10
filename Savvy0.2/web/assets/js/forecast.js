@@ -53,6 +53,16 @@ $(document).ready(function () {
                                 data: [strings[12], strings[13], strings[14], strings[15], strings[16], strings[17], strings[18], strings[19], strings[20], strings[21], strings[22], strings[23]],
                                 backgroundColor: "rgba(153,255,51,0.4)"
                             }]
+                    },
+                    options:{
+                        scales: {
+                            yAxes : [{
+                                ticks : {
+                                    max : 0,    
+                                    min : 20000
+                                }
+                            }]
+                        }
                     }
                 });
 
