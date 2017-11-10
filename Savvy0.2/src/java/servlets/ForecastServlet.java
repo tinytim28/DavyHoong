@@ -83,57 +83,168 @@ public class ForecastServlet extends HttpServlet {
                     double forecastedMonthlySales = forecastedDealsClosedMonthly * avgDealSize;
                     double toAdd = 0.0;
 
-                    for (int a = 0; a <= 11; a++) {
+                    if (ThreeMonthsSales < 10000.0) {
 
-                        int pointer = months.get(a);
+                        for (int a = 0; a <= 11; a++) {
 
-                        double multiplier;
-                        switch (pointer) {
-                            case 1:
-                                multiplier = 1.05;
-                                break;
-                            case 2:
-                                multiplier = 0.92;
-                                break;
-                            case 3:
-                                multiplier = 1.10;
-                                break;
-                            case 4:
-                                multiplier = 1.0;
-                                break;
-                            case 5:
-                                multiplier = 0.9;
-                                break;
-                            case 6:
-                                multiplier = 1.02;
-                                break;
-                            case 7:
-                                multiplier = 0.85;
-                                break;
-                            case 8:
-                                multiplier = 0.95;
-                                break;
-                            case 9:
-                                multiplier = 1.15;
-                                break;
-                            case 10:
-                                multiplier = 1.1;
-                                break;
-                            case 11:
-                                multiplier = 1.25;
-                                break;
-                            case 12:
-                                multiplier = 1.45;
-                                break;
-                            default:
-                                multiplier = 0.0;
-                                break;
+                            int pointer = months.get(a);
+
+                            double multiplier;
+                            switch (pointer) {
+                                case 1:
+                                    multiplier = 0.95;
+                                    break;
+                                case 2:
+                                    multiplier = 0.92;
+                                    break;
+                                case 3:
+                                    multiplier = 1.0;
+                                    break;
+                                case 4:
+                                    multiplier = 0.98;
+                                    break;
+                                case 5:
+                                    multiplier = 1.01;
+                                    break;
+                                case 6:
+                                    multiplier = 1.05;
+                                    break;
+                                case 7:
+                                    multiplier = 0.90;
+                                    break;
+                                case 8:
+                                    multiplier = 0.93;
+                                    break;
+                                case 9:
+                                    multiplier = 0.97;
+                                    break;
+                                case 10:
+                                    multiplier = 1.06;
+                                    break;
+                                case 11:
+                                    multiplier = 1.10;
+                                    break;
+                                case 12:
+                                    multiplier = 1.12;
+                                    break;
+                                default:
+                                    multiplier = 0.0;
+                                    break;
+                            }
+
+                            totalProjectedComissions = totalProjectedComissions + toAdd;
+                            toAdd = forecastedMonthlySales * multiplier;
+                            XYaxis += "" + toAdd + ",";
+
                         }
+                    } else if (ThreeMonthsSales >= 10000.0 && ThreeMonthsSales < 14000.0 ) {
+                        
+                        for (int a = 0; a <= 11; a++) {
 
-                        totalProjectedComissions = totalProjectedComissions + toAdd;
-                        toAdd = forecastedMonthlySales * multiplier;
-                        XYaxis += "" + toAdd + ",";
+                            int pointer = months.get(a);
 
+                            double multiplier;
+                            switch (pointer) {
+                                case 1:
+                                    multiplier = 1.00;
+                                    break;
+                                case 2:
+                                    multiplier = 0.97;
+                                    break;
+                                case 3:
+                                    multiplier = 1.02;
+                                    break;
+                                case 4:
+                                    multiplier = 0.93;
+                                    break;
+                                case 5:
+                                    multiplier = 0.93;
+                                    break;
+                                case 6:
+                                    multiplier = 1.04;
+                                    break;
+                                case 7:
+                                    multiplier = 0.85;
+                                    break;
+                                case 8:
+                                    multiplier = 0.95;
+                                    break;
+                                case 9:
+                                    multiplier = 1.03;
+                                    break;
+                                case 10:
+                                    multiplier = 1.08;
+                                    break;
+                                case 11:
+                                    multiplier = 1.14;
+                                    break;
+                                case 12:
+                                    multiplier = 1.18;
+                                    break;
+                                default:
+                                    multiplier = 0.0;
+                                    break;
+                            }
+
+                            totalProjectedComissions = totalProjectedComissions + toAdd;
+                            toAdd = forecastedMonthlySales * multiplier;
+                            XYaxis += "" + toAdd + ",";
+
+                        }
+                    } else {
+                        
+                        for (int a = 0; a <= 11; a++) {
+
+                            int pointer = months.get(a);
+
+                            double multiplier;
+                            switch (pointer) {
+                                case 1:
+                                    multiplier = 0.99;
+                                    break;
+                                case 2:
+                                    multiplier = 0.92;
+                                    break;
+                                case 3:
+                                    multiplier = 1.05;
+                                    break;
+                                case 4:
+                                    multiplier = 1.0;
+                                    break;
+                                case 5:
+                                    multiplier = 0.9;
+                                    break;
+                                case 6:
+                                    multiplier = 1.02;
+                                    break;
+                                case 7:
+                                    multiplier = 0.85;
+                                    break;
+                                case 8:
+                                    multiplier = 0.95;
+                                    break;
+                                case 9:
+                                    multiplier = 1.15;
+                                    break;
+                                case 10:
+                                    multiplier = 1.1;
+                                    break;
+                                case 11:
+                                    multiplier = 1.25;
+                                    break;
+                                case 12:
+                                    multiplier = 1.35;
+                                    break;
+                                default:
+                                    multiplier = 0.0;
+                                    break;
+                            }
+
+                            totalProjectedComissions = totalProjectedComissions + toAdd;
+                            toAdd = forecastedMonthlySales * multiplier;
+                            XYaxis += "" + toAdd + ",";
+
+                        }
                     }
 
                     String json = "";
