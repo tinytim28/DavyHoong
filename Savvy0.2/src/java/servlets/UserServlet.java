@@ -98,10 +98,7 @@ public class UserServlet extends HttpServlet {
                     String teamRetrieve;
                     User current = (User) session.getAttribute("loginUser");
 
-                    //Basically what i did is to take from the current user to check who is the manager or if the user is a manager himself
-                    // Admin can retrieve managers
-                    // managers will retrieve those whose 'manager' column has their first and last name inside. 
-                    // i altered the DAO codes to take in a string called teamRetrieve, it will only retrieve those under the manager
+                  
                     if (current.checkAdmin().equals("Admin")) {
                         teamRetrieve = "Manager";
                     } else {

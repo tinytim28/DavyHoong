@@ -6,8 +6,8 @@
 package servlets;
 
 import classes.User;
-import classes.SalesObject;
-import DAO.SalesObjectDAO;
+import classes.Goal;
+import DAO.GoalsDAO;
 import DAO.UserDAO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -55,14 +55,59 @@ public class GoalServlet extends HttpServlet {
         Map<String, Object> toReturn = new HashMap<String, Object>();
         String type = request.getParameter("type");
         
+        HttpSession session = request.getSession();
+        
         if (type != null ) {
-            if (type.equals("setGoals")) {
+            if (type.equals("setGoal")) {
                 
-            } else if (type.equals("approveGoals")) {
+                
+                User loginUser = (User) session.getAttribute("loginUser");
+                String username = loginUser.getUsername();
+                
+                GoalsDAO gDAO = new GoalsDAO();
+                
+                double first = Double.parseDouble(request.getParameter("first"));
+                double second = Double.parseDouble(request.getParameter("second"));
+                double third = Double.parseDouble(request.getParameter("third"));
+                double fourth = Double.parseDouble(request.getParameter("fourth"));
+                
+                gDAO.createGoal(username, first, second, third, fourth);
+                toReturn.put("success", "success");
+                write(response, toReturn);
+                
+            } else if (type.equals("viewTeamGoals")) {      // Only manager can approve goals, this is not used by any other type of user
+                
+                try {
+                    /* TODO output your page here. You may use following sample code. */
+                    GoalsDAO gDAO = new GoalsDAO();
+                    User current = (User) session.getAttribute("loginUser");
+
+                  
+                    
+                    String managerName = "" + current.getFirstName() + " " + current.getLastName().toUpperCase();
+                    
+
+                    ArrayList<String> list = gDAO.retrieveTeamGoals(managerName);
+                    String output = "";
+                    for (String s : list) {
+                        output += s + ",";
+                    }
+
+                    String json = "";
+                    //   System.out.println("json" + json);
+                    if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
+                        json = output.substring(0, output.length() - 1);
+                    }
+
+                    response.getWriter().write(json);
+
+                } finally {
+                    //  out.close();
+                }
                 
             } else if (type.equals("changeGoals")) {
                 
-            } else if (type.equals("checkGoals")) {
+            } else if (type.equals("approveGoals")) {
                 
             }
         }

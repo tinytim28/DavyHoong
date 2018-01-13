@@ -86,4 +86,88 @@ public class GoalsDAO {
         }
     }
     
+    public void changeGoal(double first, double second, double third, double fourth, String username) {
+        
+        double yearly = first + second + third + fourth;
+ 
+        try {
+
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Update `goals` SET `first`='" + first + "', `second`='" + second + "', `third` = '" + third + "', `fourth` = '" + fourth + "', `yearly` = '" + yearly + "', `approved` = 'Pending Approval', `changeLeft` = '0'  where `username` = '" + username + "'");
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //rs.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                //Logger.getLogger(CompanyDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    
+    public void approveGoal(String username) {
+        
+ 
+        try {
+
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Update `goals` SET  `approved` = 'Approved' where `username` = '" + username + "'");
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //rs.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                //Logger.getLogger(CompanyDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    
+    public ArrayList<String> retrieveTeamGoals( String managerName ) {
+        
+        ArrayList<String> toReturn = new ArrayList<>();
+        
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT * as 'selected' FROM goals g INNER JOIN user u ON g.username = u.username WHERE u.manager = '" + managerName + "'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                
+                toReturn.add(result.getString(1));
+                toReturn.add(result.getString(2));
+                toReturn.add(result.getString(3));
+                toReturn.add(result.getString(5));
+                toReturn.add(result.getString(6));
+                toReturn.add(result.getString(7));
+                toReturn.add(result.getString(8));
+                
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return toReturn;
+    }
+    
 }
