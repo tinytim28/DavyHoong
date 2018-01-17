@@ -89,7 +89,7 @@ public class GoalsDAO {
     public void changeGoal(double first, double second, double third, double fourth, String username) {
         
         double yearly = first + second + third + fourth;
- 
+        
         try {
 
             conn = ConnectionManager.getConnection();
@@ -168,6 +168,27 @@ public class GoalsDAO {
         }
         
         return toReturn;
+    }
+    
+    public void approval(String username, String approval) {
+        
+        try {
+
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Update `goals` SET `approved` = '" + approval + "' where `username` = '" + username + "'");
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //rs.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                //Logger.getLogger(CompanyDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
 }

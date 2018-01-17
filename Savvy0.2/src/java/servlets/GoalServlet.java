@@ -102,11 +102,40 @@ public class GoalServlet extends HttpServlet {
                 }
 
             } else if (type.equals("changeGoals")) {
-
-            } else if (type.equals("approveGoal")) {
                 
-            } else if (type.equals("rejectGoal")) {    
+                GoalsDAO gDAO = new GoalsDAO();
+                String changeLeft = request.getParameter("changeLeft");
+                String username = request.getParameter("username");
+                double first = Double.parseDouble(request.getParameter("first"));
+                double second = Double.parseDouble(request.getParameter("second"));
+                double third = Double.parseDouble(request.getParameter("third"));
+                double fourth = Double.parseDouble(request.getParameter("fourth"));
+                
+                if (changeLeft.equals("0")) {
+                    response.getWriter().write("No Changes Left");
+                    toReturn.put("success", "success");
+                } else {
+                    gDAO.changeGoal(first, second, third, fourth, username);
+                }
 
+            } else if (type.equals("goalApproval")) {
+                
+                User manager = (User) session.getAttribute("loginUser");
+                String managerName = "" + manager.getFirstName() + manager.getLastName().toUpperCase();
+                String approval = request.getParameter("approved");
+                String username = request.getParameter("username");
+                
+                GoalsDAO gDAO = new GoalsDAO();
+                
+                gDAO.approval(username, approval);
+                
+                String toDisplay = "Rejected";
+                if(approval.equals("approved")) {
+                    toDisplay = "Approved";
+                }
+                response.getWriter().write(toDisplay);
+                toReturn.put("success", "success");
+                
             } else if (type.equals("viewOwnGoals")) {
                 try {
                     GoalsDAO gDAO = new GoalsDAO();
