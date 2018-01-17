@@ -54,38 +54,34 @@ public class GoalServlet extends HttpServlet {
             throws ServletException, IOException {
         Map<String, Object> toReturn = new HashMap<String, Object>();
         String type = request.getParameter("type");
-        
+
         HttpSession session = request.getSession();
-        
-        if (type != null ) {
+
+        if (type != null) {
             if (type.equals("setGoal")) {
-                
-                
+
                 User loginUser = (User) session.getAttribute("loginUser");
                 String username = loginUser.getUsername();
-                
+
                 GoalsDAO gDAO = new GoalsDAO();
-                
+
                 double first = Double.parseDouble(request.getParameter("first"));
                 double second = Double.parseDouble(request.getParameter("second"));
                 double third = Double.parseDouble(request.getParameter("third"));
                 double fourth = Double.parseDouble(request.getParameter("fourth"));
-                
+
                 gDAO.createGoal(username, first, second, third, fourth);
                 toReturn.put("success", "success");
                 write(response, toReturn);
-                
+
             } else if (type.equals("viewTeamGoals")) {      // Only manager can approve goals, this is not used by any other type of user
-                
+
                 try {
                     /* TODO output your page here. You may use following sample code. */
                     GoalsDAO gDAO = new GoalsDAO();
                     User current = (User) session.getAttribute("loginUser");
 
-                  
-                    
                     String managerName = "" + current.getFirstName() + " " + current.getLastName().toUpperCase();
-                    
 
                     ArrayList<String> list = gDAO.retrieveTeamGoals(managerName);
                     String output = "";
@@ -104,14 +100,43 @@ public class GoalServlet extends HttpServlet {
                 } finally {
                     //  out.close();
                 }
-                
+
             } else if (type.equals("changeGoals")) {
+
+            } else if (type.equals("approveGoal")) {
                 
-            } else if (type.equals("approveGoals")) {
-                
+            } else if (type.equals("rejectGoal")) {    
+
+            } else if (type.equals("viewOwnGoals")) {
+                try {
+                    GoalsDAO gDAO = new GoalsDAO();
+                    User current = (User) session.getAttribute("loginUser");
+                    Goal goal = gDAO.retrieveGoalByAgent(current.getUsername());
+                    String output = "";
+                    output += goal.getUsername() + ",";
+                    output += goal.getFirst() + ",";
+                    output += goal.getSecond() + ",";
+                    output += goal.getThird() + ",";
+                    output += goal.getFourth() + ",";
+                    output += goal.getYearly() + ",";
+                    output += goal.getApproved() + ",";
+                    output += goal.getChangeLeft() + ",";
+                    
+                    String json = "";
+                    if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
+                        json = output.substring(0, output.length() - 1);
+                    }
+
+                    response.getWriter().write(json);
+                    
+                    
+                    
+                } finally {
+                    //  out.close();
+                }
             }
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -152,13 +177,13 @@ public class GoalServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
     public static Date validateDateTime(String dateTime, String format) throws ParseException {
         DateFormat df = new SimpleDateFormat(format);
         df.setLenient(false);
         return df.parse(dateTime);
     }
-    
+
     private void write(HttpServletResponse response, Map<String, Object> map) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -43,7 +43,7 @@ public class GoalsDAO {
                 double fourth = result.getDouble("fourth");
                 String approved = result.getString("approved");
                 String changeLeft = result.getString("changeLeft");
-                goal = new Goal(username, first, second, third, fourth, approved, changeLeft);
+                goal = new Goal(name, first, second, third, fourth, approved, changeLeft);
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -139,15 +139,15 @@ public class GoalsDAO {
         
         try {
             conn = ConnectionManager.getConnection();
-            String query = "SELECT * as 'selected' FROM goals g INNER JOIN user u ON g.username = u.username WHERE u.manager = '" + managerName + "'";
+            String query = "SELECT * FROM goals g INNER JOIN user u ON g.username = u.username WHERE u.manager = '" + managerName + "'";
             stmt = conn.prepareStatement(query);
             result = stmt.executeQuery();
-
             while (result.next()) {
                 
                 toReturn.add(result.getString(1));
                 toReturn.add(result.getString(2));
                 toReturn.add(result.getString(3));
+                toReturn.add(result.getString(4));
                 toReturn.add(result.getString(5));
                 toReturn.add(result.getString(6));
                 toReturn.add(result.getString(7));

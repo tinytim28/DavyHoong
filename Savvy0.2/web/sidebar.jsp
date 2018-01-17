@@ -41,7 +41,8 @@
                 <ul class="nav">
                     <li><a id="user_control" class="loadPage">View Individual Sales</a></li>              
                     <li><a id="forecast" class="loadPage">Forecast</a></li>  
-                    <li><a id="performance" class="loadPage">Performance</a></li>    
+                    <li><a id="performance" class="loadPage">Performance</a></li>   
+                    <li><a id="goalsmanager" class="loadPage">Goals</a></li>
                 </ul>  
             </div>
         </div>
@@ -62,6 +63,7 @@
                 <ul class="nav">
                     <li><a id="addprospects" class="loadPage">Prospects</a></li>
                     <li><a id="view_sales_in_progress" class="loadPage">Sales</a></li>
+                    <li><a id="goalsagent" class="loadPage">Goals</a></li>
                 </ul>  
             </div>
         </div>
