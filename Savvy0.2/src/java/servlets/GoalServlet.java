@@ -102,7 +102,7 @@ public class GoalServlet extends HttpServlet {
                 }
 
             } else if (type.equals("changeGoals")) {
-                
+
                 GoalsDAO gDAO = new GoalsDAO();
                 String changeLeft = request.getParameter("changeLeft");
                 String username = request.getParameter("username");
@@ -110,7 +110,7 @@ public class GoalServlet extends HttpServlet {
                 double second = Double.parseDouble(request.getParameter("second"));
                 double third = Double.parseDouble(request.getParameter("third"));
                 double fourth = Double.parseDouble(request.getParameter("fourth"));
-                
+
                 if (changeLeft.equals("0")) {
                     response.getWriter().write("No Changes Left");
                     toReturn.put("success", "success");
@@ -119,47 +119,47 @@ public class GoalServlet extends HttpServlet {
                 }
 
             } else if (type.equals("goalApproval")) {
-                
+
                 User manager = (User) session.getAttribute("loginUser");
                 String managerName = "" + manager.getFirstName() + manager.getLastName().toUpperCase();
                 String approval = request.getParameter("approved");
                 String username = request.getParameter("username");
-                
+
                 GoalsDAO gDAO = new GoalsDAO();
-                
+
                 gDAO.approval(username, approval);
-                
+
                 String toDisplay = "Rejected";
-                if(approval.equals("approved")) {
+                if (approval.equals("approved")) {
                     toDisplay = "Approved";
                 }
                 response.getWriter().write(toDisplay);
                 toReturn.put("success", "success");
-                
+
             } else if (type.equals("viewOwnGoals")) {
                 try {
                     GoalsDAO gDAO = new GoalsDAO();
                     User current = (User) session.getAttribute("loginUser");
                     Goal goal = gDAO.retrieveGoalByAgent(current.getUsername());
-                    String output = "";
-                    output += goal.getUsername() + ",";
-                    output += goal.getFirst() + ",";
-                    output += goal.getSecond() + ",";
-                    output += goal.getThird() + ",";
-                    output += goal.getFourth() + ",";
-                    output += goal.getYearly() + ",";
-                    output += goal.getApproved() + ",";
-                    output += goal.getChangeLeft() + ",";
-                    
-                    String json = "";
-                    if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
-                        json = output.substring(0, output.length() - 1);
+                    if (goal != null) {
+                        String output = "";
+                        output += goal.getUsername() + ",";
+                        output += goal.getFirst() + ",";
+                        output += goal.getSecond() + ",";
+                        output += goal.getThird() + ",";
+                        output += goal.getFourth() + ",";
+                        output += goal.getYearly() + ",";
+                        output += goal.getApproved() + ",";
+                        output += goal.getChangeLeft() + ",";
+
+                        String json = "";
+                        if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
+                            json = output.substring(0, output.length() - 1);
+                        }
+
+                        response.getWriter().write(json);
                     }
 
-                    response.getWriter().write(json);
-                    
-                    
-                    
                 } finally {
                     //  out.close();
                 }

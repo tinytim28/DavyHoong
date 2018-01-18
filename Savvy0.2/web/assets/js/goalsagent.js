@@ -34,13 +34,58 @@ $(document).ready(function () {
             }
         }
     });
+    
+    $('#CreateGoal').on('click', function () {
+        var Q1new = document.getElementById("Q1new").value;
+        var Q2new = document.getElementById("Q2new").value;
+        var Q3new = document.getElementById("Q2new").value;
+        var Q4new = document.getElementById("Q2new").value;
+  
+        if (err === "") {
+            if (document.getElementById("ErrorMessage") !== null) {
+                var parent = document.getElementById("newUser");
+                var child = document.getElementById("ErrorMessage");
+                parent.removeChild(child);
+            }
+            var data = {
+                Q1new: Q1new,
+                Q2new: Q2new,
+                Q3new: Q3new,
+                Q4new: Q4new,
+                type: "setGoal"
+            }
 
+            $.ajax({
+                url: '/Savvy0.2/GoalServlet',
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                success: function (data) {
+                    if (data.success) {
+                        document.getElementById("newUser").reset();
+                        $("#trans_table").html("");
+                        refresh();
+                        showSuccessModal("Goal Set!");
+                    } else {
+                        showErrorModal("Creation Failed.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert(data);
+                }
+            });
+        } else {
+            showErrorModal(err);
+        }
+    })
+    
     $("#UpdateGoal").click(function () {
         var Q1 = document.getElementById("Q1_update").value;
         var Q2 = document.getElementById("Q2_update").value;
         var Q3 = document.getElementById("Q3_update").value;
         var Q4 = document.getElementById("Q4_update").value;
-
+        var username = document.getElementById("username").value;
+        var changeleft = document.getElementById("changeleft").value;
         // disable search button and clear table
         $("#showUpdateGoalModal").modal('hide');
 
@@ -49,6 +94,8 @@ $(document).ready(function () {
             Q2: Q2,
             Q3: Q3,
             Q4: Q4,
+            username : username,
+            changeleft: changeleft,
             type: "changeGoals"
         }
         // send json to servlet
@@ -214,13 +261,14 @@ function refresh() {
                 }
             });
         } else {
-            htmlcode += "<form id='newProspect' name='newProspect'>";
-            htmlcode += "<div class='form-group'><label class='col-sm-1 control-label'>Q1 <font color='red'>*</font></label><div class='col-sm-1'><input class='form-control' id='pName' name='pName' type='text'></div></div>";
-            htmlcode += "<div class='form-group'><label class='col-sm-1 control-label'>Q2 <font color='red'>*</font></label><div class='col-sm-1'><input class='form-control' id='pName' name='pName' type='text'></div></div>";
-            htmlcode += "<div class='form-group'><label class='col-sm-1 control-label'>Q3 <font color='red'>*</font></label><div class='col-sm-1'><input class='form-control' id='pName' name='pName' type='text'></div></div>";
-            htmlcode += "<div class='form-group'><label class='col-sm-1 control-label'>Q4 <font color='red'>*</font></label><div class='col-sm-1'><input class='form-control' id='pName' name='pName' type='text'></div></div>";
-            htmlcode += "</form>";
-            $("#trans_table").html(htmlcode);
+            htmlcode += "<form id='newGoal' name='newGoal'><th><h2>Goal Creation</h2></th><div>";
+            htmlcode += "<div class='form-group'><label class='col-sm-1 control-label'>Q1 <font color='red'>*</font></label><div class='col-sm-1'><input class='form-control' id='Q1new' name='Q1new' type='number'></div></div>";
+            htmlcode += "<div class='form-group'><label class='col-sm-1 control-label'>Q2 <font color='red'>*</font></label><div class='col-sm-1'><input class='form-control' id='Q2new' name='Q2new' type='number'></div></div>";
+            htmlcode += "<div class='form-group'><label class='col-sm-1 control-label'>Q3 <font color='red'>*</font></label><div class='col-sm-1'><input class='form-control' id='Q3new' name='Q3new' type='number'></div></div>";
+            htmlcode += "<div class='form-group'><label class='col-sm-1 control-label'>Q4 <font color='red'>*</font></label><div class='col-sm-1'><input class='form-control' id='Q4new' name='Q4new' type='number'></div></div>";
+            htmlcode += "<div class='form-group'><label class='col-sm-1 control-label'><button class='btn btn-primary' id='CreateGoal' name='CreateGoal' type='button'>Create</button></div></div>";
+            htmlcode += "</div></form>";
+            $("#trans_table_2").html(htmlcode);
         }
     });
 
