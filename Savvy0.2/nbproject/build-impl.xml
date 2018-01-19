@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
         *** GENERATED FROM project.xml - DO NOT EDIT  ***
-        ***         EDIT ../build.xml INSTEAD         ***
+        ***         EDIT build.xml INSTEAD         ***
 
         For the purpose of easier reading the script
         is divided into following sections:
@@ -32,7 +32,7 @@
             -->
     <target name="-pre-init">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="-pre-init" name="-init-private">
         <property file="nbproject/private/private.properties"/>
@@ -231,7 +231,7 @@
     </target>
     <target name="-post-init">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="-pre-init,-init-private,-init-user,-init-project,-do-init" name="-init-check">
         <fail unless="src.dir">Must set src.dir</fail>
@@ -835,11 +835,11 @@ exists or setup the property manually. For example like this:
     <target depends="-profile-pre-init, init, -profile-post-init, -profile-init-check" if="profiler.info.jvmargs.agent" name="profile-init"/>
     <target if="profiler.info.jvmargs.agent" name="-profile-pre-init">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target if="profiler.info.jvmargs.agent" name="-profile-post-init">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="-profile-pre-init, init, -profile-post-init" if="profiler.info.jvmargs.agent" name="-profile-init-check">
         <fail unless="profiler.info.jvm">Must set JVM to use for profiling in profiler.info.jvm</fail>
@@ -860,7 +860,7 @@ exists or setup the property manually. For example like this:
     </target>
     <target name="-pre-compile">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target name="-copy-webdir">
         <copy todir="${build.web.dir}">
@@ -890,12 +890,12 @@ exists or setup the property manually. For example like this:
     </target>
     <target name="-post-compile">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="init,deps-jar,-pre-pre-compile,-pre-compile,-do-compile,-post-compile" description="Compile project." name="compile"/>
     <target name="-pre-compile-single">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="init,deps-jar,-pre-pre-compile" name="-do-compile-single">
         <fail unless="javac.includes">Must select some files in the IDE or set javac.includes</fail>
@@ -906,7 +906,7 @@ exists or setup the property manually. For example like this:
     </target>
     <target name="-post-compile-single">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="init,deps-jar,-pre-pre-compile,-pre-compile-single,-do-compile-single,-post-compile-single" name="compile-single"/>
     <property name="jspc.schemas" value="/resources/schemas/"/>
@@ -965,7 +965,7 @@ exists or setup the property manually. For example like this:
             -->
     <target name="-pre-dist">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="init,compile,compile-jsps,-pre-dist" if="do.war.package.without.custom.manifest" name="-do-dist-without-manifest">
         <dirname file="${dist.war}" property="dist.jar.dir"/>
@@ -1031,7 +1031,7 @@ exists or setup the property manually. For example like this:
     </target>
     <target name="-post-dist">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="init,compile,-pre-dist,do-dist,-post-dist" description="Build distribution (WAR)." name="dist"/>
     <target depends="init,-clean-webinf-lib,-init-cos,compile,-pre-dist,do-ear-dist,-post-dist" description="Build distribution (WAR) to be packaged into an EAR." name="dist-ear"/>
@@ -1041,11 +1041,11 @@ exists or setup the property manually. For example like this:
     <target depends="run-deploy,run-display-browser" description="Deploy to server and show in browser." name="run"/>
     <target name="-pre-run-deploy">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target name="-post-run-deploy">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target name="-pre-nbmodule-run-deploy">
         <!-- Empty placeholder for easier customization. -->
@@ -1339,7 +1339,7 @@ exists or setup the property manually. For example like this:
     </target>
     <target name="-pre-compile-test">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="init,compile,-pre-pre-compile-test,-pre-compile-test" if="have.tests" name="-do-compile-test">
         <webproject2:javac classpath="${javac.test.classpath}:${j2ee.platform.classpath}:${j2ee.platform.embeddableejb.classpath}" debug="true" destdir="${build.test.classes.dir}" srcdir="${test.src.dir}"/>
@@ -1349,12 +1349,12 @@ exists or setup the property manually. For example like this:
     </target>
     <target name="-post-compile-test">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="init,compile,-pre-pre-compile-test,-pre-compile-test,-do-compile-test,-post-compile-test" name="compile-test"/>
     <target name="-pre-compile-test-single">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="init,compile,-pre-pre-compile-test,-pre-compile-test-single" if="have.tests" name="-do-compile-test-single">
         <fail unless="javac.includes">Must select some files in the IDE or set javac.includes</fail>
@@ -1365,7 +1365,7 @@ exists or setup the property manually. For example like this:
     </target>
     <target name="-post-compile-test-single">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="init,compile,-pre-pre-compile-test,-pre-compile-test-single,-do-compile-test-single,-post-compile-test-single" name="compile-test-single"/>
     <!--
@@ -1452,7 +1452,7 @@ exists or setup the property manually. For example like this:
     </target>
     <target name="-post-clean">
         <!-- Empty placeholder for easier customization. -->
-        <!-- You can override this target in the ../build.xml file. -->
+        <!-- You can override this target in the build.xml file. -->
     </target>
     <target depends="init,undeploy-clean,deps-clean,do-clean,check-clean,-post-clean" description="Clean build products." name="clean"/>
     <target depends="clean" description="Clean build products." name="clean-ear"/>
