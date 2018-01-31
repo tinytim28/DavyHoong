@@ -33,6 +33,7 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.*;
 
 /**
  *
@@ -163,6 +164,54 @@ public class GoalServlet extends HttpServlet {
                 } finally {
                     //  out.close();
                 }
+            } else if (type.equals("showCurrentQuarterlySales")) {
+                
+                User loginUser = (User) session.getAttribute("loginUser");
+                String username = loginUser.getUsername();
+                
+                String firstQuarter = "0";
+                String secondQuarter = "0";
+                String thirdQuarter = "0";
+                String fourthQuarter = "0";
+                
+                GoalsDAO gDAO = new GoalsDAO();
+                LocalDate now = LocalDate.now();
+                int currentMonth = now.getMonth().getValue();
+                
+                if (currentMonth < 4) {
+                    
+                    firstQuarter = "" + gDAO.getUserPastQuarterSales(username, "1", "4");
+                    
+                } else if (currentMonth >= 4 && currentMonth < 7 ) {
+                    
+                    firstQuarter = "" + gDAO.getUserPastQuarterSales(username, "1", "4");
+                    secondQuarter = "" + gDAO.getUserPastQuarterSales(username, "4", "7");
+                    
+                } else if (currentMonth >= 7 && currentMonth < 10 ) {
+                    
+                    firstQuarter = "" + gDAO.getUserPastQuarterSales(username, "1", "4");
+                    secondQuarter = "" + gDAO.getUserPastQuarterSales(username, "4", "7");
+                    thirdQuarter = "" + gDAO.getUserPastQuarterSales(username, "7", "10");
+                
+                } else {
+                    
+                    firstQuarter = "" + gDAO.getUserPastQuarterSales(username, "1", "4");
+                    secondQuarter = "" + gDAO.getUserPastQuarterSales(username, "4", "7");
+                    thirdQuarter = "" + gDAO.getUserPastQuarterSales(username, "7", "10");
+                    fourthQuarter = "" + gDAO.getUserPastQuarterSales(username, "10", "1");
+                    
+                }
+                
+                String toDisplay = "" + firstQuarter + secondQuarter + thirdQuarter + fourthQuarter;
+                
+                String json = "";
+                    //   System.out.println("json" + json);
+                    if (toDisplay.length() > 0 && toDisplay.charAt(toDisplay.length() - 1) == ',') {
+                        json = toDisplay.substring(0, toDisplay.length() - 1);
+                    }
+
+                    response.getWriter().write(json);
+                
             }
         }
 

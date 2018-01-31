@@ -191,4 +191,51 @@ public class GoalsDAO {
         }
     }
     
+    public Double getUserPastQuarterSales(String username, String startMonth, String endMonth) {
+        Double total = 0.0;
+
+        LocalDate now = LocalDate.now();
+        String endYear = now.toString().substring(0, 4);
+        String startYear = now.toString().substring(0, 4);
+        
+        int temp = Integer.parseInt(endYear) + 1;
+        
+        if (endYear.equals("1")) {
+            endYear = "" + temp;
+        }
+
+
+        if (startMonth.length() < 2) {
+            startMonth = "0" + startMonth;
+        }
+        if (endMonth.length() < 2) {
+            endMonth = "0" + endMonth;
+        }
+
+        String yearStart = "" + startYear + "-" + startMonth + "-01";
+        String yearEnd = "" + endYear + "-" + endMonth + "-01";
+
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT SUM(expectedFYC) as 'sumOfFYC' from sales where '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "' and username = '" + username + "' and dateClose IS NOT NULL";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                total = result.getDouble("sumOfFYC");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return total;
+    }
+    
 }
