@@ -216,8 +216,8 @@ $(document).ready(function () {
     //end of change password
     refresh(); // by default
 
-    //start of delete user
-    $("table").on('click', '#DeleteUser', function () {
+    //start of deactivate user
+    $("table").on('click', '#DeactivateUser', function () {
         var del = $(this).attr("name");
         $("#myModal").modal({// wire up the actual modal functionality and show the dialog
             "backdrop": "static",
@@ -239,7 +239,7 @@ $(document).ready(function () {
             // send json to servlet
             $.ajax({
                 type: "POST",
-                url: "/Savvy0.2/UserServlet?type=deleteUser",
+                url: "/Savvy0.2/UserServlet?type=inactiveUser",
                 contentType: "application/json",
                 dataType: "json",
                 data: parameters
@@ -247,13 +247,13 @@ $(document).ready(function () {
 
 
             $("#trans_table").html("");
-            showSuccessModal("Successfully delete user!");
-            refresh();
+            showSuccessModal("Successfully deactivated user!");
 
+            refresh();
         });
-        refresh();
+
     });
-    //end of delete user
+    //end of deactivate user
 
     //start of view user sale
     $("table").on('click', '#ViewUserSale', function () {
@@ -293,22 +293,20 @@ $(document).ready(function () {
                         htmlcode += "<\/tr>";
                         count++;
                     }
-                    
+
                     htmlcode += "<\/select>";
                     $("#view_sales_table").html(htmlcode);
-                    
-                }else{
-                    htmlcode += "<tr>";
-                    htmlcode += "<th>User has not uploaded any sales!<\/th>";
-                    htmlcode += "<\/tr>";
+
+                } else {
+
                 }
-                
-            $("#view_sales_table").html(htmlcode);    
+
+                $("#view_sales_table").html(htmlcode);
             },
             error: function (xhr, status, error) {
                 alert(error);
             }
-            
+
         });
         viewUserSaleModal();
     });
@@ -350,18 +348,20 @@ function refresh() {
             htmlcode += "<th>Username<\/th>";
             htmlcode += "<th hidden>User Type<\/th>";
             htmlcode += "<th hidden>Manager<\/th>";
+            htmlcode += "<th>Active<\/th>";
             htmlcode += "<th>Action<\/th>";
             htmlcode += "<\/tr>";
 
             var count = 1;
-            for (var i = 0; i < strings.length; i += 5) {
+            for (var i = 0; i < strings.length; i += 6) {
                 htmlcode += "<tr class='record' id='" + count + "'>";
                 htmlcode += "<td class='firstname' id='firstname" + count + "'>" + strings[i] + "<\/td>";
                 htmlcode += "<td class='lastname' id='lastname" + count + "'>" + strings[i + 1] + "<\/td>";
                 htmlcode += "<td class='username' id='username" + count + "'>" + strings[i + 2] + "<\/td>";
                 htmlcode += "<td hidden id='usertype" + count + "'>" + strings[i + 3] + "<\/td>";
                 htmlcode += "<td hidden id='manager" + count + "'>" + strings[i + 4] + "<\/td>";
-                htmlcode += "<td><button id='ViewUserSale' type='button' class='btn btn-xs btn-success' name='" + count + "'><span class='glyphicon glyphicon-ok' aria-hidden='true'><\/span> View Sales<\/button> <button id='EditUser' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button> <button id='DeleteUser' type='button' class='btn btn-xs btn-danger' name='" + count + "'><span class='glyphicon glyphicon-trash' aria-hidden='true'><\/span> Delete<\/button><\/td>";
+                htmlcode += "<td id='active" + count + "'>" + strings[i + 5] + "<\/td>";
+                htmlcode += "<td><button id='ViewUserSale' type='button' class='btn btn-xs btn-success' name='" + count + "'><span class='glyphicon glyphicon-ok' aria-hidden='true'><\/span> View Sales<\/button> <button id='EditUser' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button> <button id='DeactivateUser' type='button' class='btn btn-xs btn-danger' name='" + count + "'><span class='glyphicon glyphicon-lock' aria-hidden='true'><\/span> Deactivate<\/button><\/td>";
 
                 htmlcode += "<\/tr>";
                 count++;

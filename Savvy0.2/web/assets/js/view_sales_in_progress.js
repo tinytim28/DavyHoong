@@ -122,9 +122,8 @@ $(document).ready(function () {
             $("#trans_table").html("");
             showSuccessModal("Successfully deleted sale!");
             refresh();
-
         });
-        refresh();
+        
     });
     //start of closing sale
     $("#showCloseSaleModal").on("hide", function () { // remove the event listeners when the dialog is dismissed

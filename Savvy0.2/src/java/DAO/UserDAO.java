@@ -52,7 +52,8 @@ public class UserDAO {
                 String password = result.getString("password");
                 String usertype = result.getString("usertype");
                 String manager = result.getString("manager");
-                users.add(new User(firstName, lastName, username, password, usertype, manager));
+                String active = result.getString("active");
+                users.add(new User(firstName, lastName, username, password, usertype, manager, active));
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -84,7 +85,8 @@ public class UserDAO {
                 String password = result.getString("password");
                 String usertype = result.getString("usertype");
                 String manager = result.getString("manager");
-                user = new User(firstName, lastName, username, password, usertype, manager);
+                String active = result.getString("active");
+                user = new User(firstName, lastName, username, password, usertype, manager, active);
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -96,12 +98,12 @@ public class UserDAO {
     }
     
     
-    public void createUser( String username, String password, String firstName, String lastName, String usertype, String manager ) {
+    public void createUser( String username, String password, String firstName, String lastName, String usertype, String manager, String active ) {
         //  lookupList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO `user` (`firstname`, `lastname`, `username`, `password`, `usertype`, `manager`) VALUES"
-                    + "(?,?,?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO `user` (`firstname`, `lastname`, `username`, `password`, `usertype`, `manager`,`active`) VALUES"
+                    + "(?,?,?,?,?,?,?)");
             //conn.setAutoCommit(false);
 
             stmt.setString(1, firstName);
@@ -110,6 +112,7 @@ public class UserDAO {
             stmt.setString(4, password);
             stmt.setString(5, usertype);
             stmt.setString(6, manager);
+            stmt.setString(7, active);
             stmt.execute();
 
         } catch (Exception e) {
@@ -145,6 +148,29 @@ public class UserDAO {
 
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("DELETE FROM `user` WHERE `username`=?");
+            stmt.setString(1, username);
+
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //rs.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+    
+    public void userInactive(String username) {
+        try {
+
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Update user set active = 'Inactive' WHERE `username`=?");
             stmt.setString(1, username);
 
             stmt.executeUpdate();
@@ -265,6 +291,7 @@ public class UserDAO {
                 lookupStringList.add(result.getString(3));
                 lookupStringList.add(result.getString(5));
                 lookupStringList.add(result.getString(6));
+                lookupStringList.add(result.getString(7));
                 
                 
             }

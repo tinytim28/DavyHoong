@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <style>
+            td:first-child, th:first-child {
+                width: 10%;
+            }
 
+            td:not(:first-child), th:not(:first-child) {
+                width: 10%;
+            }
+        </style>
 
         <title></title>
     </head>
     <body>
         <h1 class="page-header" style="color:#937851">Goals</h1> 
+        <button class="btn btn-primary" id="AddNewGoal" style="display: initial" type="button"><span aria-hidden="true" class="glyphicon glyphicon-user"></span> &nbsp;Add Goal</button> 
         <table class="table table-striped col-md-12 well" id="trans_table_main">
             <tbody id="trans_table"></tbody>
         </table>
@@ -25,35 +34,81 @@
                         <h4 id="myModalLabel">Update Goal</h4>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal well" id="goal_form" name="goal_form" style="padding-bottom: 0px;">
+                        <form class="form-horizontal well" id="update_goal_form" name="goal_form" style="padding-bottom: 0px;">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Q1 <font color="red">*</font></label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="Q1_update" name="Q1_update" type="number">
+                                    <input class="form-control" id="Q1update" name="Q1update" type="number">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Q2 <font color="red">*</font></label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="Q2_update" name="Q2_update" type="number">
+                                    <input class="form-control" id="Q2update" name="Q2update" type="number">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Q3 <font color="red">*</font></label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="Q3_update" name="Q3_update" type="number">
+                                    <input class="form-control" id="Q3update" name="Q3update" type="number">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Q4 <font color="red">*</font></label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" id="Q4_update" name="Q4_update" type="number">
+                                    <input class="form-control" id="Q4update" name="Q4update" type="number">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-9 control-label"></label>
                                 <div class="col-sm-3">
-                                    <button class="btn btn-primary" id="UpdateGoal" type="button">Update</button>
+                                    <button class="btn btn-primary" id="updateGoal" type="button">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--create goal-->
+        <div aria-hidden="true" class="modal fade" id="showCreateGoalModal" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" class="close" data-dismiss="modal" type="button">X</button>
+                        <h4 id="myModalLabel">Create Goal</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal well" id="goal_form" name="goal_form" style="padding-bottom: 0px;">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Q1 <font color="red">*</font></label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="Q1new" name="Q1new" type="number">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Q2 <font color="red">*</font></label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="Q2new" name="Q2new" type="number">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Q3 <font color="red">*</font></label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="Q3new" name="Q3new" type="number">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Q4 <font color="red">*</font></label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="Q4new" name="Q4new" type="number">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-9 control-label"></label>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary" id="CreateGoal" type="button">Create</button>
                                 </div>
                             </div>
                         </form>

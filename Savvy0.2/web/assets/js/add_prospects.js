@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 //start of jquery
-$(document).ready(function () {  
+$(document).ready(function () {
     //start of edit/update prospect
     $("#showUpdateProspectModal").on("hide", function () { // remove the event listeners when the dialog is dismissed
         $("#showUpdateProspectModal a.btn").off("click");
@@ -80,9 +80,9 @@ $(document).ready(function () {
 
 
     });
-    
+
     //end of edit/update prospect
-    
+
     //start of add sales
     $("#showAddSaleModal").on("hide", function () { // remove the event listeners when the dialog is dismissed
         $("#showAddSaleModal a.btn").off("click");
@@ -99,7 +99,6 @@ $(document).ready(function () {
         //alert(edit);
         var tr = document.getElementById(edit);
         var tds = tr.getElementsByTagName("td");
-        //alert(tds.length);
         for (var i = 0; i < tds.length; i++) {
             switch (i) {
                 case 0:
@@ -109,7 +108,7 @@ $(document).ready(function () {
             }
         }
     });
-    
+
     $('#ExpectedFYC').on('input', function () {
         document.getElementById("createSalesButton").disabled = false;
     });
@@ -123,9 +122,10 @@ $(document).ready(function () {
         var caseType = document.getElementById("caseType").value;
         var expectedFYC = document.getElementById("expectedFYC").value;
         var salesremarks = document.getElementById("salesremarks").value;
-        
+
         // disable search button and clear table
         $("#showAddSaleModal").modal('hide');
+
 
         var data = {
             pName: pName,
@@ -143,8 +143,7 @@ $(document).ready(function () {
             success: function (data) {
                 refresh();
                 showSuccessModal("Successfully added sale!");
-
-
+                $('#newSale')[0].reset();
             },
             error: function (xhr, status, error) {
                 alert(error);
@@ -154,9 +153,9 @@ $(document).ready(function () {
 
 
     });
-    
+
     //end of add sales
-    
+
     //start of add prospect
     $("#AddProspect").click(function () {
         $("#AddNewProspect").modal("show");

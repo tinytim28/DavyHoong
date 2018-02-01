@@ -57,7 +57,7 @@ public class UserServlet extends HttpServlet {
                 String lastName = request.getParameter("lastName");
                 String usertype = request.getParameter("usertype");
                 String pwHash = UserDAO.generateHash(password);
-
+                String active = "Active";
                 User current = (User) session.getAttribute("loginUser");
                 String manager = "";
 
@@ -71,7 +71,7 @@ public class UserServlet extends HttpServlet {
 
                 //System.out.println("crating user with " + username);
                 UserDAO u = new UserDAO();
-                u.createUser(username, pwHash, firstName, lastName, usertype, manager);
+                u.createUser(username, pwHash, firstName, lastName, usertype, manager, active);
                 toReturn.put("success", "success");
                 write(response, toReturn);
             } else if (type.equals("login")) {
@@ -98,7 +98,6 @@ public class UserServlet extends HttpServlet {
                     String teamRetrieve;
                     User current = (User) session.getAttribute("loginUser");
 
-                  
                     if (current.checkAdmin().equals("Admin")) {
                         teamRetrieve = "Manager";
                     } else {
@@ -134,6 +133,25 @@ public class UserServlet extends HttpServlet {
 
                     UserDAO uDAO = new UserDAO();
                     uDAO.deleteUser(username);
+
+                    response.getWriter().write("updated user");
+                } catch (JSONException ex) {
+                    //Logger.getLogger(admincontrol.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                //System.out.println(transJsonObj);      
+            } else if (type.equals("inactiveUser")) {
+                JSONObject transJsonObj = new JSONObject();
+                try {
+                    transJsonObj = new JSONObject(request.getReader().readLine());
+
+                } catch (IOException | JSONException e) {
+                }
+                try {
+                    String username = transJsonObj.getString("username");
+
+                    UserDAO uDAO = new UserDAO();
+                    uDAO.userInactive(username);
 
                     response.getWriter().write("updated user");
                 } catch (JSONException ex) {
