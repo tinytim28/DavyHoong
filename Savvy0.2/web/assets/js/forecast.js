@@ -15,7 +15,7 @@ $(document).ready(function () {
                     htmlcode += "<th>Username<\/th>";
                     htmlcode += "<th>Action<\/th>";
                     htmlcode += "<\/tr>";
-                    for (var i = 0; i < strings.length; i += 5) {
+                    for (var i = 0; i < strings.length; i += 6) {
                         htmlcode += "<tr class='record' id='" + count + "'>";
                         htmlcode += "<td class='username' id='username" + count + "'>" + strings[i + 2] + "<\/td>";
                         htmlcode += "<td><button id='viewtwelvemonths' type='button' class='btn btn-info' name='" + count + "'>Next 12 Months<\/button><\/td>";
@@ -41,7 +41,7 @@ $(document).ready(function () {
             datatype: 'json',
             data: data,
             success: function (responseJson) {
-
+                alert(responseJson);
                 var strings = responseJson.split(",");
                 ctx = document.getElementById('myChart').getContext('2d');
                 myChart = new Chart(ctx, {
