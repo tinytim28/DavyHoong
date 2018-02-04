@@ -113,7 +113,7 @@ public class OverviewServlet extends HttpServlet {
                 String year = "" + now.getYear();
                 String yearStart = year + "-01-01";
                 
-                int endYear = Integer.parseInt(yearStart) + 1;
+                int endYear = Integer.parseInt(year) + 1;
                 String toPutForEnd = "" + endYear;
 
                 String yearEnd = toPutForEnd + "-" + "01-01";
