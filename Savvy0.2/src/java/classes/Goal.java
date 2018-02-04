@@ -17,7 +17,6 @@ public class Goal {
     private double fourth;
     private double yearly;
     private String approved;
-    private String changeLeft;
 
     public Goal(String username, double first, double second, double third, double fourth) {
         this.username = username;
@@ -27,18 +26,16 @@ public class Goal {
         this.fourth = fourth;
         this.yearly = first + second + third + fourth;
         this.approved = "Pending Approval";
-        this.changeLeft = "1";   
     }
     
-    public Goal(String username, double first, double second, double third, double fourth, String approved, String changeLeft) {
+    public Goal(String username, double first, double second, double third, double fourth, String approved) {
         this.username = username;
         this.first = first;
         this.second = second;
         this.third = third;
         this.fourth = fourth;
         this.yearly = first + second + third + fourth;
-        this.approved = approved;
-        this.changeLeft = changeLeft;   
+        this.approved = approved;   
     }
 
     public String getUsername() {
@@ -91,16 +88,5 @@ public class Goal {
 
     public void setApproved(String approved) {
         this.approved = approved;
-    }
-
-    public String getChangeLeft() {
-        return changeLeft;
-    }
-
-    public void setChange(String changeLeft) {
-        this.changeLeft = changeLeft;
-    }
-    
-    
-        
+    }        
 }

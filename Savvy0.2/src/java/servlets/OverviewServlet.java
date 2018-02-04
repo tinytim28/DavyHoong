@@ -112,15 +112,11 @@ public class OverviewServlet extends HttpServlet {
                 LocalDate now = LocalDate.now();
                 String year = "" + now.getYear();
                 String yearStart = year + "-01-01";
+                
+                int endYear = Integer.parseInt(yearStart) + 1;
+                String toPutForEnd = "" + endYear;
 
-                Month currentMonth = now.getMonth();
-                int monthEnd = currentMonth.minus(1).getValue();
-                String monthEndString = "" + monthEnd;
-
-                if (monthEndString.length() < 2) {
-                    monthEndString = "0" + monthEndString;
-                }
-                String yearEnd = "" + now.getYear() + "-" + monthEndString + "-01";
+                String yearEnd = toPutForEnd + "-" + "01-01";
 
                 ArrayList<String> toShow = sDAO.getCaseBreakdownYTD(managerName, yearStart, yearEnd);
 

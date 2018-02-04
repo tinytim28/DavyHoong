@@ -65,6 +65,9 @@ public class GoalServlet extends HttpServlet {
                 String username = loginUser.getUsername();
 
                 GoalsDAO gDAO = new GoalsDAO();
+                if (gDAO.checkRejected(username)) {
+                    gDAO.deleteGoal(username);
+                }
 
                 double first = Double.parseDouble(request.getParameter("first"));
                 double second = Double.parseDouble(request.getParameter("second"));
@@ -102,24 +105,6 @@ public class GoalServlet extends HttpServlet {
                     //  out.close();
                 }
 
-            } else if (type.equals("changeGoals")) {
-
-                GoalsDAO gDAO = new GoalsDAO();
-                String changeLeft = request.getParameter("changeLeft");
-                User loginUser = (User) session.getAttribute("loginUser");
-                String username = loginUser.getUsername();
-                double first = Double.parseDouble(request.getParameter("first"));
-                double second = Double.parseDouble(request.getParameter("second"));
-                double third = Double.parseDouble(request.getParameter("third"));
-                double fourth = Double.parseDouble(request.getParameter("fourth"));
-
-                if (changeLeft.equals("0")) {
-                    response.getWriter().write("No Changes Left");
-                    toReturn.put("success", "success");
-                } else {
-                    gDAO.changeGoal(first, second, third, fourth, username);
-                }
-
             } else if (type.equals("goalApproval")) {
 
                 User manager = (User) session.getAttribute("loginUser");
@@ -152,7 +137,6 @@ public class GoalServlet extends HttpServlet {
                         output += goal.getFourth() + ",";
                         output += goal.getYearly() + ",";
                         output += goal.getApproved() + ",";
-                        output += goal.getChangeLeft() + ",";
 
                         String json = "";
                         if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {

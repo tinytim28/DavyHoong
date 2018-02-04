@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -193,6 +194,45 @@ public class UserServlet extends HttpServlet {
                     toReturn.put("usertype", usertype);
                 } catch (Exception e) {
                 }
+            } else if (type.equals("makeNewMangerWithTeam")) {
+
+                UserDAO uDAO = new UserDAO();
+                JSONObject transJsonObj = new JSONObject();
+                try {
+                    transJsonObj = new JSONObject(request.getReader().readLine());
+
+                } catch (IOException | JSONException e) {
+                }
+                try {
+
+                    User newManager = uDAO.retrieve(transJsonObj.getString("manager"));
+                    String managerName = "" + newManager.getFirstName() + newManager.getLastName().toUpperCase();
+                    uDAO.makeManager(newManager.getUsername());
+
+                    String teamMembers = transJsonObj.getString("teamMembers");
+
+                    ArrayList<String> members = new ArrayList<>();
+                    String temp = "";
+                    int start = 0;
+                    int end = teamMembers.indexOf(" ");
+
+                    while (!teamMembers.isEmpty()) {
+                        members.add(teamMembers.substring(start, end));
+                        teamMembers = teamMembers.substring(end + 1);
+                        start = 0;
+                        end = teamMembers.indexOf(" ");
+                    }
+                    
+                    for ( int i = 0; i < members.size(); i++ ) {
+                        uDAO.changeManager(members.get(i),managerName);
+                    }
+                    
+                    response.getWriter().write("Success, new team created with " + managerName.toUpperCase() + " as the manaager");
+
+                } catch (JSONException ex) {
+                    //Logger.getLogger(admincontrol.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
         }
 

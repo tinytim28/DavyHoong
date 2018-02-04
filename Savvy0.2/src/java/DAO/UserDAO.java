@@ -332,4 +332,48 @@ public class UserDAO {
         return output;
     }
     
+    public void makeManager(String username) {
+        
+        try {
+
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Update `user` SET `Manager`= 'Manager' where `username` = '" + username + "'");             
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //rs.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                //Logger.getLogger(CompanyDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    
+    public void changeManager(String username, String managerName) {
+        
+        try {
+
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Update `user` SET `Manager`= '" + managerName + "' where `username` = '" + username + "'");             
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //rs.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                //Logger.getLogger(CompanyDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }
+    
 }
