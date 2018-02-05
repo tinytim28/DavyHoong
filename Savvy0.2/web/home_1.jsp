@@ -1,20 +1,33 @@
+<%@page import="java.util.*"%>
+<%@page import="classes.*"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <style type="text/css">
-
-            html,body {
-                height: 100%;
-            }
-
-        </style>
-        <style>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Savvy Administrator</title>
+        <link rel="shortcut icon" href="assets/img/savvy icon.ico" type="image/x-icon">
+        <link rel="icon" href="assets/img/savvy icon.ico" type="image/x-icon">
+        <!-- Bootstrap core CSS -->
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/css/datepicker.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="assets/css/dashboard.css" rel="stylesheet">
+        <link href="assets/css/style.css" rel="stylesheet">
+        <script src="assets/js/jquery.js"></script>
+        <script type="text/javascript" src="assets/js/script.js"></script> 
+                <style>
             /* Loading Spinner */
             .spinner{margin:0;width:70px;height:18px;margin:-35px 0 0 -9px;position:absolute;top:50%;left:50%;text-align:center}.spinner > div{width:18px;height:18px;background-color:#333;border-radius:100%;display:inline-block;-webkit-animation:bouncedelay 1.4s infinite ease-in-out;animation:bouncedelay 1.4s infinite ease-in-out;-webkit-animation-fill-mode:both;animation-fill-mode:both}.spinner .bounce1{-webkit-animation-delay:-.32s;animation-delay:-.32s}.spinner .bounce2{-webkit-animation-delay:-.16s;animation-delay:-.16s}@-webkit-keyframes bouncedelay{0%,80%,100%{-webkit-transform:scale(0.0)}40%{-webkit-transform:scale(1.0)}}@keyframes bouncedelay{0%,80%,100%{transform:scale(0.0);-webkit-transform:scale(0.0)}40%{transform:scale(1.0);-webkit-transform:scale(1.0)}}
         </style>
+
+
         <meta charset="UTF-8">
         <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
-        <title> Savvy </title>
+        <title> Savvy0.2 </title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -178,201 +191,53 @@
             });
         </script>
 
+        <script>
+            $(function () {
+                $("#loadingGIF").show();
+                //loadReferenceData(function() {   // ensure reference data loaded before UI
+                $("#loadingGIF").hide();
+                $("#sidebarheader").load("sidebarheader.jsp");
+            <%
+                try {
+                    User loginUser = (User) session.getAttribute("loginUser");
+                    String usertype = loginUser.checkAdmin();
+                    if (usertype.equals("Admin")) {
+            %>
+                $("#pageContent").load("admin_control.jsp");
+            <%
+            } else if (usertype.equals("Manager")) {
+            %>
+
+                $("#pageContent").load("user_control.html");
+            <%
+            } else {
+
+            %>
+                $("#pageContent").load("addprospects.html");
+            <%}
+
+                } catch (NullPointerException e) {
+
+                }
+            %>
 
 
+                //});
+            });
+        </script>
     </head>
     <body>
-        <div id="loading">
-            <div class="spinner">
-                <div class="bounce1"></div>
-                <div class="bounce2"></div>
-                <div class="bounce3"></div>
+        <div id="sidebarheader"></div>
+        <div class="row" id="loadingGIF">
+            <div class="col">
+                <img src="assets/img/loading.gif" alt="" class="img-responsive center-block"/>
             </div>
         </div>
-        <div aria-hidden="true" class="modal" id="errorModal" role="dialog" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-danger">
-                        <h2>Error</h2>
-                    </div>
-                    <div class="modal-body">
-                        <p id="errorMsg"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-danger" data-dismiss="modal" id="CloseError" type="button">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="center-vertical bg-black">
-            <div class="center-content row">
-                <form id="loginForm" method="post" class="center-margin col-xs-11 col-sm-5">
-                    <h3 class="text-center pad25B font-gray font-size-23">Savvy<span class="opacity-80">v0.2</span></h3>
-                    <div id="login-form" class="content-box">
-                        <div class="content-box-wrapper pad20A">
-
-                            <div class="form-group">
-                                <label for="username">Username:</label>
-                                <div class="input-group input-group-lg">
-                                    <span class="input-group-addon addon-inside bg-white font-primary">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                    </span>
-                                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password:</label>
-                                <div class="input-group input-group-lg">
-                                    <span class="input-group-addon addon-inside bg-white font-primary">
-                                        <i class="glyph-icon icon-unlock-alt"></i>
-                                    </span>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="button-pane">
-                            <button type="submit" class="btn btn-block btn-primary">Login</button>
-                        </div>
-                    </div>
-
-
-                </form>
-
-            </div>
-        </div>
-
-
-        <!-- WIDGETS -->
-
-        <script type="text/javascript" src="assets/bootstrap/js/bootstrap.js"></script>
-
-        <!-- Bootstrap Dropdown -->
-
-        <!-- <script type="text/javascript" src="assets/widgets/dropdown/dropdown.js"></script> -->
-
-        <!-- Bootstrap Tooltip -->
-
-        <!-- <script type="text/javascript" src="assets/widgets/tooltip/tooltip.js"></script> -->
-
-        <!-- Bootstrap Popover -->
-
-        <!-- <script type="text/javascript" src="assets/widgets/popover/popover.js"></script> -->
-
-        <!-- Bootstrap Progress Bar -->
-
-        <script type="text/javascript" src="assets/widgets/progressbar/progressbar.js"></script>
-
-        <!-- Bootstrap Buttons -->
-
-        <!-- <script type="text/javascript" src="assets/widgets/button/button.js"></script> -->
-
-        <!-- Bootstrap Collapse -->
-
-        <!-- <script type="text/javascript" src="assets/widgets/collapse/collapse.js"></script> -->
-
-        <!-- Superclick -->
-
-        <script type="text/javascript" src="assets/widgets/superclick/superclick.js"></script>
-
-        <!-- Input switch alternate -->
-
-        <script type="text/javascript" src="assets/widgets/input-switch/inputswitch-alt.js"></script>
-
-        <!-- Slim scroll -->
-
-        <script type="text/javascript" src="assets/widgets/slimscroll/slimscroll.js"></script>
-
-        <!-- Slidebars -->
-
-        <script type="text/javascript" src="assets/widgets/slidebars/slidebars.js"></script>
-        <script type="text/javascript" src="assets/widgets/slidebars/slidebars-demo.js"></script>
-
-        <!-- PieGage -->
-
-        <script type="text/javascript" src="assets/widgets/charts/piegage/piegage.js"></script>
-        <script type="text/javascript" src="assets/widgets/charts/piegage/piegage-demo.js"></script>
-
-        <!-- Screenfull -->
-
-        <script type="text/javascript" src="assets/widgets/screenfull/screenfull.js"></script>
-
-        <!-- Content box -->
-
-        <script type="text/javascript" src="assets/widgets/content-box/contentbox.js"></script>
-
-        <!-- Overlay -->
-
-        <script type="text/javascript" src="assets/widgets/overlay/overlay.js"></script>
-
-        <!-- Widgets init for demo -->
-
-        <script type="text/javascript" src="assets/js-init/widgets-init.js"></script>
-
-        <!-- Theme layout -->
-
-        <script type="text/javascript" src="assets/themes/admin/layout.js"></script>
-
-        <!-- Theme switcher -->
-
-        <script type="text/javascript" src="assets/widgets/theme-switcher/themeswitcher.js"></script>
-        <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-        <script type="text/javascript" src="assets/js/jquery-1.11.1.min.js"></script>
+        <!-- javascript libraries ======================================== -->
         <script src="assets/js/jquery.min.js"></script>
-        <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="assets/js/jquery-ui.min.js"></script>
-        <script>
-            $(document).ready(function () {
-
-                $('#loginForm').submit(function(e) {
-                    e.preventDefault();
-                    var username = document.getElementById("username").value;
-                    var password = document.getElementById("password").value;
-                    if (username.trim() === "" || password.trim() === "") {
-                        showErrorModal("Please fill in both username and password to login.");
-                    } else {
-                        var data = {
-                            username: username,
-                            password: password,
-                            type: "login"
-                        };
-                        // send json to servlet
-                        $.ajax({
-                            url: '/Savvy0.2/UserServlet',
-                            type: 'POST',
-                            dataType: 'json',
-                            data: data,
-                            success: function (data) {
-                                if (data.success) {
-                                    window.location.replace("home.jsp");
-                                } else {
-                                    showErrorModal("Username and password does not match.");
-                                    return;
-                                }
-                            },
-                            error: function (xhr, status, error) {
-                                alert(error);
-                                console.log(e);
-                            }
-                        });
-                    }
-                });
-
-                $('#errorModal').keydown(function (e) {
-                    var key = e.which;
-                    if (key == 13) {
-                        $('#errorModal').modal('hide');
-                    }
-                });
-
-            });
-
-            function showErrorModal(errorMessage) {
-                document.getElementById("errorMsg").innerHTML = errorMessage;
-                $('#errorModal').modal('show');
-            }
-
-
-        </script>
+        <script src="assets/js/jquery.js"></script>
+        <link rel="stylesheet" href="assets/css/jquery-ui.css">
+        <script src="assets/js/jquery-ui.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>>
     </body>
 </html>
