@@ -121,22 +121,33 @@ public class GoalServlet extends HttpServlet {
                 }
 
             } else if (type.equals("goalApproval")) {
+                JSONObject transJsonObj = new JSONObject();
+                try {
+                    transJsonObj = new JSONObject(request.getReader().readLine());
 
-                User manager = (User) session.getAttribute("loginUser");
-                String managerName = "" + manager.getFirstName() + manager.getLastName().toUpperCase();
-                String approval = request.getParameter("approved");
-                String username = request.getParameter("username");
-
-                GoalsDAO gDAO = new GoalsDAO();
-
-                gDAO.approval(username, approval);
-
-                String toDisplay = "Rejected";
-                if (approval.equals("approved")) {
-                    toDisplay = "Approved";
+                } catch (IOException | JSONException e) {
                 }
-                response.getWriter().write(toDisplay);
-                toReturn.put("success", "success");
+                try {
+                    String username = transJsonObj.getString("username");
+
+                    String approval = transJsonObj.getString("approved");
+
+
+                    GoalsDAO gDAO = new GoalsDAO();
+
+                    gDAO.approval(username, approval);
+
+                    String toDisplay = "Rejected";
+                    if (approval.equals("approved")) {
+                        toDisplay = "Approved";
+                    }
+                    response.getWriter().write(toDisplay);
+                    toReturn.put("success", "success");
+
+                    response.getWriter().write("updated user");
+                } catch (JSONException ex) {
+                    //Logger.getLogger(admincontrol.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
             } else if (type.equals("viewOwnGoals")) {
                 try {

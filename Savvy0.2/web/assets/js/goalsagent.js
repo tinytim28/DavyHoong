@@ -46,7 +46,6 @@ $(document).ready(function () {
 
 
         if (document.getElementById("ErrorMessage") !== null) {
-            var parent = document.getElementById("newUser");
             var child = document.getElementById("ErrorMessage");
             parent.removeChild(child);
         }
@@ -110,7 +109,6 @@ $(document).ready(function () {
 
             },
             error: function (xhr, status, error) {
-                alert("sian");
             }
         });
 
@@ -175,7 +173,7 @@ function refresh() {
                 htmlcode1 += "<\/tr>";
                 htmlcode += "<td class='approval' id='approval" + count + "'>" + strings[i + 6] + "<\/td>";
                 htmlcode += "<td class='changeleft' id='changeleft" + count + "'>" + strings[i + 7] + "<\/td>";
-                if (strings[i + 6] === "Pending Approval" || strings[i + 7] === "0") {
+                if (strings[i + 6] === "Pending Approval" || strings[i + 6] === "Approved" && strings[i + 7] === "0" ) {
                     htmlcode += "<td><button id='EditGoal' disabled type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button><\/td>";
                 } else {
                     htmlcode += "<td><button id='EditGoal' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button><\/td>";

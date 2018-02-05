@@ -20,7 +20,8 @@ $(document).ready(function () {
 
             // set request parameters
             var parameters = {
-                username: username
+                username: username,
+                approved: "Rejected"
             };
 
             parameters = JSON.stringify(parameters);
@@ -28,7 +29,7 @@ $(document).ready(function () {
             // send json to servlet
             $.ajax({
                 type: "POST",
-                url: "/Savvy0.2/GoalServlet?type=rejectGoal",
+                url: "/Savvy0.2/GoalServlet?type=goalApproval",
                 contentType: "application/json",
                 dataType: "json",
                 data: parameters
@@ -43,7 +44,7 @@ $(document).ready(function () {
         refresh();
     });
     //end of reject goal
-    //start of reject goal
+    //start of approve goal
     $("table").on('click', '#ApproveGoal', function () {
         var del = $(this).attr("name");
         $("#approveModal").modal({// wire up the actual modal functionality and show the dialog
@@ -55,21 +56,22 @@ $(document).ready(function () {
             $("#approveModal").modal('hide'); // dismiss the dialog
 
             var username = $("#username" + del).text();
-
             // set request parameters
             var parameters = {
-                username: username
+                username: username,
+                approved: "Approved",
+                
             };
 
-            parameters = JSON.stringify(parameters);
+            var data = JSON.stringify(parameters);
 
             // send json to servlet
             $.ajax({
                 type: "POST",
-                url: "/Savvy0.2/GoalServlet?type=ApproveGoal",
+                url: "/Savvy0.2/GoalServlet?type=goalApproval",
                 contentType: "application/json",
                 dataType: "json",
-                data: parameters
+                data: data
             });
 
 
@@ -80,7 +82,7 @@ $(document).ready(function () {
         });
         refresh();
     });
-    //end of reject goal
+    //end of approve goal
     refresh();
 });
 //end of jquery

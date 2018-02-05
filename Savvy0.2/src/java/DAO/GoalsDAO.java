@@ -109,30 +109,6 @@ public class GoalsDAO {
         }
     }
     
-    
-    public void approveGoal(String username) {
-        
- 
-        try {
-
-            conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `goals` SET  `approved` = 'Approved' where `username` = '" + username + "'");
-            stmt.executeUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                //rs.close();
-                stmt.close();
-                conn.close();
-            } catch (SQLException ex) {
-                //Logger.getLogger(CompanyDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-    
-    
     public ArrayList<String> retrieveTeamGoals( String managerName ) {
         
         ArrayList<String> toReturn = new ArrayList<>();
