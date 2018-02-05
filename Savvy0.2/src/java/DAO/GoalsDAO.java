@@ -42,8 +42,7 @@ public class GoalsDAO {
                 double third= result.getDouble("third");
                 double fourth = result.getDouble("fourth");
                 String approved = result.getString("approved");
-                String changeLeft = result.getString("changeLeft");
-                goal = new Goal(name, first, second, third, fourth, approved, changeLeft);
+                goal = new Goal(name, first, second, third, fourth, approved);
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -60,7 +59,7 @@ public class GoalsDAO {
         
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO `goals` (`username`, `first`, `second` , `third`, `fourth`, `yearly`, `approved`, `changeLeft`) VALUES"
+            stmt = conn.prepareStatement("INSERT INTO `goals` (`username`, `first`, `second` , `third`, `fourth`, `yearly`, `approved`) VALUES"
                     + "(?,?,?,?,?,?,?,?)");
 
             stmt.setString(1, toAdd.getUsername());
@@ -70,7 +69,6 @@ public class GoalsDAO {
             stmt.setDouble(5, toAdd.getFourth());
             stmt.setDouble(6, toAdd.getYearly());
             stmt.setString(7, toAdd.getApproved());
-            stmt.setString(8, toAdd.getChangeLeft());
             stmt.execute();
 
         } catch (Exception e) {
@@ -93,7 +91,7 @@ public class GoalsDAO {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `goals` SET `first`='" + first + "', `second`='" + second + "', `third` = '" + third + "', `fourth` = '" + fourth + "', `yearly` = '" + yearly + "', `approved` = 'Pending Approval', `changeLeft` = '0'  where `username` = '" + username + "'");
+            stmt = conn.prepareStatement("Update `goals` SET `first`='" + first + "', `second`='" + second + "', `third` = '" + third + "', `fourth` = '" + fourth + "', `yearly` = '" + yearly + "', `approved` = 'Pending Approval'  where `username` = '" + username + "'");
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -212,6 +210,55 @@ public class GoalsDAO {
             }
         }
         return total;
+    }
+    
+    public boolean checkRejected(String username) {
+        Goal goal = null;
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Select * from goals where username like  '" + username + "'");
+            result = stmt.executeQuery();
+            while (result.next()) {
+                String name = result.getString("username");
+                double first = result.getDouble("first");
+                double second = result.getDouble("second");
+                double third= result.getDouble("third");
+                double fourth = result.getDouble("fourth");
+                String approved = result.getString("approved");
+                goal = new Goal(name, first, second, third, fourth, approved);
+            }
+            if (conn != null) {
+                ConnectionManager.close(conn, stmt, result);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        if (goal != null ) {
+            return true;
+        }
+        return false;
+    }
+    
+    public void deleteGoal(String username) {
+        try {
+
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE from goals where username ='" + username + "'" );
+
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //rs.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
 }

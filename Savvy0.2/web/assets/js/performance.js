@@ -46,7 +46,7 @@ function dropdownChangeYTD() {
             url: "/Savvy0.2/OverviewServlet",
             datatype: 'json',
             data: data,
-            success: function (responseJson) {
+            success: function (responseJson) {               
                 var strings = responseJson.split(",");
                 var index = (strings.length - 1) / 2;
                 var labels = [];
@@ -127,6 +127,7 @@ function dropdownChangeYTD() {
             datatype: 'json',
             data: data,
             success: function (responseJson) {
+                alert(responseJson);
                 var strings = responseJson.split(",");
                 var htmlcode = "";
                 htmlcode += "<tr>";
