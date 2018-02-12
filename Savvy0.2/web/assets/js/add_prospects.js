@@ -284,15 +284,16 @@ function refresh() {
     }, function (responseJson) {
         var strings = responseJson.split(",");
         var htmlcode = "";
+        var htmlcode1 = "";
         if (responseJson) {
-            htmlcode += "<tr>";
-            htmlcode += "<th>Prospects Name<\/th>";
-            htmlcode += "<th hidden>User Name<\/th>";
-            htmlcode += "<th>Prospect's Contact<\/th>";
-            htmlcode += "<th>First Contacted<\/th>";
-            htmlcode += "<th>Remarks<\/th>";
-            htmlcode += "<th>Action<\/th>";
-            htmlcode += "<\/tr>";
+            htmlcode1 += "<tr>";
+            htmlcode1 += "<th>Prospects Name<\/th>";
+            htmlcode1 += "<th hidden>User Name<\/th>";
+            htmlcode1 += "<th>Prospect's Contact<\/th>";
+            htmlcode1 += "<th>First Contacted<\/th>";
+            htmlcode1 += "<th>Remarks<\/th>";
+            htmlcode1 += "<th>Action<\/th>";
+            htmlcode1 += "<\/tr>";
 
             var count = 1;
 
@@ -309,6 +310,8 @@ function refresh() {
             }
 
             htmlcode += "<\/select>";
+            $("#trans_table_head").html(htmlcode1);
+            $("#trans_table_foot").html(htmlcode1);
             $("#trans_table").html(htmlcode);
         }
     });
@@ -320,5 +323,19 @@ function showUpdateProspectModal() {
 
 function showAddSaleModal() {
     $('#showAddSaleModal').modal('show');
+
+
+
+    $(document).ready(function () {
+        $('#datatable-responsive').DataTable({
+            responsive: true
+        });
+    });
+
+    $(document).ready(function () {
+        $('.dataTables_filter input').attr("placeholder", "Search...");
+    });
+
+
 }
 
