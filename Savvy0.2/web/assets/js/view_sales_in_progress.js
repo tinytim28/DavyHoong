@@ -219,6 +219,7 @@ function refresh() {
         var htmlcode = "";
         if (responseJson) {
             htmlcode += "<tr>";
+            htmlcode += "<th hidden>ID<\/th>";
             htmlcode += "<th hidden>Username<\/th>";
             htmlcode += "<th>Prospect Name<\/th>";
             htmlcode += "<th>Date Closed<\/th>";
@@ -229,14 +230,15 @@ function refresh() {
             htmlcode += "<\/tr>";
 
             var count = 1;
-            for (var i = 0; i < strings.length; i += 6) {
+            for (var i = 0; i < strings.length; i += 7) {
                 htmlcode += "<tr class='record' id='" + count + "'>";
-                htmlcode += "<td hidden class='username' id='username" + count + "'>" + strings[i] + "<\/td>";
-                htmlcode += "<td class='pName' id='pName" + count + "'>" + strings[i + 1] + "<\/td>";
-                htmlcode += "<td class='dateClose' id='dateClose" + count + "'>" + strings[i + 2] + "<\/td>";
-                htmlcode += "<td class='caseType' id='caseType" + count + "'>" + strings[i + 3] + "<\/td>";
-                htmlcode += "<td class='expectedFYC' id='expectedFYC" + count + "'>" + strings[i + 4] + "<\/td>";
-                htmlcode += "<td class='remarks' id='remarks" + count + "'>" + strings[i + 5] + "<\/td>";
+                htmlcode += "<td hidden class='ID' id='ID" + count + "'>" + strings[i] + "<\/td>";
+                htmlcode += "<td hidden class='username' id='username" + count + "'>" + strings[i+1] + "<\/td>";
+                htmlcode += "<td class='pName' id='pName" + count + "'>" + strings[i + 2] + "<\/td>";
+                htmlcode += "<td class='dateClose' id='dateClose" + count + "'>" + strings[i + 3] + "<\/td>";
+                htmlcode += "<td class='caseType' id='caseType" + count + "'>" + strings[i + 4] + "<\/td>";
+                htmlcode += "<td class='expectedFYC' id='expectedFYC" + count + "'>" + strings[i + 5] + "<\/td>";
+                htmlcode += "<td class='remarks' id='remarks" + count + "'>" + strings[i + 6] + "<\/td>";
                 if (strings[i + 2] === "Work in Progress!") {
                     htmlcode += "<td><button id='CloseSale' type='button' class='btn btn-xs btn-success' name='" + count + "'><span class='glyphicon glyphicon-ok' aria-hidden='true'><\/span> Close<\/button><button id='EditSale' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button>  <button id='DeleteSale' type='button' class='btn btn-xs btn-danger' name='" + count + "'><span class='glyphicon glyphicon-trash' aria-hidden='true'><\/span> Delete<\/button><\/td>";
                 } else {

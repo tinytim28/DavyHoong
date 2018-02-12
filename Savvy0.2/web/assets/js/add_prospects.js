@@ -63,7 +63,7 @@ $(document).ready(function () {
         // send json to servlet
         $.ajax({
             type: "POST",
-            url: "/Proto/ProspectServlet",
+            url: "/Savvy0.2/ProspectServlet",
             datatype: 'json',
             data: data,
             success: function (data) {
@@ -137,7 +137,7 @@ $(document).ready(function () {
         // send json to servlet
         $.ajax({
             type: "POST",
-            url: "/Proto/SalesServlet",
+            url: "/Savvy0.2/SalesServlet",
             datatype: 'json',
             data: data,
             success: function (data) {
@@ -194,7 +194,7 @@ $(document).ready(function () {
         };
 
         $.ajax({
-            url: '/Proto/ProspectServlet',
+            url: '/Savvy0.2/ProspectServlet',
             type: 'POST',
             dataType: 'json',
             data: data,
@@ -244,7 +244,7 @@ $(document).ready(function () {
             // send json to servlet
             $.ajax({
                 type: "POST",
-                url: "/Proto/ProspectServlet?type=deleteProspect",
+                url: "/Savvy0.2/ProspectServlet?type=deleteProspect",
                 contentType: "application/json",
                 dataType: "json",
                 data: parameters
@@ -279,7 +279,7 @@ function showErrorModal(errorMessage) {
 }
 
 function refresh() {
-    $.get("/Proto/ProspectServlet?type=retrieveProspectsByAgent", {
+    $.get("/Savvy0.2/ProspectServlet?type=retrieveProspectsByAgent", {
         "_": $.now()
     }, function (responseJson) {
         var strings = responseJson.split(",");

@@ -41,8 +41,8 @@ $(document).ready(function () {
     $('#CreateGoal').on('click', function () {
         var Q1new = document.getElementById("Q1new").value;
         var Q2new = document.getElementById("Q2new").value;
-        var Q3new = document.getElementById("Q2new").value;
-        var Q4new = document.getElementById("Q2new").value;
+        var Q3new = document.getElementById("Q3new").value;
+        var Q4new = document.getElementById("Q4new").value;
 
 
         if (document.getElementById("ErrorMessage") !== null) {
@@ -150,7 +150,6 @@ function refresh() {
             document.getElementById("AddNewGoal").style.visibility = "hidden";
             htmlcode += "<tr>";
             htmlcode += "<th>Approval<\/th>";
-            htmlcode += "<th>Changes Left<\/th>";
             htmlcode += "<th>Action<\/th>";
             htmlcode += "<\/tr>";
             htmlcode1 += "<tr>";
@@ -163,7 +162,7 @@ function refresh() {
 
 
             var count = 1;
-            for (var i = 0; i < strings.length; i += 8) {
+            for (var i = 0; i < strings.length; i += 7) {
                 htmlcode1 += "<tr class='record' id='" + count + "'>";
                 htmlcode1 += "<td class='Q1' id='Q1" + count + "'>" + strings[i + 1] + "<\/td>";
                 htmlcode1 += "<td class='Q2' id='Q2" + count + "'>" + strings[i + 2] + "<\/td>";
@@ -172,8 +171,7 @@ function refresh() {
                 htmlcode1 += "<td class='total' id='total" + count + "'>" + strings[i + 5] + "<\/td>";
                 htmlcode1 += "<\/tr>";
                 htmlcode += "<td class='approval' id='approval" + count + "'>" + strings[i + 6] + "<\/td>";
-                htmlcode += "<td class='changeleft' id='changeleft" + count + "'>" + strings[i + 7] + "<\/td>";
-                if (strings[i + 6] === "Pending Approval" || strings[i + 6] === "Approved" && strings[i + 7] === "0" ) {
+                if (strings[i + 6] === "Pending Approval") {
                     htmlcode += "<td><button id='EditGoal' disabled type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button><\/td>";
                 } else {
                     htmlcode += "<td><button id='EditGoal' type='button' class='btn btn-xs btn-primary' name='" + count + "'><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button><\/td>";

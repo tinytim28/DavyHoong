@@ -273,6 +273,7 @@ $(document).ready(function () {
                 var htmlcode = "";
                 if (data) {
                     htmlcode += "<tr>";
+                    htmlcode += "<th hidden>ID<\/th>";
                     htmlcode += "<th hidden>Username<\/th>";
                     htmlcode += "<th>Prospect Name<\/th>";
                     htmlcode += "<th>Date Closed<\/th>";
@@ -282,14 +283,15 @@ $(document).ready(function () {
                     htmlcode += "<\/tr>";
 
                     var count = 1;
-                    for (var i = 0; i < strings.length; i += 6) {
+                    for (var i = 0; i < strings.length; i += 7) {
                         htmlcode += "<tr class='record' id='" + count + "'>";
-                        htmlcode += "<td hidden class='username' id='username" + count + "'>" + strings[i] + "<\/td>";
-                        htmlcode += "<td class='pName' id='pName" + count + "'>" + strings[i + 1] + "<\/td>";
-                        htmlcode += "<td class='dateClose' id='dateClose" + count + "'>" + strings[i + 2] + "<\/td>";
-                        htmlcode += "<td class='caseType' id='caseType" + count + "'>" + strings[i + 3] + "<\/td>";
-                        htmlcode += "<td class='expectedFYC' id='expectedFYC" + count + "'>" + strings[i + 4] + "<\/td>";
-                        htmlcode += "<td class='remarks' id='remarks" + count + "'>" + strings[i + 5] + "<\/td>";
+                        htmlcode += "<td hidden class='id' id='id" + count + "'>" + strings[i] + "<\/td>";
+                        htmlcode += "<td hidden class='username' id='username" + count + "'>" + strings[i+1] + "<\/td>";
+                        htmlcode += "<td class='pName' id='pName" + count + "'>" + strings[i + 2] + "<\/td>";
+                        htmlcode += "<td class='dateClose' id='dateClose" + count + "'>" + strings[i + 3] + "<\/td>";
+                        htmlcode += "<td class='caseType' id='caseType" + count + "'>" + strings[i + 4] + "<\/td>";
+                        htmlcode += "<td class='expectedFYC' id='expectedFYC" + count + "'>" + strings[i + 5] + "<\/td>";
+                        htmlcode += "<td class='remarks' id='remarks" + count + "'>" + strings[i + 6] + "<\/td>";
                         htmlcode += "<\/tr>";
                         count++;
                     }

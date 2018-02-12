@@ -64,15 +64,16 @@ public class SalesObjectDAO {
             while (result.next()) {
                 lookupStringList.add(result.getString(1));
                 lookupStringList.add(result.getString(2));
-                Date dateCheck = result.getDate(3);
+                lookupStringList.add(result.getString(3));
+                Date dateCheck = result.getDate(4);
                 if (dateCheck == null) {
                     lookupStringList.add("Work in Progress!");
                 } else {
                     lookupStringList.add("" + dateCheck);
                 }
-                lookupStringList.add(result.getString(4));
-                lookupStringList.add("" + result.getDouble(5));
-                lookupStringList.add(result.getString(6));
+                lookupStringList.add(result.getString(5));
+                lookupStringList.add("" + result.getDouble(6));
+                lookupStringList.add(result.getString(7));
 
             }
         } catch (Exception e) {

@@ -41,7 +41,6 @@ $(document).ready(function () {
             datatype: 'json',
             data: data,
             success: function (responseJson) {
-                alert(responseJson);
                 var strings = responseJson.split(",");
                 ctx = document.getElementById('myChart').getContext('2d');
                 myChart = new Chart(ctx, {
@@ -49,19 +48,32 @@ $(document).ready(function () {
                     data: {
                         labels: [strings[0], strings[1], strings[2], strings[3], strings[4], strings[5], strings[6], strings[7], strings[8], strings[9], strings[10], strings[11]],
                         datasets: [{
-                                label: 'Current Sales',
+                                label: 'Forecasted Sales',
                                 data: [strings[12], strings[13], strings[14], strings[15], strings[16], strings[17], strings[18], strings[19], strings[20], strings[21], strings[22], strings[23]],
                                 backgroundColor: "rgba(153,255,51,0.4)"
                             }]
                     },
-                    options:{
+                    options: {
                         scales: {
-                            yAxes : [{
-                                ticks : {
-                                    max : 0,    
-                                    min : 20000
+                            yAxes: [
+                                {
+                                    ticks: {
+                                        max: 0,
+                                        min: 20000
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'First Yyear Commission',
+                                        fontColor: "#546372"
+                                    }
                                 }
-                            }]
+                            ],
+                            xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'For Year 2018-2019'
+                                    }
+                                }]
                         }
                     }
                 });
