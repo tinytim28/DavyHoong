@@ -6,13 +6,59 @@
     </head>
     <body>
         <h1 class="page-header" style="color:#937851">Prospects</h1>
+        <button class="btn btn-primary" id="AddProspect" style="display: initial" type="button"><span aria-hidden="true" class="glyphicon glyphicon-user"></span> &nbsp;Add New Prospect</button> 
         <table class="table table-striped col-md-12 well" id="trans_table_main">
-            <thead id ="trans_table_head"></thead>
-            <tfoot id ="trans_table_foot"></tfoot>
             <tbody id="trans_table"></tbody>
         </table>
-        
         <!--Add Prospect-->
+        <div aria-hidden="true" class="modal fade" id="AddNewProspect" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" class="close" data-dismiss="modal" type="button">X</button>
+                        <h4 id="myModalLabel">Add New Prospect</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal well" id="newProspect" name="newProspect" style="padding-bottom: 0px;">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Prospect Name <font color="red">*</font></label>
+                                <div class="col-sm-7">
+                                    <input class="form-control" id="pName" name="pName" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"> Prospect Contact <font color="red">*</font></label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="pContact" name="pContact" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">First Contacted <font color="red">*</font></label>
+                                <div class="col-sm-5">                                          
+                                    <div class='input-group date' id='dateTimePicker'>
+                                        <input type='text' class="form-control" id='firstContact' name='firstContact' />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>                            
+                                </div>
+                            </div>  
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"> Remarks <font color="red">*</font></label>
+                                <div class="col-sm-7">
+                                    <input class="form-control input-large" id="remarks" name="remarks" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-9 control-label"></label>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary" disabled id="createButton" type="button">Create</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-12">
@@ -196,56 +242,56 @@
         <script src="assets/js/moment-with-locales.min.js"></script>
         <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
         <script type="text/javascript">
-                                $(function () {
-                                    var bindDatePicker = function () {
-                                        $(".date")
-                                                .datetimepicker({
-                                                    format: "YYYY-MM-DD",
-                                                    icons: {
-                                                        time: "fa fa-clock-o",
-                                                        date: "fa fa-calendar",
-                                                        up: "fa fa-arrow-up",
-                                                        down: "fa fa-arrow-down"
-                                                    }
-                                                })
-                                                .find("input:first")
-                                                .on("blur", function () {
-                                                    // check if the date is correct. We can accept dd-mm-yyyy and yyyy-mm-dd.
-                                                    // update the format if it's yyyy-mm-dd
-                                                    var date = parseDate($(this).val());
+            $(function () {
+                var bindDatePicker = function () {
+                    $(".date")
+                            .datetimepicker({
+                                format: "YYYY-MM-DD",
+                                icons: {
+                                    time: "fa fa-clock-o",
+                                    date: "fa fa-calendar",
+                                    up: "fa fa-arrow-up",
+                                    down: "fa fa-arrow-down"
+                                }
+                            })
+                            .find("input:first")
+                            .on("blur", function () {
+                                // check if the date is correct. We can accept dd-mm-yyyy and yyyy-mm-dd.
+                                // update the format if it's yyyy-mm-dd
+                                var date = parseDate($(this).val());
 
-                                                    if (!isValidDate(date)) {
-                                                        //create date based on momentjs (we have that)
-                                                        date = moment().format("YYYY-MM-DD");
-                                                    }
+                                if (!isValidDate(date)) {
+                                    //create date based on momentjs (we have that)
+                                    date = moment().format("YYYY-MM-DD");
+                                }
 
-                                                    $(this).val(date);
-                                                });
-                                    };
+                                $(this).val(date);
+                            });
+                };
 
-                                    var isValidDate = function (value, format) {
-                                        format = format || false;
-                                        // lets parse the date to the best of our knowledge
-                                        if (format) {
-                                            value = parseDate(value);
-                                        }
+                var isValidDate = function (value, format) {
+                    format = format || false;
+                    // lets parse the date to the best of our knowledge
+                    if (format) {
+                        value = parseDate(value);
+                    }
 
-                                        var timestamp = Date.parse(value);
+                    var timestamp = Date.parse(value);
 
-                                        return isNaN(timestamp) == false;
-                                    };
+                    return isNaN(timestamp) == false;
+                };
 
-                                    var parseDate = function (value) {
-                                        var m = value.match(/^(\d{1,2})(\/|-)?(\d{1,2})(\/|-)?(\d{4})$/);
-                                        if (m)
-                                            value =
-                                                    m[5] + "-" + ("00" + m[3]).slice(-2) + "-" + ("00" + m[1]).slice(-2);
+                var parseDate = function (value) {
+                    var m = value.match(/^(\d{1,2})(\/|-)?(\d{1,2})(\/|-)?(\d{4})$/);
+                    if (m)
+                        value =
+                                m[5] + "-" + ("00" + m[3]).slice(-2) + "-" + ("00" + m[1]).slice(-2);
 
-                                        return value;
-                                    };
+                    return value;
+                };
 
-                                    bindDatePicker();
-                                });
+                bindDatePicker();
+            });
         </script>
     </body>
 </html>
