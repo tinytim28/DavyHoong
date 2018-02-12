@@ -202,14 +202,14 @@
                 <div id="page-header" class="bg-gradient-9">
                     <div id="mobile-navigation">
                         <button id="nav-toggle" class="collapsed" data-toggle="collapse" data-target="#page-sidebar"><span></span></button>
-                        <a href="index.html" class="logo-content-small" title="MonarchUI"></a>
+                        <a href="home.jsp" class="logo-content-small" title="MonarchUI"></a>
                     </div>
                     <div id="header-logo" class="logo-bg">
-                        <a href="index.html" class="logo-content-big" title="Proto">
+                        <a href="home.jsp" class="logo-content-big" title="Proto">
                             Savvy <i>0.2</i>
                             <span>The perfect solution for financial team management</span>
                         </a>
-                        <a href="index.html" class="logo-content-small" title="Proto">
+                        <a href="home.jsp" class="logo-content-small" title="Proto">
                             Savvy <i>0.2</i>
                             <span>The perfect solution for financial team management</span>
                         </a>
@@ -802,9 +802,7 @@
                                 <div class="sidebar-submenu">
 
                                     <ul>
-                                        <li><a id ="addprospects_1" class="loadPage"><span>Add</span></a></li>
-                                        <li><a id ="addprospects" class="loadPage"<span>Prospects</span></a></li>
-                                        <li><a id ="addprospects" class="loadPage"<span>Customers</span></a></li>
+                                        <li><a id ="addprospects" class="loadPage"><span>Add</span></a></li>
                                     </ul>
 
                                 </div><!-- .sidebar-submenu -->

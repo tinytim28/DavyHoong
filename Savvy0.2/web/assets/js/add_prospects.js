@@ -63,7 +63,7 @@ $(document).ready(function () {
         // send json to servlet
         $.ajax({
             type: "POST",
-            url: "/Savvy0.2/ProspectServlet",
+            url: "/Proto/ProspectServlet",
             datatype: 'json',
             data: data,
             success: function (data) {
@@ -137,7 +137,7 @@ $(document).ready(function () {
         // send json to servlet
         $.ajax({
             type: "POST",
-            url: "/Savvy0.2/SalesServlet",
+            url: "/Proto/SalesServlet",
             datatype: 'json',
             data: data,
             success: function (data) {
@@ -194,7 +194,7 @@ $(document).ready(function () {
         };
 
         $.ajax({
-            url: '/Savvy0.2/ProspectServlet',
+            url: '/Proto/ProspectServlet',
             type: 'POST',
             dataType: 'json',
             data: data,
@@ -244,7 +244,7 @@ $(document).ready(function () {
             // send json to servlet
             $.ajax({
                 type: "POST",
-                url: "/Savvy0.2/ProspectServlet?type=deleteProspect",
+                url: "/Proto/ProspectServlet?type=deleteProspect",
                 contentType: "application/json",
                 dataType: "json",
                 data: parameters
@@ -279,21 +279,20 @@ function showErrorModal(errorMessage) {
 }
 
 function refresh() {
-    $.get("/Savvy0.2/ProspectServlet?type=retrieveProspectsByAgent", {
+    $.get("/Proto/ProspectServlet?type=retrieveProspectsByAgent", {
         "_": $.now()
     }, function (responseJson) {
         var strings = responseJson.split(",");
         var htmlcode = "";
-        var htmlcode1 = "";
         if (responseJson) {
-            htmlcode1 += "<tr>";
-            htmlcode1 += "<th>Prospects Name<\/th>";
-            htmlcode1 += "<th hidden>User Name<\/th>";
-            htmlcode1 += "<th>Prospect's Contact<\/th>";
-            htmlcode1 += "<th>First Contacted<\/th>";
-            htmlcode1 += "<th>Remarks<\/th>";
-            htmlcode1 += "<th>Action<\/th>";
-            htmlcode1 += "<\/tr>";
+            htmlcode += "<tr>";
+            htmlcode += "<th>Prospects Name<\/th>";
+            htmlcode += "<th hidden>User Name<\/th>";
+            htmlcode += "<th>Prospect's Contact<\/th>";
+            htmlcode += "<th>First Contacted<\/th>";
+            htmlcode += "<th>Remarks<\/th>";
+            htmlcode += "<th>Action<\/th>";
+            htmlcode += "<\/tr>";
 
             var count = 1;
 
@@ -310,8 +309,6 @@ function refresh() {
             }
 
             htmlcode += "<\/select>";
-            $("#trans_table_head").html(htmlcode1);
-            $("#trans_table_foot").html(htmlcode1);
             $("#trans_table").html(htmlcode);
         }
     });
@@ -323,19 +320,5 @@ function showUpdateProspectModal() {
 
 function showAddSaleModal() {
     $('#showAddSaleModal').modal('show');
-
-
-
-    $(document).ready(function () {
-        $('#datatable-responsive').DataTable({
-            responsive: true
-        });
-    });
-
-    $(document).ready(function () {
-        $('.dataTables_filter input').attr("placeholder", "Search...");
-    });
-
-
 }
 
