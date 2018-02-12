@@ -13,6 +13,7 @@ import java.sql.Date;
  */
 public class SalesObject {
     
+    int salesID;
     private String username;
     private String pName;
     private Date dateClose;
@@ -20,7 +21,8 @@ public class SalesObject {
     private double expectedFYC;
     private String remarks;
     
-    public SalesObject ( String username,  String pName,Date dateClose, String caseType, double expectedFYC, String remarks ) {
+    public SalesObject ( int salesID, String username,  String pName,Date dateClose, String caseType, double expectedFYC, String remarks ) {
+        this.salesID = salesID;
         this.username = username;
         this.pName = pName;
         this.dateClose = dateClose;
@@ -54,6 +56,10 @@ public class SalesObject {
     public String getRemarks() {
         return remarks;
     }
+    
+    public int getSalesID() {
+        return salesID;
+    }
 
     public void setusername(String username) {
         this.username = username;
@@ -78,6 +84,10 @@ public class SalesObject {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+    
+    public void setID(int salesID) {
+        this.salesID = salesID;
     }
             
 }

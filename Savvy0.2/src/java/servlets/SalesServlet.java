@@ -138,14 +138,14 @@ public class SalesServlet extends HttpServlet {
                 }
 
                 String pName = "";
-                String caseType = "";
+                String salesID = "";
 
                 try {
                     pName = transJsonObj.getString("pName");
-                    caseType = transJsonObj.getString("caseType");
+                    salesID = transJsonObj.getString("salesID");
 
                     SalesObjectDAO sDAO = new SalesObjectDAO();
-                    sDAO.deleteSale(pName, caseType);
+                    sDAO.deleteSale(pName, Integer.parseInt(salesID));
 
                     response.getWriter().write("Deleted Sale");
                 } catch (JSONException ex) {
@@ -160,13 +160,14 @@ public class SalesServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     User loginUser = (User) session.getAttribute("loginUser");
                     String username = loginUser.getUsername();
+                    int salesID = Integer.parseInt(request.getParameter("salesID"));
                     String pName = request.getParameter("pName");
                     double expectedFYC = Double.parseDouble(request.getParameter("pContact"));
                     String caseType = request.getParameter("caseType");
                     String remarks = request.getParameter("remarks");
                     java.sql.Date dateClose = null;
                     SalesObjectDAO sDAO = new SalesObjectDAO();
-                    sDAO.updateSale(username,  pName, dateClose, caseType, expectedFYC, remarks);
+                    sDAO.updateSale(salesID, username,  pName, dateClose, caseType, expectedFYC, remarks);
 
                     response.getWriter().write("updated Sale Line Item");
                     toReturn.put("success", "success");
@@ -180,8 +181,7 @@ public class SalesServlet extends HttpServlet {
                     HttpSession session = request.getSession();
                     User loginUser = (User) session.getAttribute("loginUser");
                     String username = loginUser.getUsername();
-                    String pName = request.getParameter("pName");
-                    String caseType = request.getParameter("caseType");
+                    int salesID = Integer.parseInt(request.getParameter("salesID"));
                     String dateCloseString = request.getParameter("dateClose");
                     java.util.Date date = null;
                     SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -195,7 +195,7 @@ public class SalesServlet extends HttpServlet {
                     java.sql.Date dateClose = new java.sql.Date(date.getTime());
 
                     SalesObjectDAO sDAO = new SalesObjectDAO();
-                    sDAO.closeSale(username,  pName,dateClose, caseType);
+                    sDAO.closeSale(username,  salesID, dateClose);
 
                     response.getWriter().write("closed Sale Line Item");
                     toReturn.put("success", "success");

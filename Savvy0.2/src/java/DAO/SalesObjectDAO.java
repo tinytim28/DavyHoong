@@ -35,13 +35,14 @@ public class SalesObjectDAO {
             stmt = conn.prepareStatement("Select * from sales where username like  '" + username + "'");
             result = stmt.executeQuery();
             while (result.next()) {
+                int salesID = result.getInt("salesID");
                 String name = result.getString("username");
                 String pName = result.getString("pName");
                 Date dateClose = result.getDate("dateClose");
                 String caseType = result.getString("caseType");
                 double expectedFYC = result.getDouble("expectedFYC");
                 String remarks = result.getString("remarks");
-                sales.add(new SalesObject(name, pName, dateClose, caseType, expectedFYC, remarks));
+                sales.add(new SalesObject(salesID, name, pName, dateClose, caseType, expectedFYC, remarks));
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -116,11 +117,11 @@ public class SalesObjectDAO {
         }
     }
 
-    public void deleteSale(String pName, String caseType) {
+    public void deleteSale(String pName, int salesID) {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("DELETE from sales where pName ='" + pName + "' AND caseType = '" + caseType + "' ");
+            stmt = conn.prepareStatement("DELETE from sales where pName ='" + pName + "' AND salesID = '" + salesID + "' ");
 
             stmt.executeUpdate();
 
@@ -138,12 +139,12 @@ public class SalesObjectDAO {
 
     }
 
-    public void updateSale(String username, String pName, Date dateClose, String caseType, double expectedFYC, String remarks) {
+    public void updateSale(int salesID, String username, String pName, Date dateClose, String caseType, double expectedFYC, String remarks) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `sales` SET `expectedFYC`='" + expectedFYC + "', `remarks`='" + remarks + "'  where `username` = '" + username + "' and `caseType` = '" + caseType + "' and `pName` = '" + pName + "' and dateClose IS NOT NULL");
+            stmt = conn.prepareStatement("Update `sales` SET `expectedFYC`='" + expectedFYC + "', `remarks`='" + remarks + "', `caseType`='" + caseType + "'   where `username` = '" + username + "' and `salesID` = '" + salesID + "' and dateClose IS NOT NULL");
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -159,12 +160,12 @@ public class SalesObjectDAO {
         }
     }
 
-    public void closeSale(String username, String pName, Date dateClose, String caseType) {
+    public void closeSale(String username, int salesID, Date dateClose) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `sales` SET `dateClose`='" + dateClose + "'  where `username` = '" + username + "' and `caseType` = '" + caseType + "' and `pName` = '" + pName + "' and dateClose IS NULL");
+            stmt = conn.prepareStatement("Update `sales` SET `dateClose`='" + dateClose + "'  where `username` = '" + username + "' and `salesID` = '" + salesID + "'  and dateClose IS NULL");
             stmt.executeUpdate();
 
         } catch (Exception e) {
