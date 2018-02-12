@@ -23,14 +23,13 @@ import java.util.logging.Logger;
  * @author Timothy
  */
 public class ProspectsDAO {
-    
+
     private ArrayList<Prospects> prospects;
     private Connection conn;
     private ResultSet result;
     private PreparedStatement stmt;
-    
-    
-    public ArrayList<Prospects> retrieveAllByAgent( String username ) {
+
+    public ArrayList<Prospects> retrieveAllByAgent(String username) {
         prospects = new ArrayList<>();
         try {
             conn = ConnectionManager.getConnection();
@@ -41,7 +40,7 @@ public class ProspectsDAO {
                 String pContact = result.getString("pContact");
                 Date firstContact = result.getDate("firstContact");
                 String remarks = result.getString("remarks");
-                
+
                 prospects.add(new Prospects(pName, username, pContact, firstContact, remarks));
             }
             if (conn != null) {
@@ -52,9 +51,8 @@ public class ProspectsDAO {
         }
         return prospects;
     }
-    
-    
-    public ArrayList<String> retrieveIndividualSales( String username ) {
+
+   public ArrayList<String> retrieveIndividualSales( String username ) {
         ArrayList<String> lookupStringList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
@@ -83,9 +81,8 @@ public class ProspectsDAO {
         }
         return lookupStringList;
     }
-    
-    
-    public void createProspect( String pName, String username, String pContact, Date firstContact, String remarks ) {
+
+    public void createProspect(String pName, String username, String pContact, Date firstContact, String remarks) {
         //  lookupList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
@@ -111,13 +108,12 @@ public class ProspectsDAO {
             }
         }
     }
-    
-    
+
     public void deleteProspect(String pName, String username) {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("DELETE from prospects where pName ='" + pName + "' AND username = '" + username + "' " );
+            stmt = conn.prepareStatement("DELETE from prospects where pName ='" + pName + "' AND username = '" + username + "' ");
 
             stmt.executeUpdate();
 
@@ -134,13 +130,13 @@ public class ProspectsDAO {
         }
 
     }
-    
+
     public void updateProspect(String pName, String username, String pContact, Date firstContact, String remarks) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `prospects` SET `pContact`='" + pContact + "', `remarks`='" + remarks + "',  `firstContact`='" + firstContact + "' where `username` = '" + username + "' and pName = '" + pName + "'");             
+            stmt = conn.prepareStatement("Update `prospects` SET `pContact`='" + pContact + "', `remarks`='" + remarks + "',  `firstContact`='" + firstContact + "' where `username` = '" + username + "' and pName = '" + pName + "'");
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -155,7 +151,7 @@ public class ProspectsDAO {
             }
         }
     }
-    
+
     public int getUserPastThreeMonthsTotalProspects(String username) {
         int total = 0;
 
@@ -198,7 +194,3 @@ public class ProspectsDAO {
         return total;
     }
 }
-    
-    
-    
-
