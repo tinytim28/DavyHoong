@@ -63,7 +63,7 @@ public class GoalsDAO {
         try {
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("INSERT INTO `goals` (`username`, `first`, `second` , `third`, `fourth`, `yearly`, `approved`) VALUES"
-                    + "(?,?,?,?,?,?,?,?)");
+                    + "(?,?,?,?,?,?,?)");
 
             stmt.setString(1, toAdd.getUsername());
             stmt.setDouble(2, toAdd.getFirst());
@@ -265,3 +265,6 @@ public class GoalsDAO {
     }
     
 }
+
+
+//lalalaalla

@@ -25,19 +25,47 @@ import com.google.gson.JsonObject;
  * @author Timothy
  */
 public class ProspectsDAO {
-    
+
     private ArrayList<Prospects> prospects;
     private Connection conn;
     private ResultSet result;
     private PreparedStatement stmt;
+
     
     
     
     
     
-    public String retrieveIndividualProspects( String username ) {
-        JsonArray jsonArray = new JsonArray();
+
         
+
+
+    public ArrayList<Prospects> retrieveAllByAgent(String username) {
+        prospects = new ArrayList<>();
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Select * from prospects where username like  '" + username + "'");
+            result = stmt.executeQuery();
+            while (result.next()) {
+                String pName = result.getString("pName");
+                String pContact = result.getString("pContact");
+                Date firstContact = result.getDate("firstContact");
+                String remarks = result.getString("remarks");
+
+                prospects.add(new Prospects(pName, username, pContact, firstContact, remarks));
+            }
+            if (conn != null) {
+                ConnectionManager.close(conn, stmt, result);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return prospects;
+    }
+
+   public String retrieveIndividualProspects( String username ) {
+        JsonArray jsonArray = new JsonArray();
+
         try {
             conn = ConnectionManager.getConnection();
             String query = "SELECT * from prospects where username like '" + username + "'";
@@ -66,9 +94,8 @@ public class ProspectsDAO {
         }
         return jsonArray.toString();
     }
-    
-    
-    public void createProspect( String pName, String username, String pContact, Date firstContact, String remarks ) {
+
+    public void createProspect(String pName, String username, String pContact, Date firstContact, String remarks) {
         //  lookupList = new ArrayList<String>();
         try {
             conn = ConnectionManager.getConnection();
@@ -94,13 +121,12 @@ public class ProspectsDAO {
             }
         }
     }
-    
-    
+
     public void deleteProspect(String pName, String username) {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("DELETE from prospects where pName ='" + pName + "' AND username = '" + username + "' " );
+            stmt = conn.prepareStatement("DELETE from prospects where pName ='" + pName + "' AND username = '" + username + "' ");
 
             stmt.executeUpdate();
 
@@ -117,13 +143,13 @@ public class ProspectsDAO {
         }
 
     }
-    
+
     public void updateProspect(String pName, String username, String pContact, Date firstContact, String remarks) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `prospects` SET `pContact`='" + pContact + "', `remarks`='" + remarks + "',  `firstContact`='" + firstContact + "' where `username` = '" + username + "' and pName = '" + pName + "'");             
+            stmt = conn.prepareStatement("Update `prospects` SET `pContact`='" + pContact + "', `remarks`='" + remarks + "',  `firstContact`='" + firstContact + "' where `username` = '" + username + "' and pName = '" + pName + "'");
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -138,7 +164,7 @@ public class ProspectsDAO {
             }
         }
     }
-    
+
     public int getUserPastThreeMonthsTotalProspects(String username) {
         int total = 0;
 
@@ -181,7 +207,6 @@ public class ProspectsDAO {
         return total;
     }
 }
-    
-    
-    
 
+
+//lalalalal

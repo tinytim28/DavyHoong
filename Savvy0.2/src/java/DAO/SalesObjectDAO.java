@@ -41,6 +41,7 @@ public class SalesObjectDAO {
             result = stmt.executeQuery();
 
             while (result.next()) {
+
                 JsonObject toReturn = new JsonObject();
                 
                 toReturn.addProperty("SalesID", result.getString(1));
@@ -56,6 +57,7 @@ public class SalesObjectDAO {
                 toReturn.addProperty("expectedFYC" , result.getDouble(6));
                 toReturn.addProperty("remarks", result.getString(7));
                 jsonArray.add(toReturn);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -762,3 +764,6 @@ public class SalesObjectDAO {
     }
     
 }
+
+
+//lalalaalal

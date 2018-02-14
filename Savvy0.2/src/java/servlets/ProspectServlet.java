@@ -97,7 +97,6 @@ public class ProspectServlet extends HttpServlet {
                     String json = pDAO.retrieveIndividualProspects(username);
 
                     response.getWriter().write(json);
-
                 } finally {
                     //  out.close();
                 }
@@ -152,9 +151,9 @@ public class ProspectServlet extends HttpServlet {
 
                     }
                     java.sql.Date firstContact = new java.sql.Date(date.getTime());
-                    
+
                     ProspectsDAO pDAO = new ProspectsDAO();
-                    pDAO.updateProspect(pName,username,pContact, firstContact, remarks);
+                    pDAO.updateProspect(pName, username, pContact, firstContact, remarks);
 
                     response.getWriter().write("updated Prospect");
                     toReturn.put("success", "success");
@@ -217,3 +216,7 @@ public class ProspectServlet extends HttpServlet {
     }// </editor-fold>
 
 }
+
+
+
+//lalalal
