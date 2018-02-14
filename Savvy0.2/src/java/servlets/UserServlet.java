@@ -105,17 +105,8 @@ public class UserServlet extends HttpServlet {
                         teamRetrieve = "" + current.getFirstName() + " " + current.getLastName().toUpperCase();
                     }
 
-                    ArrayList<String> list = userDAO.retrieveUserInfo(teamRetrieve);
-                    String output = "";
-                    for (String s : list) {
-                        output += s + ",";
-                    }
-
-                    String json = "";
-                    //   System.out.println("json" + json);
-                    if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
-                        json = output.substring(0, output.length() - 1);
-                    }
+                    String json = userDAO.retrieveUserInfo(teamRetrieve);
+                    
 
                     response.getWriter().write(json);
 

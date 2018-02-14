@@ -21,6 +21,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.*;
 import java.util.Date;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  *
@@ -39,30 +41,7 @@ public class UserDAO {
      *
      * @return all of the user data from the database in an ArrrayList
      */
-    public ArrayList<User> retrieveAll() {
-        users = new ArrayList<>();
-        try {
-            conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Select * from user");
-            result = stmt.executeQuery();
-            while (result.next()) {
-                String firstName = result.getString("firstName");
-                String lastName = result.getString("lastName");
-                String username = result.getString("username");
-                String password = result.getString("password");
-                String usertype = result.getString("usertype");
-                String manager = result.getString("manager");
-                String active = result.getString("active");
-                users.add(new User(firstName, lastName, username, password, usertype, manager, active));
-            }
-            if (conn != null) {
-                ConnectionManager.close(conn, stmt, result);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return users;
-    }
+    
     
     
     /**
@@ -276,8 +255,9 @@ public class UserDAO {
 
     }
     
-    public ArrayList<String> retrieveUserInfo( String teamRetrieve ) {
-        ArrayList<String> lookupStringList = new ArrayList<String>();
+    public String retrieveUserInfo( String teamRetrieve ) {
+        JsonArray jsonArray = new JsonArray();
+        
         try {
             conn = ConnectionManager.getConnection();
             String query = "SELECT * from user where `manager` = '" + teamRetrieve + "'";
@@ -285,14 +265,14 @@ public class UserDAO {
             result = stmt.executeQuery();
 
             while (result.next()) {
-                
-                lookupStringList.add(result.getString(1));
-                lookupStringList.add(result.getString(2));
-                lookupStringList.add(result.getString(3));
-                lookupStringList.add(result.getString(5));
-                lookupStringList.add(result.getString(6));
-                lookupStringList.add(result.getString(7));
-                
+                JsonObject toReturn = new JsonObject();
+                toReturn.addProperty("firstname", result.getString(1));
+                toReturn.addProperty("lastname", result.getString(2));
+                toReturn.addProperty("username", result.getString(3));
+                toReturn.addProperty("usertype", result.getString(5));
+                toReturn.addProperty("manager", result.getString(6));
+                toReturn.addProperty("Active", result.getString(7));
+                jsonArray.add(toReturn);
                 
             }
         } catch (Exception e) {
@@ -306,31 +286,10 @@ public class UserDAO {
                 Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return lookupStringList;
+        return jsonArray.toString();
     }
     
-    public ArrayList<String> retrieveTeamUsernames (String managerName) {
-        ArrayList<String> output = new ArrayList<>();
-        
-        try {
-            conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Select username from user where username like '" + managerName + "'");
-            result = stmt.executeQuery();
-            while (result.next()) {
-                
-                String username = result.getString("username");
-                
-                output.add(username);
-            }
-            if (conn != null) {
-                ConnectionManager.close(conn, stmt, result);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return output;
-    }
+    
     
     public void makeManager(String username) {
         

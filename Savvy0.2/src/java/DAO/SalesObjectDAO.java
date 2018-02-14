@@ -16,6 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.Date;
 import java.time.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  *
@@ -28,33 +30,10 @@ public class SalesObjectDAO {
     private ResultSet result;
     private PreparedStatement stmt;
 
-    public ArrayList<SalesObject> retrieveAllByAgent(String username) {
-        sales = new ArrayList<>();
-        try {
-            conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Select * from sales where username like  '" + username + "'");
-            result = stmt.executeQuery();
-            while (result.next()) {
-                int salesID = result.getInt("salesID");
-                String name = result.getString("username");
-                String pName = result.getString("pName");
-                Date dateClose = result.getDate("dateClose");
-                String caseType = result.getString("caseType");
-                double expectedFYC = result.getDouble("expectedFYC");
-                String remarks = result.getString("remarks");
-                sales.add(new SalesObject(salesID, name, pName, dateClose, caseType, expectedFYC, remarks));
-            }
-            if (conn != null) {
-                ConnectionManager.close(conn, stmt, result);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return sales;
-    }
+    
 
-    public ArrayList<String> retrieveIndividualSales(String username) {
-        ArrayList<String> lookupStringList = new ArrayList<String>();
+    public String retrieveIndividualSales(String username) {
+        JsonArray jsonArray = new JsonArray();
         try {
             conn = ConnectionManager.getConnection();
             String query = "SELECT * from sales where username like '" + username + "'";
@@ -62,18 +41,21 @@ public class SalesObjectDAO {
             result = stmt.executeQuery();
 
             while (result.next()) {
-                lookupStringList.add(result.getString(1));
-                lookupStringList.add(result.getString(2));
-                Date dateCheck = result.getDate(3);
+                JsonObject toReturn = new JsonObject();
+                
+                toReturn.addProperty("SalesID", result.getString(1));
+                toReturn.addProperty("username" ,result.getString(2));
+                toReturn.addProperty("pName", result.getString(3));
+                Date dateCheck = result.getDate(4);
                 if (dateCheck == null) {
-                    lookupStringList.add("Work in Progress!");
+                    toReturn.addProperty("dateClose", "Work in Progress!");
                 } else {
-                    lookupStringList.add("" + dateCheck);
+                    toReturn.addProperty("dateClose", dateCheck.toString());
                 }
-                lookupStringList.add(result.getString(4));
-                lookupStringList.add("" + result.getDouble(5));
-                lookupStringList.add(result.getString(6));
-
+                toReturn.addProperty("caseType", result.getString(5));
+                toReturn.addProperty("expectedFYC" , result.getDouble(6));
+                toReturn.addProperty("remarks", result.getString(7));
+                jsonArray.add(toReturn);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,7 +68,7 @@ public class SalesObjectDAO {
                 Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return lookupStringList;
+        return jsonArray.toString();
     }
 
     public void createSale(String username, Date dateClose, String pName, String caseType, double expectedFYC, String remarks) {

@@ -17,6 +17,8 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  *
@@ -30,32 +32,12 @@ public class ProspectsDAO {
     private PreparedStatement stmt;
     
     
-    public ArrayList<Prospects> retrieveAllByAgent( String username ) {
-        prospects = new ArrayList<>();
-        try {
-            conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Select * from prospects where username like  '" + username + "'");
-            result = stmt.executeQuery();
-            while (result.next()) {
-                String pName = result.getString("pName");
-                String pContact = result.getString("pContact");
-                Date firstContact = result.getDate("firstContact");
-                String remarks = result.getString("remarks");
-                
-                prospects.add(new Prospects(pName, username, pContact, firstContact, remarks));
-            }
-            if (conn != null) {
-                ConnectionManager.close(conn, stmt, result);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return prospects;
-    }
     
     
-    public ArrayList<String> retrieveIndividualSales( String username ) {
-        ArrayList<String> lookupStringList = new ArrayList<String>();
+    
+    public String retrieveIndividualProspects( String username ) {
+        JsonArray jsonArray = new JsonArray();
+        
         try {
             conn = ConnectionManager.getConnection();
             String query = "SELECT * from prospects where username like '" + username + "'";
@@ -63,12 +45,13 @@ public class ProspectsDAO {
             result = stmt.executeQuery();
 
             while (result.next()) {
-                lookupStringList.add(result.getString(1));
-                lookupStringList.add(result.getString(2));
-                lookupStringList.add(result.getString(3));
-                lookupStringList.add("" + result.getDate(4));
-                lookupStringList.add(result.getString(5));
-                
+                JsonObject toReturn = new JsonObject();
+                toReturn.addProperty("pName", result.getString(1));
+                toReturn.addProperty("username", result.getString(2));
+                toReturn.addProperty("pContact", result.getString(3));
+                toReturn.addProperty("firstContact", result.getDate(4).toString());
+                toReturn.addProperty("remarks", result.getString(5));
+                jsonArray.add(toReturn);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,7 +64,7 @@ public class ProspectsDAO {
                 Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return lookupStringList;
+        return jsonArray.toString();
     }
     
     

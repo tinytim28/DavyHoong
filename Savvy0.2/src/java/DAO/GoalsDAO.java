@@ -16,6 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.Date;
 import java.time.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  *
@@ -29,20 +31,21 @@ public class GoalsDAO {
     private PreparedStatement stmt;
     
     
-    public Goal retrieveGoalByAgent(String username) {
-        Goal goal = null;
+    public String retrieveGoalByAgent(String username) {
+        JsonObject toReturn = new JsonObject();
         try {
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("Select * from goals where username like  '" + username + "'");
             result = stmt.executeQuery();
             while (result.next()) {
-                String name = result.getString("username");
-                double first = result.getDouble("first");
-                double second = result.getDouble("second");
-                double third= result.getDouble("third");
-                double fourth = result.getDouble("fourth");
-                String approved = result.getString("approved");
-                goal = new Goal(name, first, second, third, fourth, approved);
+                toReturn.addProperty("username", result.getString(1));
+                toReturn.addProperty("first", result.getString(2));
+                toReturn.addProperty("second", result.getString(3));
+                toReturn.addProperty("third", result.getString(4));
+                toReturn.addProperty("fourth", result.getString(5));
+                toReturn.addProperty("yearly", result.getString(6));
+                toReturn.addProperty("approved", result.getString(7));
+    
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -50,7 +53,7 @@ public class GoalsDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return goal;
+        return toReturn.toString();
     }
     
     public void createGoal(String username, double first, double second, double third, double fourth) {
@@ -107,9 +110,9 @@ public class GoalsDAO {
         }
     }
     
-    public ArrayList<String> retrieveTeamGoals( String managerName ) {
+    public String retrieveTeamGoals( String managerName ) {
         
-        ArrayList<String> toReturn = new ArrayList<>();
+        JsonArray jsonArray = new JsonArray();
         
         try {
             conn = ConnectionManager.getConnection();
@@ -118,15 +121,15 @@ public class GoalsDAO {
             result = stmt.executeQuery();
             while (result.next()) {
                 
-                toReturn.add(result.getString(1));
-                toReturn.add(result.getString(2));
-                toReturn.add(result.getString(3));
-                toReturn.add(result.getString(4));
-                toReturn.add(result.getString(5));
-                toReturn.add(result.getString(6));
-                toReturn.add(result.getString(7));
-                toReturn.add(result.getString(8));
-                
+                JsonObject toReturn = new JsonObject(); 
+                toReturn.addProperty("username", result.getString(1));
+                toReturn.addProperty("first", result.getString(2));
+                toReturn.addProperty("second", result.getString(3));
+                toReturn.addProperty("third", result.getString(4));
+                toReturn.addProperty("fourth", result.getString(5));
+                toReturn.addProperty("yearly", result.getString(6));
+                toReturn.addProperty("approved", result.getString(7));
+                jsonArray.add(toReturn);
                 
             }
         } catch (Exception e) {
@@ -141,7 +144,7 @@ public class GoalsDAO {
             }
         }
         
-        return toReturn;
+        return jsonArray.toString();
     }
     
     public void approval(String username, String approval) {

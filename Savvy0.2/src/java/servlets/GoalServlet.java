@@ -87,17 +87,8 @@ public class GoalServlet extends HttpServlet {
 
                     String managerName = "" + current.getFirstName() + " " + current.getLastName().toUpperCase();
 
-                    ArrayList<String> list = gDAO.retrieveTeamGoals(managerName);
-                    String output = "";
-                    for (String s : list) {
-                        output += s + ",";
-                    }
-
-                    String json = "";
-                    //   System.out.println("json" + json);
-                    if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
-                        json = output.substring(0, output.length() - 1);
-                    }
+                    String json = gDAO.retrieveTeamGoals(managerName);
+                    
 
                     response.getWriter().write(json);
 
@@ -138,24 +129,11 @@ public class GoalServlet extends HttpServlet {
                 try {
                     GoalsDAO gDAO = new GoalsDAO();
                     User current = (User) session.getAttribute("loginUser");
-                    Goal goal = gDAO.retrieveGoalByAgent(current.getUsername());
-                    if (goal != null) {
-                        String output = "";
-                        output += goal.getUsername() + ",";
-                        output += goal.getFirst() + ",";
-                        output += goal.getSecond() + ",";
-                        output += goal.getThird() + ",";
-                        output += goal.getFourth() + ",";
-                        output += goal.getYearly() + ",";
-                        output += goal.getApproved() + ",";
+                    String json = gDAO.retrieveGoalByAgent(current.getUsername());
+                    
 
-                        String json = "";
-                        if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
-                            json = output.substring(0, output.length() - 1);
-                        }
-
-                        response.getWriter().write(json);
-                    }
+                    response.getWriter().write(json);
+                    
 
                 } finally {
                     //  out.close();

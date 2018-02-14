@@ -82,17 +82,8 @@ public class SalesServlet extends HttpServlet {
                 try {
                     /* TODO output your page here. You may use following sample code. */
                     SalesObjectDAO salesDAO = new SalesObjectDAO();
-                    ArrayList<String> list = salesDAO.retrieveIndividualSales(username);
-                    String output = "";
-                    for (String s : list) {
-                        output += s + ",";
-                    }
-
-                    String json = "";
-                    //   System.out.println("json" + json);
-                    if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
-                        json = output.substring(0, output.length() - 1);
-                    }
+                    String json = salesDAO.retrieveIndividualSales(username);
+                    
                     toReturn.put("success", "success");
                     response.getWriter().write(json);
 
@@ -109,17 +100,8 @@ public class SalesServlet extends HttpServlet {
                 try {
                     /* TODO output your page here. You may use following sample code. */
                     SalesObjectDAO salesDAO = new SalesObjectDAO();
-                    ArrayList<String> list = salesDAO.retrieveIndividualSales(username);
-                    String output = "";
-                    for (String s : list) {
-                        output += s + ",";
-                    }
-
-                    String json = "";
-                    //   System.out.println("json" + json);
-                    if (output.length() > 0 && output.charAt(output.length() - 1) == ',') {
-                        json = output.substring(0, output.length() - 1);
-                    }
+                    String json = salesDAO.retrieveIndividualSales(username);
+                    
 
                     response.getWriter().write(json);
 
