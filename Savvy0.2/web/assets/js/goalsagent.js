@@ -94,7 +94,7 @@ $(document).ready(function () {
             third: Q3update,
             fourth: Q4update,
             changeLeft: changeLeft,
-            type: "changeGoals"
+            type: "setGoal"
         }
         // send json to servlet
         $.ajax({
