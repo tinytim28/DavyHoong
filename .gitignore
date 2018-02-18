@@ -9,4 +9,11 @@ Savvy0.2/dist/
 Savvy0.2/nbdist/
 Savvy0.2/.nb-gradle/
 
+Savvy0.5/nbproject/private/
+Savvy0.5/build/
+Savvy0.5/nbbuild/
+Savvy0.5/dist/
+Savvy0.5/nbdist/
+Savvy0.5/.nb-gradle/
+
 # End of https://www.gitignore.io/api/netbeans
