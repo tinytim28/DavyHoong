@@ -10,6 +10,9 @@
         <link rel="shortcut icon" href="assets/img/savvy icon.ico" type="image/x-icon">
         <link rel="icon" href="assets/img/savvy icon.ico" type="image/x-icon">
 
+        <link href="assets/elements/tile-box.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/elements/content-box.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/widgets/charts/piegage/piegage.css" rel="stylesheet" type="text/css"/>
         <!-- Bootstrap core CSS -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="assets/css/datepicker.css" rel="stylesheet">
@@ -175,6 +178,7 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/themes/admin/layout.js" type="text/javascript"></script>
         <script src="assets/widgets/superclick/superclick.js" type="text/javascript"></script>
+
     </div></body>
 
 

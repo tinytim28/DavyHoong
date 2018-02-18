@@ -270,7 +270,6 @@ $(document).ready(function () {
     //start of deactivate user
     $("table").on('click', '#DeactivateUser', function () {
         var del = $(this).attr("name");
-        alert(del);
         var user = JSON.parse(del);
         var username = user.username;
         $("#myModal").modal({// wire up the actual modal functionality and show the dialog

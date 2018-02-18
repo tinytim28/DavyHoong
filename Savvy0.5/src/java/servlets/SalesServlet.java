@@ -187,7 +187,7 @@ public class SalesServlet extends HttpServlet {
                     String username = loginUser.getUsername();
                     int salesID = Integer.parseInt(request.getParameter("salesID"));
                     String pName = request.getParameter("pName");
-                    double expectedFYC = Double.parseDouble(request.getParameter("pContact"));
+                    double expectedFYC = Double.parseDouble(request.getParameter("expectedFYC"));
                     String caseType = request.getParameter("caseType");
                     String remarks = request.getParameter("remarks");
                     java.sql.Date dateClose = null;

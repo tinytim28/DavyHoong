@@ -1,4 +1,17 @@
 var table;
+var pNameUpdate;
+var caseTypeUpdate;
+var expectedFYCUpdate;
+var remarksUpdate;
+var salesIDUpdate;
+var usernameDelete;
+var pNameDelete;
+var salesIDDelete;
+var pNameClose;
+var caseTypeClose;
+var expectedFYCClose;
+var dateCloseClose;
+var salesIDClose;
 $.ajax({
     url: '/Savvy0.5/SalesServlet?type=retrieveProgressByAgent',
     dataType: 'json',
@@ -60,28 +73,21 @@ $(document).ready(function () {
         fetch();
     });
 //start of edit/update sale
-    $("#showUpdateSaleModal").on("hide", function () { // remove the event listeners when the dialog is dismissed
-        $("#showUpdateSaleModal a.btn").off("click");
-    });
 
-    $("#showUpdateSaleModal").on("hidden", function () { // remove the actual elements from the DOM when fully hidden
-        $("#showUpdateSaleModal").remove();
-    });
-
-
-    $("table").on('click', '#EditSale', function () {
+    $('table').on('click', '#EditSale', function () {
         showUpdateSaleModal();
         var edit = $(this).attr("name");
         var sale = JSON.parse(edit);
-        var pName = sale.pName;
-        var caseType = sale.caseType;
-        var expectedFYC = sale.expectedFYC;
-        var remarks = sale.remarks;
-
-        $("#pName_update").val(pName);
-        $("#caseType_update").val(caseType);
-        $("#expectedFYC_update").val(expectedFYC);
-        $("#remarks_update").val(remarks);
+        pNameUpdate = sale.pName;
+        caseTypeUpdate = sale.caseType;
+        expectedFYCUpdate = sale.expectedFYC;
+        remarksUpdate = sale.remarks;
+        salesIDUpdate = sale.SalesID;
+        $("salesID_update").val(salesIDUpdate);
+        $("#pName_update").val(pNameUpdate);
+        $("#caseType_update").val(caseTypeUpdate);
+        $("#expectedFYC_update").val(expectedFYCUpdate);
+        $("#remarks_update").val(remarksUpdate);
 
     });
 
@@ -90,7 +96,8 @@ $(document).ready(function () {
         var caseType = document.getElementById("caseType_update").value;
         var expectedFYC = document.getElementById("expectedFYC_update").value;
         var remarks = document.getElementById("remarks_update").value;
-
+        alert(salesIDUpdate);
+        var salesID = salesIDUpdate;
         // disable search button and clear table
         $("#showUpdateSaleModal").modal('hide');
 
@@ -99,6 +106,7 @@ $(document).ready(function () {
             caseType: caseType,
             expectedFYC: expectedFYC,
             remarks: remarks,
+            salesID: salesID,
             type: "updateSales"
         }
         // send json to servlet
@@ -109,7 +117,8 @@ $(document).ready(function () {
             data: data,
             success: function (data) {
                 showSuccessAlert("Successfully updated sale!");
-
+                table.destroy();
+                fetch();
 
             },
             error: function (xhr, status, error) {
@@ -187,9 +196,9 @@ $(document).ready(function () {
     $("table").on('click', '#DeleteSale', function () {
         var del = $(this).attr("name");
         var sale = JSON.parse(del);
-        var username = sale.username;
-        var pName = sale.pName;
-        var salesID = sale.SalesID;
+        usernameDelete = sale.username;
+        pNameDelete = sale.pName;
+        salesIDDelete = sale.SalesID;
         $("#myModal").modal({// wire up the actual modal functionality and show the dialog
             "backdrop": "static",
             "keyboard": true,
@@ -199,9 +208,9 @@ $(document).ready(function () {
             $("#myModal").modal('hide'); // dismiss the dialog
 
             var parameters = {
-                username: username,
-                pName: pName,
-                salesID: salesID
+                username: usernameDelete,
+                pName: pNameDelete,
+                salesID: salesIDDelete
             };
 
             parameters = JSON.stringify(parameters);
@@ -212,17 +221,11 @@ $(document).ready(function () {
                 url: "/Savvy0.5/SalesServlet?type=deleteSale",
                 contentType: "application/json",
                 dataType: "json",
-                data: parameters,
-                success: function () {
-                    showSuccessAlert("Successfully deleted sale!");
-                    table.destroy();
-                    fetch();
-                },
-                error: function () {
-                    showErrorAlert("Error!");
-                }
+                data: parameters
             });
-
+            showSuccessAlert("Successfully deleted sale!");
+            table.destroy();
+            fetch();
 
 
         });
@@ -244,18 +247,18 @@ $(document).ready(function () {
         showCloseSale();
         var edit = $(this).attr("name");
         var closingSale = JSON.parse(edit);
-        var pName = closingSale.pName;
-        var caseType = closingSale.caseType;
-        var expectedFYC = closingSale.expectedFYC;
-        var dateClose = closingSale.dateClose;
-        var salesID = closingSale.SalesID;
+        pNameClose = closingSale.pName;
+        caseTypeClose = closingSale.caseType;
+        expectedFYCClose = closingSale.expectedFYC;
+        dateCloseClose = closingSale.dateClose;
+        salesIDClose = closingSale.SalesID;
         //alert(tds.length);
 
-        $("#pName_close").val(pName);
-        $("#salesID_close").val(salesID);
-        $("#caseType_close").val(caseType);
-        $("#expectedFYC_close").val(expectedFYC);
-        $("#dateClose").val(dateClose);
+        $("#pName_close").val(pNameClose);
+        $("#salesID_close").val(salesIDClose);
+        $("#caseType_close").val(caseTypeClose);
+        $("#expectedFYC_close").val(expectedFYCClose);
+        $("#dateClose").val(dateCloseClose);
 
 
 

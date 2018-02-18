@@ -1,62 +1,160 @@
-$("#YearlyBox").height($("#q1box").height());
-$("#approvedBox").height($("#q1box").height());
-$("#actionbox").height($("#q1box").height());
+var currentQ1salespie;
+var currentQ2salespie;
+var currentQ3salespie;
+var currentQ4salespie;
+var currentyearsalespie;
+var goalQ1salespie;
+var goalQ2salespie;
+var goalQ3salespie;
+var goalQ4salespie;
+var goalyearsalespie;
 
+function getCurrent() {
+    $.ajax({
+        url: '/Savvy0.5/GoalServlet?type=showCurrentQuarterlySales',
+        dataType: 'json',
+        success: function (data) {
+            var currentQ1;
+            var currentQ2;
+            var currentQ3;
+            var currentQ4;
+            var currentyear;
+            if (data[0].first) {
+                $("#Q1current").html("<span>$</span>");
+                $("#Q1current").append(parseInt(data[0].first));
+                currentQ1 = parseInt(data[0].first);
+            } else {
+                $("#Q1current").html("<span>$</span>");
+                $("#Q1current").append("NIL");
+                currentQ1 = 0;
+            }
+            if (data[0].second) {
+                $("#Q2current").html("<span>$</span>");
+                $("#Q2current").append(parseInt(data[0].second));
+                currentQ2 = parseInt(data[0].second);
+            } else {
+                $("#Q2current").html("<span>$</span>");
+                $("#Q2current").append("NIL");
+                currentQ2 = 0;
+            }
+            if (data[0].third) {
+                $("#Q3current").html("<span>$</span>");
+                $("#Q3current").append(parseInt(data[0].third));
+                currentQ3 = parseInt(data[0].third);
+            } else {
+                $("#Q3current").html("<span>$</span>");
+                $("#Q3current").append("NIL");
+                currentQ3 = 0;
+            }
+            if (data[0].fourth) {
+                $("#Q4current").html("<span>$</span>");
+                $("#Q4current").append(parseInt(data[0].fourth));
+                currentQ4 = parseInt(data[0].fourth);
 
-$.ajax({
-    url: '/Savvy0.5/GoalServlet?type=viewOwnGoals',
-    dataType: 'json',
-    success: function (data) {
-        $("#Q1new").val(data[0].first);
-        $("#Q2new").val(data[0].second);
-        $("#Q3new").val(data[0].third);
-        $("#Q4new").val(data[0].fourth);
-        $("#yearlyview").val(data[0].yearly);
-        $("#approvedview").val(data[0].approved);
-        if (data[0].approved === "Pending Approval") {
-            document.getElementById("Q1new").disabled = true;
-            document.getElementById("Q2new").disabled = true;
-            document.getElementById("Q3new").disabled = true;
-            document.getElementById("Q4new").disabled = true;
-            document.getElementById("CreateGoal").disabled = true;
-            $('#CreateGoal').removeClass('btn-primary');
+            } else {
+                $("#Q4current").html("<span>$</span>");
+                $("#Q4current").append("NIL");
+                currentQ4 = 0;
+            }
+            currentyear = currentQ1 + currentQ2 + currentQ3 + currentQ4;
+            $("#yearcurrent").html("<span>$</span>");
+            $("#yearcurrent").append(currentyear);
         }
-    }
-});
-$.ajax({
-    url: '/Savvy0.5/GoalServlet?type=showCurrentQuarterlySales',
-    dataType: 'json',
-    success: function (data) {
-        if (data[0].first) {
-            $("#Q1current").append(data[0].first);
-        } else {
-            $("#Q1current").append("NIL");
+    });
+}
+
+function getGoals() {
+    $.ajax({
+        url: '/Savvy0.5/GoalServlet?type=viewOwnGoals',
+        dataType: 'json',
+        success: function (data) {
+             var goalQ1;
+             var goalQ2;
+             var goalQ3;
+             var goalQ4;
+            if (data.length) {
+
+                $("#piebox").show();
+                $("#targetSales").show();
+                if (data[0].first) {
+                    $("#Q1view").html("<span>$</span>");
+                    $("#Q1view").append(parseInt(data[0].first));
+                    goalQ1 = parseInt(data[0].first);
+                } else {
+                    $("#Q1view").html("<span>$</span>");
+                    $("#Q1view").append("NIL");
+                    goalQ1 = 0;
+                }
+                if (data[0].second) {
+                    $("#Q2view").html("<span>$</span>");
+                    $("#Q2view").append(parseInt(data[0].second));
+                    goalQ2 = parseInt(data[0].first);
+                } else {
+                    $("#Q2view").html("<span>$</span>");
+                    $("#Q2view").append("NIL");
+                    goalQ2 = 0;
+                }
+                if (data[0].third) {
+                    $("#Q3view").html("<span>$</span>");
+                    $("#Q3view").append(parseInt(data[0].third));
+                    goalQ3 = parseInt(data[0].first);
+                } else {
+                    $("#Q3view").html("<span>$</span>");
+                    $("#Q3view").append("NIL");
+                    goalQ3 = 0;
+                }
+                if (data[0].fourth) {
+                    $("#Q4view").html("<span>$</span>");
+                    $("#Q4view").append(parseInt(data[0].fourth));
+                    goalQ4 = parseInt(data[0].first);
+                } else {
+                    $("#Q4view").html("<span>$</span>");
+                    $("#Q4view").append("NIL");
+                    goalQ4 = 0;
+                }
+                $("#Q1new").val(data[0].first);
+                $("#Q2new").val(data[0].second);
+                $("#Q3new").val(data[0].third);
+                $("#Q4new").val(data[0].fourth);
+
+
+                $("#yearlyview").html("<span>$</span>");
+                $("#yearlyview").append(data[0].yearly);
+                $("#approvedview").html("");
+                $("#approvedview").append(data[0].approved);
+                if (data[0].approved === "Pending Approval") {
+                    document.getElementById("Q1new").disabled = true;
+                    document.getElementById("Q2new").disabled = true;
+                    document.getElementById("Q3new").disabled = true;
+                    document.getElementById("Q4new").disabled = true;
+                    document.getElementById("CreateGoal").disabled = true;
+                    $('#CreateGoal').removeClass('btn-primary');
+                }
+
+            } else {
+                $("#formBox").show();
+            }
         }
-        if (data[0].second) {
-            $("#Q2current").append(data[0].second);
-        } else {
-            $("#Q2current").append("NIL");
-        }
-        if (data[0].third) {
-            $("#Q3current").append(data[0].third);
-        } else {
-            $("#Q3current").append("NIL");
-        }
-        if (data[0].fourth) {
-            $("#Q4current").append(data[0].fourth);
-        } else {
-            $("#Q4current").append("NIL");
-        }
 
 
-
-
-    }
-});
-
+    });
+}
+function getPies() {
+    var q1piedata = String(currentQ1salespie / goalQ1salespie * 100);
+    var q2piedata = String(currentQ2salespie / goalQ2salespie * 100);
+    var q3piedata = String(currentQ3salespie / goalQ3salespie * 100);
+    var q4piedata = String(currentQ4salespie / goalQ4salespie * 100);
+    $("#q1pie").attr('data-percent', q1piedata);
+    $("#q2pie").attr('data-percent', q2piedata);
+    $("#q3pie").attr('data-percent', q3piedata);
+    $("#q4pie").attr('data-percent', q4piedata);
+}
 
 
 $(document).ready(function () {
+    getCurrent();
+    getGoals();
+    getPies();
     $("table").on('click', '#EditGoal', function () {
         showUpdateGoalModal();
         var edit = $(this).attr("name");
@@ -107,7 +205,8 @@ $(document).ready(function () {
                     $("#trans_table").html("");
 
                     showSuccessAlert("Goal Set!");
-                    fetch();
+                    getCurrent();
+                    getGoals();
                 } else {
                     showErrorAlert("Creation Failed.");
                 }
@@ -190,28 +289,6 @@ function showErrorAlert(errorMessage) {
     });
 }
 
-function fetch() {
-    $.ajax({
-        url: '/Savvy0.5/GoalServlet?type=viewOwnGoals',
-        dataType: 'json',
-        success: function (data) {
-            $("#Q1new").val(data[0].first);
-            $("#Q2new").val(data[0].second);
-            $("#Q3new").val(data[0].third);
-            $("#Q4new").val(data[0].fourth);
-            $("#yearlyview").val(data[0].yearly);
-            $("#approvedview").val(data[0].approved);
-            if (data[0].approved === "Pending Approval") {
-                document.getElementById("Q1new").disabled = true;
-                document.getElementById("Q2new").disabled = true;
-                document.getElementById("Q3new").disabled = true;
-                document.getElementById("Q4new").disabled = true;
-                document.getElementById("actionbox").disabled = true;
-            }
-        }
-    });
-
-}
 
 function showUpdateGoalModal() {
     $('#showUpdateGoalModal').modal('show');
