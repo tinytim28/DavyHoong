@@ -25,7 +25,7 @@ $("#monthlist").change(function () {
         };
         $.ajax({
             type: "POST",
-            url: "/OverviewServlet",
+            url: "/Savvy0.5/OverviewServlet",
             datatype: 'json',
             data: data,
             success: function (responseJson) {
@@ -129,7 +129,7 @@ $("#monthlist").change(function () {
 
         });
         $.ajax({
-            url: '/OverviewServlet?type=managerRetrieveCaseBreakdownYTD',
+            url: '/Savvy0.5/OverviewServlet?type=managerRetrieveCaseBreakdownYTD',
             dataType: 'json',
             success: function (data) {
                 if (data[0].Life) {
@@ -182,7 +182,7 @@ $("#monthlist").change(function () {
             type: "managerTeamOverviewOneMonth"
         };
         $.ajax({
-            url: "/OverviewServlet",
+            url: "/Savvy0.5/OverviewServlet",
             datatype: 'json',
             data: data,
             success: function (responseJson) {
@@ -286,7 +286,7 @@ $("#monthlist").change(function () {
 
         });
         $.ajax({
-            url: '/OverviewServlet?month=' + month + '&type=managerRetrieveCaseBreakdownMonth',
+            url: '/Savvy0.5/OverviewServlet?month=' + month + '&type=managerRetrieveCaseBreakdownMonth',
             dataType: 'json',
             success: function (data) {
                 if (data[0].Life) {
@@ -338,7 +338,7 @@ $("#monthlist").change(function () {
 
 $(document).ready(function () {
     $.ajax({
-        url: '/OverviewServlet?type=managerRetrieveCaseBreakdownYTD',
+        url: '/Savvy0.5/OverviewServlet?type=managerRetrieveCaseBreakdownYTD',
         dataType: 'json',
         success: function (data) {
             if (data[0].Life) {
@@ -378,7 +378,7 @@ $(document).ready(function () {
 
 function display() {
     //both single month and YTD methods for servlet working
-    $.get("/OverviewServlet?type=managerTeamOverviewYTD", {
+    $.get("/Savvy0.5/OverviewServlet?type=managerTeamOverviewYTD", {
         "_": $.now()
     }, function (responseJson) {
         var strings = responseJson.split(",");

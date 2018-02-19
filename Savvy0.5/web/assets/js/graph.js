@@ -77,7 +77,7 @@ function display() {
 //       }]  
 //     }  
 //   });  
-    $.get("/TestServlet?type=forecastAgent", {
+    $.get("/Savvy0.5/TestServlet?type=forecastAgent", {
         "_": $.now()
     }, function (responseJson) {
         var strings = responseJson.split(",");

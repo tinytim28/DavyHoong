@@ -1,6 +1,6 @@
 var table;
 $.ajax({
-    url: '/ProspectServlet?type=retrieveProspectsByAgent',
+    url: '/Savvy0.5/ProspectServlet?type=retrieveProspectsByAgent',
     dataType: 'json',
     success: function (data) {
 
@@ -87,7 +87,7 @@ $(document).ready(function () {
         // send json to servlet
         $.ajax({
             type: "POST",
-            url: "/ProspectServlet",
+            url: "/Savvy0.5/ProspectServlet",
             datatype: 'json',
             data: data,
             success: function (data) {
@@ -152,7 +152,7 @@ $(document).ready(function () {
         };
 
         $.ajax({
-            url: '/ProspectServlet',
+            url: '/Savvy0.5/ProspectServlet',
             type: 'POST',
             dataType: 'json',
             data: data,
@@ -200,7 +200,7 @@ $(document).ready(function () {
             // send json to servlet
             $.ajax({
                 type: "POST",
-                url: "/ProspectServlet?type=deleteProspect",
+                url: "/Savvy0.5/ProspectServlet?type=deleteProspect",
                 contentType: "application/json",
                 dataType: "json",
                 data: parameters
@@ -219,7 +219,7 @@ $(document).ready(function () {
 //end of jquery
 function fetch() {
     $.ajax({
-        url: '/ProspectServlet?type=retrieveProspectsByAgent',
+        url: '/Savvy0.5/ProspectServlet?type=retrieveProspectsByAgent',
         dataType: 'json',
         success: function (data) {
 

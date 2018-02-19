@@ -72,7 +72,7 @@ $(document).ready(function() {
     // send json to servlet
     $.ajax({
       type: "POST",
-      url: "/UserServlet",
+      url: "/Savvy0.5/UserServlet",
       datatype: 'json',
       data: data,
       success: function(data) {
@@ -152,7 +152,7 @@ $(document).ready(function() {
       }
 
       $.ajax({
-        url: '/UserServlet',
+        url: '/Savvy0.5/UserServlet',
         type: 'POST',
         dataType: 'json',
         data: data,
@@ -238,7 +238,7 @@ $(document).ready(function() {
       // send json to servlet
       $.ajax({
         type: "POST",
-        url: "/UserServlet?type=deleteUser",
+        url: "/Savvy0.5/UserServlet?type=deleteUser",
         contentType: "application/json",
         dataType: "json",
         data: parameters
@@ -278,7 +278,7 @@ function showErrorModal(errorMessage) {
 
 //start of view users
 function refresh() {
-  $.get("/UserServlet?type=retrieveUser", {
+  $.get("/Savvy0.5/UserServlet?type=retrieveUser", {
     "_": $.now()
   }, function(responseJson) {
     //alert(responseJson);
