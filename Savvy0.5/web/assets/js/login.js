@@ -15,7 +15,7 @@ $(document).ready(function () {
             };
             // send json to servlet
             $.ajax({
-                url: '/Savvy0.5/UserServlet',
+                url: '/UserServlet',
                 type: 'POST',
                 dataType: 'json',
                 data: data,

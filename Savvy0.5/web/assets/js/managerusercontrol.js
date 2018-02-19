@@ -1,6 +1,6 @@
 var table;
 $.ajax({
-    url: '/Savvy0.5/UserServlet?type=retrieveUser',
+    url: '/UserServlet?type=retrieveUser',
     dataType: 'json',
     success: function (data) {
 
@@ -40,7 +40,7 @@ $.ajax({
 
 function fetch() {
     $.ajax({
-        url: '/Savvy0.5/UserServlet?type=retrieveUser',
+        url: '/UserServlet?type=retrieveUser',
         dataType: 'json',
         success: function (data) {
 
@@ -126,7 +126,7 @@ $(document).ready(function () {
             // send json to servlet
             $.ajax({
                 type: "POST",
-                url: "/Savvy0.5/UserServlet",
+                url: "/UserServlet",
                 datatype: 'json',
                 data: data,
                 success: function (data) {
@@ -204,7 +204,7 @@ $(document).ready(function () {
             };
 
             $.ajax({
-                url: '/Savvy0.5/UserServlet',
+                url: '/UserServlet',
                 type: 'POST',
                 dataType: 'json',
                 data: data,
@@ -291,7 +291,7 @@ $(document).ready(function () {
             // send json to servlet
             $.ajax({
                 type: "POST",
-                url: "/Savvy0.5/UserServlet?type=inactiveUser",
+                url: "/UserServlet?type=inactiveUser",
                 contentType: "application/json",
                 dataType: "json",
                 data: parameters
@@ -304,7 +304,7 @@ $(document).ready(function () {
 
 
         });
-
+        fetch();
     });
     //end of deactivate user
 
@@ -318,7 +318,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "/Savvy0.5/SalesServlet",
+            url: "/SalesServlet",
             datatype: 'json',
             data: data,
             success: function (data) {

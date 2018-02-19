@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 $.ajax({
-    url: '/Savvy0.5/UserServlet?type=retrieveUser',
+    url: '/UserServlet?type=retrieveUser',
     dataType: 'json',
     success: function (data) {
         $("#usernamelist").html("");
@@ -24,7 +24,7 @@ $("#usernamelist").change(function () {
     };
 
     $.ajax({
-        url: "/Savvy0.5/ForecastServlet",
+        url: "/ForecastServlet",
         datatype: 'json',
         data: data,
         success: function (responseJson) {

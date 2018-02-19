@@ -1,6 +1,6 @@
 var usertype = "";
 $.ajax({
-    url: "/Savvy0.5/UserServlet?type=checkUserType",
+    url: "/UserServlet?type=checkUserType",
     success: function (data) {
         usertype = data;
         htmlcode = "";

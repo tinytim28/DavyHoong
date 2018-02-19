@@ -11,7 +11,7 @@ var goalyearsalespie;
 
 function getCurrent() {
     $.ajax({
-        url: '/Savvy0.5/GoalServlet?type=showCurrentQuarterlySales',
+        url: '/GoalServlet?type=showCurrentQuarterlySales',
         dataType: 'json',
         success: function (data) {
             var currentQ1;
@@ -65,7 +65,7 @@ function getCurrent() {
 
 function getGoals() {
     $.ajax({
-        url: '/Savvy0.5/GoalServlet?type=viewOwnGoals',
+        url: '/GoalServlet?type=viewOwnGoals',
         dataType: 'json',
         success: function (data) {
              var goalQ1;
@@ -196,7 +196,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: '/Savvy0.5/GoalServlet',
+            url: '/GoalServlet',
             type: 'POST',
             dataType: 'json',
             data: data,
@@ -238,7 +238,7 @@ $(document).ready(function () {
         // send json to servlet
         $.ajax({
             type: "POST",
-            url: "/Savvy0.5/GoalServlet",
+            url: "/GoalServlet",
             datatype: 'json',
             data: data,
             success: function (data) {

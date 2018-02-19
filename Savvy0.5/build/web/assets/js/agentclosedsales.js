@@ -1,6 +1,6 @@
 var table;
 $.ajax({
-    url: '/Savvy0.5/SalesServlet?type=retrieveClosedByAgent',
+    url: '/SalesServlet?type=retrieveClosedByAgent',
     dataType: 'json',
     success: function (data) {
 

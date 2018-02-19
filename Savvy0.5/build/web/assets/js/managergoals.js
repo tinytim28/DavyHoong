@@ -1,7 +1,7 @@
 var table;
 $(document).ready(function () {
     $.ajax({
-        url: '/Savvy0.5/GoalServlet?type=viewTeamGoals',
+        url: '/GoalServlet?type=viewTeamGoals',
         dataType: 'json',
         success: function (data) {
 
@@ -72,7 +72,7 @@ $(document).ready(function () {
 
             // send json to servlet
             $.ajax({
-                url: "/Savvy0.5/GoalServlet?type=goalApproval",
+                url: "/GoalServlet?type=goalApproval",
                 contentType: "application/json",
                 dataType: "json",
                 data: parameters
@@ -105,7 +105,7 @@ $(document).ready(function () {
 
             // send json to servlet
             $.ajax({
-                url: "/Savvy0.5/GoalServlet?type=goalApproval",
+                url: "/GoalServlet?type=goalApproval",
                 contentType: "application/json",
                 dataType: "json",
                 data: parameters
@@ -124,7 +124,7 @@ $(document).ready(function () {
 
 function fetch() {
     $.ajax({
-        url: '/Savvy0.5/GoalServlet?type=viewTeamGoals',
+        url: '/GoalServlet?type=viewTeamGoals',
         dataType: 'json',
         success: function (data) {
 

@@ -57,7 +57,7 @@
                 <div id="page-header" class="bg-gradient-9">
                     <div id="mobile-navigation">
                         <button id="nav-toggle" class="collapsed" data-toggle="collapse" data-target="#page-sidebar"><span></span></button>
-                        <a href="home.jsp" class="logo-content-small" title="Savvy0.5"></a>
+                        <a href="home.jsp" class="logo-content-small" title=""></a>
                     </div>
                     <div id="header-logo" class="logo-bg">
                         <a href="home.jsp" class="logo-content-big" title="Proto">

@@ -13,7 +13,7 @@ var expectedFYCClose;
 var dateCloseClose;
 var salesIDClose;
 $.ajax({
-    url: '/Savvy0.5/SalesServlet?type=retrieveProgressByAgent',
+    url: '/SalesServlet?type=retrieveProgressByAgent',
     dataType: 'json',
     success: function (data) {
 
@@ -55,7 +55,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: '/Savvy0.5/ProspectServlet?type=retrieveProspectsByAgent',
+    url: '/ProspectServlet?type=retrieveProspectsByAgent',
     dataType: 'json',
     success: function (data) {
         $("#pName_forsale").html("");
@@ -112,7 +112,7 @@ $(document).ready(function () {
         // send json to servlet
         $.ajax({
             type: "POST",
-            url: "/Savvy0.5/SalesServlet",
+            url: "/SalesServlet",
             datatype: 'json',
             data: data,
             success: function (data) {
@@ -167,7 +167,7 @@ $(document).ready(function () {
         // send json to servlet
         $.ajax({
             type: "POST",
-            url: "/Savvy0.5/SalesServlet",
+            url: "/SalesServlet",
             datatype: 'json',
             data: data,
             success: function (data) {
@@ -218,7 +218,7 @@ $(document).ready(function () {
             // send json to servlet
             $.ajax({
                 type: "POST",
-                url: "/Savvy0.5/SalesServlet?type=deleteSale",
+                url: "/SalesServlet?type=deleteSale",
                 contentType: "application/json",
                 dataType: "json",
                 data: parameters
@@ -284,7 +284,7 @@ $(document).ready(function () {
         // send json to servlet
         $.ajax({
             type: "POST",
-            url: "/Savvy0.5/SalesServlet",
+            url: "/SalesServlet",
             datatype: 'json',
             data: data,
             success: function (data) {
@@ -309,7 +309,7 @@ $(document).ready(function () {
 
 function fetch() {
     $.ajax({
-        url: '/Savvy0.5/SalesServlet?type=retrieveProgressByAgent',
+        url: '/SalesServlet?type=retrieveProgressByAgent',
         dataType: 'json',
         success: function (data) {
 
