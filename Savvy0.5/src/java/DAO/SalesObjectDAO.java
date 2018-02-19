@@ -267,7 +267,7 @@ public class SalesObjectDAO {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `sales` SET `expectedFYC`='" + expectedFYC + "', `remarks`='" + remarks + "', `caseType`='" + caseType + "'   where `username` = '" + username + "' and `salesID` = '" + salesID + "' and dateClose IS NOT NULL");
+            stmt = conn.prepareStatement("Update `sales` SET `expectedFYC`='" + expectedFYC + "', `remarks`='" + remarks + "', `caseType`='" + caseType + "'   where `username` = '" + username + "' and `salesID` = '" + salesID +"'");
             stmt.executeUpdate();
 
         } catch (Exception e) {
