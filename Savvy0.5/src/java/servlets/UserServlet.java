@@ -108,11 +108,9 @@ public class UserServlet extends HttpServlet {
                     String teamRetrieve;
                     User current = (User) session.getAttribute("loginUser");
 
-                    if (current.checkAdmin().equals("Admin")) {
-                        teamRetrieve = "Manager";
-                    } else {
-                        teamRetrieve = "" + current.getFirstName() + " " + current.getLastName().toUpperCase();
-                    }
+
+                    teamRetrieve = "" + current.getFirstName() + " " + current.getLastName().toUpperCase();
+                    
 
                     String list = userDAO.retrieveUserInfo(teamRetrieve);
                     String output = "";

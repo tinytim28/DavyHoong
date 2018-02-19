@@ -1,42 +1,4 @@
 var table;
-$.ajax({
-    url: '/Savvy0.5/UserServlet?type=retrieveUser',
-    dataType: 'json',
-    success: function (data) {
-
-        table = $('#trans_table').DataTable({
-            data: data,
-            "columnDefs": [
-                {
-                    "targets": 0,
-                    data: 'firstname'
-                },
-                {
-                    "targets": 1,
-                    data: 'lastname'
-                },
-                {
-                    "targets": 2,
-                    data: 'username'
-                },
-                {
-                    "targets": 3,
-                    data: 'Active'
-                },
-                {
-                    "targets": 4,
-                    data: 'ID',
-                    render: function (data, type, row) {
-                        return "<button id='EditUser' type='button' class='btn btn-xs btn-primary' name=' " + JSON.stringify(row) + "  '><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button>  <button id='DeactivateUser' type='button' class='btn btn-xs btn-danger' name='" + JSON.stringify(row) + "'><span class='glyphicon glyphicon-trash' aria-hidden='true'><\/span> Deactivate<\/button><\/td>";
-                    }
-                }
-
-            ]
-        });
-
-    }
-});
-
 
 function fetch() {
     $.ajax({
@@ -79,6 +41,7 @@ function fetch() {
 }
 $(document).ready(function () {
 //start of update user
+    fetch();
     $("#showUpdateUserModal").on("hide", function () { // remove the event listeners when the dialog is dismissed
         $("#showUpdateUserModal a.btn").off("click");
     });
@@ -130,7 +93,7 @@ $(document).ready(function () {
                 datatype: 'json',
                 data: data,
                 success: function (data) {
-                    
+
                     showSuccessModal("Successfully updated user!");
                     table.destroy();
                     fetch();
@@ -265,107 +228,49 @@ $(document).ready(function () {
         }
     });
     //end of change password
- // by default
+    // by default
 
     //start of deactivate user
-    $("table").on('click', '#DeactivateUser', function () {
-        var del = $(this).attr("name");
-        var user = JSON.parse(del);
-        var username = user.username;
-        $("#myModal").modal({// wire up the actual modal functionality and show the dialog
-            "backdrop": "static",
-            "keyboard": true,
-            "show": true // ensure the modal is shown immediately
-        });
-        $("#myModal #cfmDelete").on("click", function (e) {
-            $("#myModal").modal('hide'); // dismiss the dialog
 
-
-            // set request parameters
-            var parameters = {
-                username: username
-            };
-
-            parameters = JSON.stringify(parameters);
-
-            // send json to servlet
-            $.ajax({
-                type: "POST",
-                url: "/Savvy0.5/UserServlet?type=inactiveUser",
-                contentType: "application/json",
-                dataType: "json",
-                data: parameters
-            });
-
-
-            table.destroy();
-            fetch();
-            showSuccessModal("Successfully deactivated user!");
-
-
-        });
-
-    });
     //end of deactivate user
+});
 
-    //start of view user sale
-    $("table").on('click', '#ViewUserSale', function () {
-        var view = $(this).attr("name");
-        var username = $("#username" + view).text();
-        var data = {
-            username: username,
-            type: "adminRetrieveSales"
-        }
+$("table").on('click', '#DeactivateUser', function () {
+    var del = $(this).attr("name");
+    var user = JSON.parse(del);
+    var username = user.username;
+    $("#myModal").modal({// wire up the actual modal functionality and show the dialog
+        "backdrop": "static",
+        "keyboard": true,
+        "show": true // ensure the modal is shown immediately
+    });
+    $("#myModal #cfmDelete").on("click", function (e) {
+        $("#myModal").modal('hide'); // dismiss the dialog
+
+
+        // set request parameters
+        var parameters = {
+            username: username
+        };
+
+        parameters = JSON.stringify(parameters);
+
+        // send json to servlet
         $.ajax({
             type: "POST",
-            url: "/Savvy0.5/SalesServlet",
-            datatype: 'json',
-            data: data,
-            success: function (data) {
-                var strings = data.split(",");
-                var htmlcode = "";
-                if (data) {
-                    htmlcode += "<tr>";
-                    htmlcode += "<th hidden>ID<\/th>";
-                    htmlcode += "<th hidden>Username<\/th>";
-                    htmlcode += "<th>Prospect Name<\/th>";
-                    htmlcode += "<th>Date Closed<\/th>";
-                    htmlcode += "<th>Case Type<\/th>";
-                    htmlcode += "<th>Expected FYC<\/th>";
-                    htmlcode += "<th>Remarks<\/th>";
-                    htmlcode += "<\/tr>";
-
-                    var count = 1;
-                    for (var i = 0; i < strings.length; i += 7) {
-                        htmlcode += "<tr class='record' id='" + count + "'>";
-                        htmlcode += "<td hidden class='id' id='id" + count + "'>" + strings[i] + "<\/td>";
-                        htmlcode += "<td hidden class='username' id='username" + count + "'>" + strings[i + 1] + "<\/td>";
-                        htmlcode += "<td class='pName' id='pName" + count + "'>" + strings[i + 2] + "<\/td>";
-                        htmlcode += "<td class='dateClose' id='dateClose" + count + "'>" + strings[i + 3] + "<\/td>";
-                        htmlcode += "<td class='caseType' id='caseType" + count + "'>" + strings[i + 4] + "<\/td>";
-                        htmlcode += "<td class='expectedFYC' id='expectedFYC" + count + "'>" + strings[i + 5] + "<\/td>";
-                        htmlcode += "<td class='remarks' id='remarks" + count + "'>" + strings[i + 6] + "<\/td>";
-                        htmlcode += "<\/tr>";
-                        count++;
-                    }
-
-                    htmlcode += "<\/select>";
-                    $("#view_sales_table").html(htmlcode);
-
-                } else {
-
-                }
-
-                $("#view_sales_table").html(htmlcode);
-            },
-            error: function (xhr, status, error) {
-                alert(error);
-            }
-
+            url: "/Savvy0.5/UserServlet?type=inactiveUser",
+            contentType: "application/json",
+            dataType: "json",
+            data: parameters
         });
-        viewUserSaleModal();
+
+
+        table.destroy();
+        fetch();
+        showSuccessModal("Successfully deactivated user!");
+
+
     });
-    //end of view user sale
 
 });
 
@@ -373,9 +278,6 @@ function showSuccessModal(successMessage) {
     document.getElementById("successMsg").innerHTML = successMessage;
     $('#successModal').modal('show');
 
-    setTimeout(function () {
-        $("#user_create").click(); //Delay the refresh to show the success message before refreshing
-    }, 2500);
 
 }
 

@@ -10,9 +10,9 @@ $.ajax({
         htmlcode4 = "";
         var button = "";
         if (usertype === "Admin") {
-            htmlcode += "<li> <a id = 'admin_control' class = 'loadPage'> Admin Control <\/a><\/li>";
-            $("#pageContent").load("admin_control.jsp");
+            htmlcode1 += "<a href='#' title='Users'><i class='glyph-icon icon-group'><\/i><span>Managers<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'adminusercontrol' class = 'loadPage'> User Control <\/a><\/li><\/ul><\/div>";
             button += "<button type='button' class='btn btn-primary btn-xs navbar-btn' id='logout'>Logout<\/button>";
+            $("#pageContent").load("adminusercontrol.html");
         } else if (usertype === "Manager") {
             htmlcode1 += "<a href='#' title='Financial Agents'><i class='glyph-icon icon-group'><\/i><span>Financial Agents<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'managerusercontrol' class = 'loadPage'> Agent Control <\/a><\/li><\/ul><\/div>";
             htmlcode2 += "<a href='#' title='Sales'><i class='glyph-icon icon-money'><\/i><span>Sales<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'managerviewsales' class = 'loadPage'> View Sales <\/a><\/li><\/ul><\/div>";
