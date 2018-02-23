@@ -1,85 +1,29 @@
-var currentQ1salespie;
-var currentQ2salespie;
-var currentQ3salespie;
-var currentQ4salespie;
-var currentyearsalespie;
-var goalQ1salespie;
-var goalQ2salespie;
-var goalQ3salespie;
-var goalQ4salespie;
-var goalyearsalespie;
+
 
 function getCurrent() {
-    $.ajax({
-        url: '/Savvy0.5/GoalServlet?type=showCurrentQuarterlySales',
-        dataType: 'json',
-        success: function (data) {
-            var currentQ1;
-            var currentQ2;
-            var currentQ3;
-            var currentQ4;
-            var currentyear;
-            if (data[0].first) {
-                $("#Q1current").html("<span>$</span>");
-                $("#Q1current").append(parseInt(data[0].first));
-                currentQ1 = parseInt(data[0].first);
-            } else {
-                $("#Q1current").html("<span>$</span>");
-                $("#Q1current").append("NIL");
-                currentQ1 = 0;
-            }
-            if (data[0].second) {
-                $("#Q2current").html("<span>$</span>");
-                $("#Q2current").append(parseInt(data[0].second));
-                currentQ2 = parseInt(data[0].second);
-            } else {
-                $("#Q2current").html("<span>$</span>");
-                $("#Q2current").append("NIL");
-                currentQ2 = 0;
-            }
-            if (data[0].third) {
-                $("#Q3current").html("<span>$</span>");
-                $("#Q3current").append(parseInt(data[0].third));
-                currentQ3 = parseInt(data[0].third);
-            } else {
-                $("#Q3current").html("<span>$</span>");
-                $("#Q3current").append("NIL");
-                currentQ3 = 0;
-            }
-            if (data[0].fourth) {
-                $("#Q4current").html("<span>$</span>");
-                $("#Q4current").append(parseInt(data[0].fourth));
-                currentQ4 = parseInt(data[0].fourth);
+    var currentQ1;
+    var currentQ2;
+    var currentQ3;
+    var currentQ4;
+    var currentyear;
+    var goalQ1;
+    var goalQ2;
+    var goalQ3;
+    var goalQ4;
 
-            } else {
-                $("#Q4current").html("<span>$</span>");
-                $("#Q4current").append("NIL");
-                currentQ4 = 0;
-            }
-            currentyear = currentQ1 + currentQ2 + currentQ3 + currentQ4;
-            $("#yearcurrent").html("<span>$</span>");
-            $("#yearcurrent").append(currentyear);
-        }
-    });
-}
 
-function getGoals() {
     $.ajax({
         url: '/Savvy0.5/GoalServlet?type=viewOwnGoals',
         dataType: 'json',
         success: function (data) {
-             var goalQ1;
-             var goalQ2;
-             var goalQ3;
-             var goalQ4;
             if (data.length) {
 
-                $("#piebox").show();
                 $("#targetSales").show();
                 if (data[0].first) {
                     $("#Q1view").html("<span>$</span>");
                     $("#Q1view").append(parseInt(data[0].first));
                     goalQ1 = parseInt(data[0].first);
+
                 } else {
                     $("#Q1view").html("<span>$</span>");
                     $("#Q1view").append("NIL");
@@ -122,7 +66,7 @@ function getGoals() {
                 $("#yearlyview").append(data[0].yearly);
                 $("#approvedview").html("");
                 $("#approvedview").append(data[0].approved);
-                if (data[0].approved === "Pending Approval") {
+                if (data[0].approved === "Pending Approval" || data[0].approved === "Approved") {
                     document.getElementById("Q1new").disabled = true;
                     document.getElementById("Q2new").disabled = true;
                     document.getElementById("Q3new").disabled = true;
@@ -130,31 +74,99 @@ function getGoals() {
                     document.getElementById("CreateGoal").disabled = true;
                     $('#CreateGoal').removeClass('btn-primary');
                 }
+                $.ajax({
+                    url: '/Savvy0.5/GoalServlet?type=showCurrentQuarterlySales',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data[0].first) {
+                            $("#Q1current").html("<span>$</span>");
+                            $("#Q1current").append(parseInt(data[0].first));
+                            currentQ1 = parseInt(data[0].first);
+                            if (goalQ1 >= currentQ1) {
+                                $("#currentQ1").attr('class', "tile-box bg-red content-box");
+                            } else {
+                                $("#currentQ1").attr('class', "tile-box bg-green content-box");
+                            }
+                        } else {
+                            $("#Q1current").html("<span>$</span>");
+                            $("#Q1current").append("NIL");
+                            currentQ1 = 0;
+                        }
+                        if (data[0].second) {
+                            $("#Q2current").html("<span>$</span>");
+                            $("#Q2current").append(parseInt(data[0].second));
+                            currentQ2 = parseInt(data[0].second);
+                            if (goalQ1 >= currentQ1) {
+                                $("#currentQ2").attr('class', "tile-box bg-red content-box");
+                            } else {
+                                $("#currentQ2").attr('class', "tile-box bg-green content-box");
+                            }
+                        } else {
+                            $("#Q2current").html("<span>$</span>");
+                            $("#Q2current").append("NIL");
+                            currentQ2 = 0;
+                        }
+                        if (data[0].third) {
+                            $("#Q3current").html("<span>$</span>");
+                            $("#Q3current").append(parseInt(data[0].third));
+                            currentQ3 = parseInt(data[0].third);
+                            if (goalQ1 >= currentQ1) {
+                                $("#currentQ3").attr('class', "tile-box bg-red content-box");
+                            } else {
+                                $("#currentQ3").attr('class', "tile-box bg-green content-box");
+                            }
+                        } else {
+                            $("#Q3current").html("<span>$</span>");
+                            $("#Q3current").append("NIL");
+                            currentQ3 = 0;
+                        }
+                        if (data[0].fourth) {
+                            $("#Q4current").html("<span>$</span>");
+                            $("#Q4current").append(parseInt(data[0].fourth));
+                            currentQ4 = parseInt(data[0].fourth);
+                            if (goalQ1 >= currentQ1) {
+                                $("#currentQ4").attr('class', "tile-box bg-red content-box");
+                            } else {
+                                $("#currentQ4").attr('class', "tile-box bg-green content-box");
+                            }
 
-            } else {
-                $("#formBox").show();
+                        } else {
+                            $("#Q4current").html("<span>$</span>");
+                            $("#Q4current").append("NIL");
+                            currentQ4 = 0;
+                        }
+                        currentyear = currentQ1 + currentQ2 + currentQ3 + currentQ4;
+                        $("#yearcurrent").html("<span>$</span>");
+                        $("#yearcurrent").append(currentyear);
+                        var q1piedata = String(currentQ1 / goalQ1 * 100);
+                        var q2piedata = String(currentQ2 / goalQ2 * 100);
+                        var q3piedata = String(currentQ3 / goalQ3 * 100);
+                        var q4piedata = String(currentQ4 / goalQ4 * 100);
+                        $("#q1pie").attr('data-percent', q1piedata);
+                        $("#q2pie").attr('data-percent', q2piedata);
+                        $("#q3pie").attr('data-percent', q3piedata);
+                        $("#q4pie").attr('data-percent', q4piedata);
+                    }
+                });
+
+
             }
         }
 
 
     });
 }
-function getPies() {
-    var q1piedata = String(currentQ1salespie / goalQ1salespie * 100);
-    var q2piedata = String(currentQ2salespie / goalQ2salespie * 100);
-    var q3piedata = String(currentQ3salespie / goalQ3salespie * 100);
-    var q4piedata = String(currentQ4salespie / goalQ4salespie * 100);
-    $("#q1pie").attr('data-percent', q1piedata);
-    $("#q2pie").attr('data-percent', q2piedata);
-    $("#q3pie").attr('data-percent', q3piedata);
-    $("#q4pie").attr('data-percent', q4piedata);
-}
+
+
+
+
+
+
+
 
 
 $(document).ready(function () {
     getCurrent();
-    getGoals();
-    getPies();
     $("table").on('click', '#EditGoal', function () {
         showUpdateGoalModal();
         var edit = $(this).attr("name");
