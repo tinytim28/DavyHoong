@@ -48,6 +48,7 @@ public class UserDAO {
             stmt = conn.prepareStatement("Select * from user");
             result = stmt.executeQuery();
             while (result.next()) {
+                int userid = result.getInt("userid");
                 String firstName = result.getString("firstName");
                 String lastName = result.getString("lastName");
                 String username = result.getString("username");
@@ -55,7 +56,7 @@ public class UserDAO {
                 String usertype = result.getString("usertype");
                 String manager = result.getString("manager");
                 String active = result.getString("active");
-                users.add(new User(firstName, lastName, username, password, usertype, manager, active));
+                users.add(new User(userid, firstName, lastName, username, password, usertype, manager, active));
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -81,6 +82,7 @@ public class UserDAO {
             stmt = conn.prepareStatement("Select * from user where username like '" + inputUsername + "'");
             result = stmt.executeQuery();
             while (result.next()) {
+                int userid = result.getInt("userid");
                 String firstName = result.getString("firstName");
                 String lastName = result.getString("lastName");
                 String username = result.getString("username");
@@ -88,7 +90,33 @@ public class UserDAO {
                 String usertype = result.getString("usertype");
                 String manager = result.getString("manager");
                 String active = result.getString("active");
-                user = new User(firstName, lastName, username, password, usertype, manager, active);
+                user = new User(userid, firstName, lastName, username, password, usertype, manager, active);
+            }
+            if (conn != null) {
+                ConnectionManager.close(conn, stmt, result);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    
+    public User retrieveById(int selected) {
+        User user = null;
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Select * from user where userid like '" + selected + "'");
+            result = stmt.executeQuery();
+            while (result.next()) {
+                int userid = result.getInt("userid");
+                String firstName = result.getString("firstName");
+                String lastName = result.getString("lastName");
+                String username = result.getString("username");
+                String password = result.getString("password");
+                String usertype = result.getString("usertype");
+                String manager = result.getString("manager");
+                String active = result.getString("active");
+                user = new User(userid, firstName, lastName, username, password, usertype, manager, active);
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -145,12 +173,12 @@ public class UserDAO {
     }
     
     
-    public void deleteUser(String username) {
+    public void deleteUser(int userid) {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("DELETE FROM `user` WHERE `username`=?");
-            stmt.setString(1, username);
+            stmt = conn.prepareStatement("DELETE FROM user where userid = '" + userid + "'");
+
 
             stmt.executeUpdate();
 
@@ -168,12 +196,11 @@ public class UserDAO {
 
     }
     
-    public void userInactive(String username) {
+    public void userInactive(int userid) {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update user set active = 'Inactive' WHERE `username`=?");
-            stmt.setString(1, username);
+            stmt = conn.prepareStatement("Update user set active = 'Inactive' where userid = '" + userid + "'");
 
             stmt.executeUpdate();
 
@@ -232,12 +259,12 @@ public class UserDAO {
         return isAuthenticated;
     }
     
-    public void updateUserWithNewPw(String username, String firstName, String lastName, String password) {
+    public void updateUserWithNewPw(int userid, String username, String firstName, String lastName, String password) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `user` SET `firstname`='" + firstName + "', `lastname`='" + lastName + "', `password` = '" + password + "'  where `username` = '" + username + "'");             
+            stmt = conn.prepareStatement("Update `user` SET `firstname`='" + firstName + "', `lastname`='" + lastName + "', `password` = '" + password + "'  where `userid` = '" + userid + "'");             
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -256,12 +283,12 @@ public class UserDAO {
 
     }
     
-    public void updateUser(String username, String firstName, String lastName, String manager) {
+    public void updateUser(int userid, String username, String firstName, String lastName, String manager) {
 
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `user` SET `firstname`='" + firstName + "', `lastName`='" + lastName + "', `manager`='" + manager  + "'  where `username` = '" + username + "'");
+            stmt = conn.prepareStatement("Update `user` SET `firstname`='" + firstName + "', `lastName`='" + lastName + "', `manager`='" + manager  + "'  where `userid` = '" + userid + "'");
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -289,12 +316,13 @@ public class UserDAO {
 
             while (result.next()) {
                 JsonObject toReturn = new JsonObject();
-                toReturn.addProperty("firstname", result.getString(1));
-                toReturn.addProperty("lastname", result.getString(2));
-                toReturn.addProperty("username", result.getString(3));
-                toReturn.addProperty("usertype", result.getString(5));
-                toReturn.addProperty("manager", result.getString(6));
-                toReturn.addProperty("Active", result.getString(7));
+                toReturn.addProperty("userid", result.getInt(1));
+                toReturn.addProperty("firstname", result.getString(2));
+                toReturn.addProperty("lastname", result.getString(3));
+                toReturn.addProperty("username", result.getString(4));
+                toReturn.addProperty("usertype", result.getString(6));
+                toReturn.addProperty("manager", result.getString(7));
+                toReturn.addProperty("Active", result.getString(8));
                 jsonArray.add(toReturn);
                 
             }
@@ -335,12 +363,12 @@ public class UserDAO {
         return output;
     }
     
-    public void makeManager(String username) {
+    public void makeManager(int userid) {
         
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `user` SET `Manager`= 'Manager' where `username` = '" + username + "'");             
+            stmt = conn.prepareStatement("Update `user` SET `Manager`= 'Manager' where `userid` = '" + userid + "'");             
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -357,12 +385,12 @@ public class UserDAO {
     }
     
     
-    public void changeManager(String username, String managerName) {
+    public void changeManager(int userid, String managerName) {
         
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `user` SET `Manager`= '" + managerName + "' where `username` = '" + username + "'");             
+            stmt = conn.prepareStatement("Update `user` SET `Manager`= '" + managerName + "' where `userid` = '" + userid + "'");             
             stmt.executeUpdate();
 
         } catch (Exception e) {

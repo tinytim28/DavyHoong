@@ -11,6 +11,7 @@ package classes;
  */
 public class User {
     
+    int userid;
     private String firstName;
     private String lastName;
     private String username;
@@ -19,7 +20,8 @@ public class User {
     private String manager;
     private String active;
     
-    public User ( String firstName, String lastName, String username, String password, String usertype, String manager, String active ) {
+    public User ( int userid, String firstName, String lastName, String username, String password, String usertype, String manager, String active ) {
+        this.userid = userid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -27,6 +29,14 @@ public class User {
         this.usertype = usertype;
         this.manager = manager;
         this.active = active;
+    }
+    
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+    
+    public int getUserid() {
+        return userid;
     }
     
     public void setManager(String manager) {

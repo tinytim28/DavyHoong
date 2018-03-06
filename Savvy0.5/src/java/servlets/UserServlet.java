@@ -135,10 +135,10 @@ public class UserServlet extends HttpServlet {
                 } catch (IOException | JSONException e) {
                 }
                 try {
-                    String username = transJsonObj.getString("username");
+                    int userid = transJsonObj.getInt("userid");
 
                     UserDAO uDAO = new UserDAO();
-                    uDAO.deleteUser(username);
+                    uDAO.deleteUser(userid);
 
                     response.getWriter().write("updated user");
                 } catch (JSONException ex) {
@@ -154,10 +154,10 @@ public class UserServlet extends HttpServlet {
                 } catch (IOException | JSONException e) {
                 }
                 try {
-                    String username = transJsonObj.getString("username");
+                    int userid = transJsonObj.getInt("userid");
 
                     UserDAO uDAO = new UserDAO();
-                    uDAO.userInactive(username);
+                    uDAO.userInactive(userid);
 
                     response.getWriter().write("updated user");
                 } catch (JSONException ex) {
@@ -173,15 +173,15 @@ public class UserServlet extends HttpServlet {
                     String username = request.getParameter("username");
                     String firstName = request.getParameter("firstName");
                     String lastName = request.getParameter("lastName");
-
+                    int userid = Integer.parseInt(request.getParameter("userid"));
                     String password = request.getParameter("password");
 
                     UserDAO uDAO = new UserDAO();
                     if (password != null && !password.trim().equals("")) {
                         String pwHash = UserDAO.generateHash(password);
-                        uDAO.updateUserWithNewPw(username, firstName, lastName, pwHash);
+                        uDAO.updateUserWithNewPw(userid, username, firstName, lastName, pwHash);
                     } else {
-                        uDAO.updateUser(username, firstName, lastName, manager);
+                        uDAO.updateUser(userid, username, firstName, lastName, manager);
                     }
                     response.getWriter().write("updated user");
                     toReturn.put("success", "success");
@@ -194,7 +194,7 @@ public class UserServlet extends HttpServlet {
                     toReturn.put("usertype", usertype);
                 } catch (Exception e) {
                 }
-            } else if (type.equals("makeNewMangerWithTeam")) {
+            } else if (type.equals("makeNewManagerWithTeam")) {
 
                 UserDAO uDAO = new UserDAO();
                 JSONObject transJsonObj = new JSONObject();
@@ -204,27 +204,19 @@ public class UserServlet extends HttpServlet {
                 } catch (IOException | JSONException e) {
                 }
                 try {
-
-                    User newManager = uDAO.retrieve(transJsonObj.getString("manager"));
+                    
+                    int newManagerId = transJsonObj.getInt("newManager");
+                    ArrayList<Integer> usersId = new ArrayList<>();
+                    usersId.add(transJsonObj.getInt("user1"));
+                    usersId.add(transJsonObj.getInt("user2"));
+                    usersId.add(transJsonObj.getInt("user3"));
+                    User newManager = uDAO.retrieveById(newManagerId);
                     String managerName = "" + newManager.getFirstName() + newManager.getLastName().toUpperCase();
-                    uDAO.makeManager(newManager.getUsername());
+                    uDAO.makeManager(newManagerId);
 
-                    String teamMembers = transJsonObj.getString("teamMembers");
 
-                    ArrayList<String> members = new ArrayList<>();
-                    String temp = "";
-                    int start = 0;
-                    int end = teamMembers.indexOf(" ");
-
-                    while (!teamMembers.isEmpty()) {
-                        members.add(teamMembers.substring(start, end));
-                        teamMembers = teamMembers.substring(end + 1);
-                        start = 0;
-                        end = teamMembers.indexOf(" ");
-                    }
-
-                    for (int i = 0; i < members.size(); i++) {
-                        uDAO.changeManager(members.get(i), managerName);
+                    for (int i = 0; i < usersId.size(); i++) {
+                        uDAO.changeManager(usersId.get(i), managerName);
                     }
 
                     response.getWriter().write("Success, new team created with " + managerName.toUpperCase() + " as the manaager");
