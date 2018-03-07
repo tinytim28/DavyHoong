@@ -244,7 +244,7 @@ public class SalesObjectDAO {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("DELETE from sales where username ='" + username + "' AND pName ='" + pName + "' AND salesid = '" + salesID + "' ");
+            stmt = conn.prepareStatement("DELETE from sales where username ='" + username + "' AND pName ='" + pName + "' AND salesid = '" + salesID + "'");
 
             stmt.executeUpdate();
 

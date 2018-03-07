@@ -13,6 +13,7 @@ import java.sql.Time;
  * @author Timothy
  */
 public class Notification {
+    int notiID;
     int managerID;
     String notificationType;
     String message;
@@ -22,7 +23,8 @@ public class Notification {
     int priority;
     int audience;  // 0 if meant for team, else individual agentID
 
-    public Notification(int managerID, String notificationType, Date date, Time start, Time end, int priority, int audience, String message) {
+    public Notification(int notiID, int managerID, String notificationType, Date date, Time start, Time end, int priority, int audience, String message) {
+        this.notiID = notiID;
         this.managerID = managerID;
         this.notificationType = notificationType;
         this.date = date;
@@ -31,6 +33,14 @@ public class Notification {
         this.priority = priority;
         this.audience = audience;
         this.message = message;
+    }
+
+    public int getNotiID() {
+        return notiID;
+    }
+
+    public void setNotiID(int notiID) {
+        this.notiID = notiID;
     }
     
     public String getMessage() {

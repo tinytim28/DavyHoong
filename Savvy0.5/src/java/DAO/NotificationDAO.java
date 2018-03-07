@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.Date;
-import java.time.*;
+import java.sql.Time;
 
 /**
  *
@@ -40,7 +40,8 @@ public class NotificationDAO {
             while (result.next()) {
 
                 JsonObject toReturn = new JsonObject();
-
+                
+                toReturn.addProperty("notiID", result.getInt("notiID"));
                 toReturn.addProperty("managerID", result.getInt("managerID"));
                 toReturn.addProperty("notificationType", result.getString("notificationType"));
                 toReturn.addProperty("date", result.getDate("date").toString());
@@ -81,7 +82,8 @@ public class NotificationDAO {
             while (result.next()) {
 
                 JsonObject toReturn = new JsonObject();
-
+                
+                toReturn.addProperty("notiID", result.getInt("notiID"));
                 toReturn.addProperty("managerID", result.getInt("managerID"));
                 toReturn.addProperty("notificationType", result.getString("notificationType"));
                 toReturn.addProperty("date", result.getDate("date").toString());         
@@ -102,5 +104,57 @@ public class NotificationDAO {
             }
         }
         return jsonArray.toString();
+    }
+    
+    public void createNotification(int managerID, String notificationType, Date date, Time start,  Time end, int audience, String message) {
+        //  lookupList = new ArrayList<String>();
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("INSERT INTO `notification` (`managerID`, `notificationType, `date` , `start`, `end`, `message`) VALUES"
+                    + "(?,?,?,?,?,?)");
+            stmt.setInt(1, managerID);
+            stmt.setString(2, notificationType);
+            stmt.setDate(3, date);
+            stmt.setTime(4, start);
+            stmt.setTime(5, end);
+            stmt.setInt(6, audience);
+            stmt.setString(7, message);
+            stmt.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            String error = e.getMessage();
+            System.out.println(error);
+        } finally {
+            try {
+                // rs.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+    }
+    
+    public void deleteNotification(int notiID) {
+        try {
+
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE from notification where notiID =" + notiID + "");
+
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //rs.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 }
