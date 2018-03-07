@@ -108,13 +108,10 @@ public class UserServlet extends HttpServlet {
                     String teamRetrieve;
                     User current = (User) session.getAttribute("loginUser");
 
-
                     teamRetrieve = "" + current.getFirstName() + " " + current.getLastName().toUpperCase();
-                    
 
                     String list = userDAO.retrieveUserInfo(teamRetrieve);
                     String output = "";
-
 
                     String json = "";
                     //   System.out.println("json" + json);
@@ -167,7 +164,7 @@ public class UserServlet extends HttpServlet {
                 //System.out.println(transJsonObj);      
             } else if (type.equals("updateUser")) {
                 try {
-                    User user = (User)session.getAttribute("loginUser");
+                    User user = (User) session.getAttribute("loginUser");
                     String manager = user.getFirstName() + " " + user.getLastName().toUpperCase();
                     //changed this part as well, same as above, chage the variable names accordingly and remove those thats not needed
                     String username = request.getParameter("username");
@@ -195,34 +192,25 @@ public class UserServlet extends HttpServlet {
                 } catch (Exception e) {
                 }
             } else if (type.equals("makeNewManagerWithTeam")) {
-
-                UserDAO uDAO = new UserDAO();
                 JSONObject transJsonObj = new JSONObject();
                 try {
+                    UserDAO uDAO = new UserDAO();
                     transJsonObj = new JSONObject(request.getReader().readLine());
-
-                } catch (IOException | JSONException e) {
-                }
-                try {
-                    
                     int newManagerId = transJsonObj.getInt("newManager");
                     ArrayList<Integer> usersId = new ArrayList<>();
                     usersId.add(transJsonObj.getInt("user1"));
                     usersId.add(transJsonObj.getInt("user2"));
                     usersId.add(transJsonObj.getInt("user3"));
                     User newManager = uDAO.retrieveById(newManagerId);
-                    String managerName = "" + newManager.getFirstName() + newManager.getLastName().toUpperCase();
+                    String managerName = "" + newManager.getFirstName() + " " + newManager.getLastName().toUpperCase();
                     uDAO.makeManager(newManagerId);
-
 
                     for (int i = 0; i < usersId.size(); i++) {
                         uDAO.changeManager(usersId.get(i), managerName);
                     }
 
-                    response.getWriter().write("Success, new team created with " + managerName.toUpperCase() + " as the manaager");
-
-                } catch (JSONException ex) {
-                    //Logger.getLogger(admincontrol.class.getName()).log(Level.SEVERE, null, ex);
+                    response.getWriter().write("Success, new team created with " + managerName.toUpperCase() + " as the manager");
+                } catch (IOException | JSONException e) {
                 }
 
             }

@@ -132,49 +132,47 @@
             </div>
         </div>
         <!--update User-->
-        <div aria-hidden="true" class="modal fade" id="showUpdateUserModal" role="dialog" tabindex="-1">
+        <div aria-hidden="true" class="modal fade" id="showMakeManagerModal" role="dialog" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button aria-hidden="true" class="close" data-dismiss="modal" type="button">X</button>
-                        <h4 id="myModalLabel">Update User</h4>
+                        <h4 id="makeManagerModal">Make Manager</h4>
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal well" id="registerUserForm" name="registerUserForm" style="padding-bottom: 0px;">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Username</label>
+                                <label class="col-sm-4 control-label">New Manager</label>
                                 <div class="col-sm-7">
-                                    <input class="form-control" id="username_update" name="bic" type="text">
+                                    <select class="form-control" id="newManager" name="newManager" disabled>
+                                    </select> 
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">First Name</label>
+                                <label class="col-sm-4 control-label">Option 1</label>
                                 <div class="col-sm-7">
-                                    <input class="form-control" id="firstName_update" name="bic" type="text">
+                                    <select class="form-control" id="option1" name="option1">
+                                    </select>                
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Last Name</label>
+                            <div class="form-group" id="option2div">
+                                <label class="col-sm-4 control-label">Option 2</label>
                                 <div class="col-sm-7">
-                                    <input class="form-control" id="lastName_update" name="bic" type="text">
+                                    <select class="form-control" id="option2" name="option2">
+                                    </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Password (Optional)</label>
+                            <div class="form-group" id="option3div">
+                                <label class="col-sm-4 control-label">Option 3</label>
                                 <div class="col-sm-7">
-                                    <input class="form-control" id="password_update" name="bic" type="password">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Confirm Password (Optional)</label>
-                                <div class="col-sm-7">
-                                    <input class="form-control" id="cfmpassword_update" name="bic" type="password">
+                                    <select class="form-control" id="option3" name="option3">
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label"></label>
                                 <div class="col-sm-7">
-                                    <button class="btn btn-primary" id="UpdateUser" style="display: initial" type="button">Update User</button>
+                                    <button class="btn btn-primary" name="MakeManager" id="MakeManager" style="display: initial" type="button">Make Manager</button>
                                 </div>
                             </div>
                         </form>

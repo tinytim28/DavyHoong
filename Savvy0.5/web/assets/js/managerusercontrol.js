@@ -29,7 +29,11 @@ function fetch() {
                         "targets": 4,
                         data: 'ID',
                         render: function (data, type, row) {
-                            return "<button id='EditUser' type='button' class='btn btn-xs btn-primary' name=' " + JSON.stringify(row) + "  '><span class='glyphicon glyphicon-pencil' aria-hidden='true'><\/span> Edit<\/button>  <button id='DeactivateUser' type='button' class='btn btn-xs btn-danger' name='" + JSON.stringify(row) + "'><span class='glyphicon glyphicon-trash' aria-hidden='true'><\/span> Deactivate<\/button><\/td>";
+                            if (row.Active == "Active") {
+                                return "<button id='MakeManager' type='button' class='btn btn-xs btn-primary' name=' " + JSON.stringify(row) + "  '><span class='glyphicon glyphicon-arrow-up' aria-hidden='true'><\/span> Make Manager<\/button>  <button id='DeactivateUser' type='button' class='btn btn-xs btn-danger' name='" + JSON.stringify(row) + "'><span class='glyphicon glyphicon-trash' aria-hidden='true'><\/span> Deactivate<\/button><\/td>";
+                            } else {
+                                return "<button id='MakeManager' disabled type='button' class='btn btn-xs btn-primary' name=' " + JSON.stringify(row) + "  '><span class='glyphicon glyphicon-arrow-up' aria-hidden='true'><\/span> Make Manager<\/button>  <button id='DeactivateUser' disabled type='button' class='btn btn-xs btn-danger' name='" + JSON.stringify(row) + "'><span class='glyphicon glyphicon-trash' aria-hidden='true'><\/span> Deactivate<\/button><\/td>";
+                            }
                         }
                     }
 
@@ -39,64 +43,143 @@ function fetch() {
         }
     });
 }
+
+
 $(document).ready(function () {
-//start of update user
+    $('#showMakeManagerModal').on('hidden.bs.modal', function (e) {
+        $(this)
+                .find("input,textarea,select")
+                .val('')
+                .end()
+                .find("input[type=checkbox], input[type=radio]")
+                .prop("checked", "")
+                .end();
+        document.getElementById("option1").disabled = false;
+        document.getElementById("option2").disabled = false;
+        document.getElementById("option3").disabled = false;
+    })
+
     fetch();
-    $("#showUpdateUserModal").on("hide", function () { // remove the event listeners when the dialog is dismissed
-        $("#showUpdateUserModal a.btn").off("click");
+    $("#showMakeManagerModal").on("hide", function () { // remove the event listeners when the dialog is dismissed
+        $("#showMakeManagerModal a.btn").off("click");
     });
 
-    $("#showUpdateUserModal").on("hidden", function () { // remove the actual elements from the DOM when fully hidden
-        $("#showUpdateUserModal").remove();
+    $("#showMakeManagerModal").on("hidden", function () { // remove the actual elements from the DOM when fully hidden
+        $("#showMakeManagerModal").remove();
     });
 
 
-    $("table").on('click', '#EditUser', function () {
-        showUpdateUserModal();
-        var edit = $(this).attr("name");
-        var user = JSON.parse(edit);
-        var username = user.username;
-        var firstname = user.firstname;
-        var lastname = user.lastname;
-        $("#username_update").val(username);
-        $("#firstName_update").val(firstname);
-        $("#lastName_update").val(lastname);
+    $("table").on('click', '#MakeManager', function () {
+        showMakeManagerModal();
+        var makeManager = $(this).attr("name");
+        var newManager = JSON.parse(makeManager);
+        var userid = newManager.userid;
+        var username = newManager.username;
+        $("#newManager").html("");
+        $("#newManager").append("<option value='" + userid + "'>" + username + "</option>");
+        var option1 = "";
+        var option2 = "";
+        var option3 = "";
+        $.ajax({
+            url: '/Savvy0.5/UserServlet?type=retrieveUser',
+            dataType: 'json',
+            success: function (data) {
+                $("#option1").html("<option value=''>" + "Please Choose One" + "</option>");
+                $("#option2").html("<option value=''>" + "Please Choose One" + "</option>");
+                $("#option3").html("<option value=''>" + "Please Choose One" + "</option>");
+                var i;
+                for (i in data) {
+                    if (data[i].userid != newManager.userid && data[i].Active != "Inactive") {
+                        $("#option1").append("<option value='" + data[i].userid + "'>" + data[i].username + "</option>");
+                    }
+                }
+
+            }
+        });
+        $("#option1").change(function () {
+            option1 = $(this.value);
+            document.getElementById("option1").disabled = true;
+            $.ajax({
+                url: '/Savvy0.5/UserServlet?type=retrieveUser',
+                dataType: 'json',
+                success: function (data) {
+                    $("#option2").html("<option value=''>" + "Please Choose One" + "</option>");
+                    var i;
+                    for (i in data) {
+                        if (data[i].userid != option1.selector && data[i].userid != newManager.userid && data[i].Active != "Inactive") {
+                            $("#option2").append("<option value='" + data[i].userid + "'>" + data[i].username + "</option>");
+                        }
+                    }
+
+                }
+            });
+        });
+        $("#option2").change(function () {
+            option2 = $(this.value);
+            document.getElementById("option2").disabled = true;
+            $.ajax({
+                url: '/Savvy0.5/UserServlet?type=retrieveUser',
+                dataType: 'json',
+                success: function (data) {
+                    $("#option3").html("<option value=''>" + "Please Choose One" + "</option>");
+                    var i;
+                    for (i in data) {
+                        if (data[i].userid != option1.selector && data[i].userid != option2.selector && data[i].userid != newManager.userid && data[i].Active != "Inactive") {
+                            $("#option3").append("<option value='" + data[i].userid + "'>" + data[i].username + "</option>");
+                        }
+                    }
+
+                }
+            });
+        });
+        $("#option3").change(function () {
+            option3 = $(this.value);
+            document.getElementById("option3").disabled = true;
+        });
+
     });
 
-    $("#UpdateUser").click(function () {
-        var username = document.getElementById("username_update").value;
-        var firstname = document.getElementById("firstName_update").value;
-        var lastname = document.getElementById("lastName_update").value;
-        var password = document.getElementById("password_update").value;
-        var cfmPassword = document.getElementById("cfmpassword_update").value;
+    $("#MakeManager").click(function () {
+        var newManager = parseInt(document.getElementById("newManager").value);
+        var option1 = parseInt(document.getElementById("option1").value);
+        var option2 = parseInt(document.getElementById("option2").value);
+        var option3 = parseInt(document.getElementById("option3").value);
 
-
-        if (password !== cfmPassword) {
-            $("#showUpdateUserModal").modal('hide');
-            showErrorModal("Password don't match!");
+        if (!option1 || !option2 || !option3) {
+            $("#showMakeManagerModal").modal('hide');
+            showErrorModal("Please input all fields before submitting!");
         } else {
 
             // disable search button and clear table
-            $("#showUpdateUserModal").modal('hide');
+            $("#showMakeManagerModal").modal('hide');
 
             var data = {
-                username: username,
-                firstName: firstname,
-                lastName: lastname,
-                password: password,
-                type: "updateUser"
+                newManager: newManager,
+                user1: option1,
+                user2: option2,
+                user3: option3
             };
+            
+            var parameters = JSON.stringify(data);
+            alert(parameters);
             // send json to servlet
             $.ajax({
                 type: "POST",
-                url: "/Savvy0.5/UserServlet",
-                datatype: 'json',
-                data: data,
-                success: function (data) {
+                url: "/Savvy0.5/UserServlet?type=makeNewManagerWithTeam",
+                contentType: "application/json",
+                datatype: "json",
+                data: parameters,
 
-                    showSuccessModal("Successfully updated user!");
-                    table.destroy();
-                    fetch();
+                success: function (data) {
+                    if (data.success) {
+                        showSuccessModal("Successfully promoted!");
+                        table.destroy();
+                        fetch();
+                        
+                    } else {
+                        showErrorModal("Creation Failed.");
+                    }
+
 
                 },
                 error: function (xhr, status, error) {
@@ -238,7 +321,7 @@ $(document).ready(function () {
 $("table").on('click', '#DeactivateUser', function () {
     var del = $(this).attr("name");
     var user = JSON.parse(del);
-    var username = user.username;
+    var userid = user.userid;
     $("#myModal").modal({// wire up the actual modal functionality and show the dialog
         "backdrop": "static",
         "keyboard": true,
@@ -250,7 +333,7 @@ $("table").on('click', '#DeactivateUser', function () {
 
         // set request parameters
         var parameters = {
-            username: username
+            userid: userid
         };
 
         parameters = JSON.stringify(parameters);
@@ -294,8 +377,8 @@ function showErrorModal(errorMessage) {
 
 
 
-function showUpdateUserModal() {
-    $('#showUpdateUserModal').modal('show');
+function showMakeManagerModal() {
+    $('#showMakeManagerModal').modal('show');
 }
 function viewUserSaleModal() {
     $('#viewUserSaleModal').modal('show');
