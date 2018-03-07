@@ -52,6 +52,7 @@ public class NotificationDAO {
                 
                 toReturn.addProperty("end", result.getTime("end").toString());
                 toReturn.addProperty("audience", result.getInt("audience"));
+                toReturn.addProperty("message", result.getString("message"));
                 jsonArray.add(toReturn);
 
             }
@@ -85,6 +86,7 @@ public class NotificationDAO {
                 toReturn.addProperty("notificationType", result.getString("notificationType"));
                 toReturn.addProperty("date", result.getDate("date").toString());         
                 toReturn.addProperty("audience", result.getInt("audience"));
+                toReturn.addProperty("message", result.getString("message"));
                 jsonArray.add(toReturn);
 
             }
