@@ -1,32 +1,16 @@
-<<<<<<< Updated upstream
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/managerusercontrol.js</file>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/src/java/servlets/UserServlet.java</file>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/src/java/DAO/UserDAO.java</file>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/managerusercontrol.html</file>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/adminusercontrol.js</file>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/agentprogresssales.js</file>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/adminusercontrol.html</file>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/admin_control.js</file>
-        </group>
-    </open-files>
-</project-private>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
+            <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/classes/Notification.java</file>
             <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/DAO/UserDAO.java</file>
             <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/classes/User.java</file>
             <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/servlets/UserServlet.java</file>
             <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/DAO/SalesObjectDAO.java</file>
+            <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/DAO/NotificationDAO.java</file>
+            <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/servlets/SalesServlet.java</file>
             <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/classes/SalesObject.java</file>
         </group>
     </open-files>
 </project-private>
->>>>>>> Stashed changes
