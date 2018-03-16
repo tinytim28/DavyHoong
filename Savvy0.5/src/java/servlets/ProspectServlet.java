@@ -94,7 +94,7 @@ public class ProspectServlet extends HttpServlet {
                 try {
                     /* TODO output your page here. You may use following sample code. */
                     ProspectsDAO pDAO = new ProspectsDAO();
-                    String list = pDAO.retrieveIndividualSales(username);
+                    String list = pDAO.retrieveIndividualProspects(username);
                     String output = "";
 
 

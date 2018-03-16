@@ -54,7 +54,7 @@ public class ProspectsDAO {
         return prospects;
     }
 
-    public String retrieveIndividualSales(String username) {
+    public String retrieveIndividualProspects(String username) {
         JsonArray jsonArray = new JsonArray();
         try {
             conn = ConnectionManager.getConnection();
