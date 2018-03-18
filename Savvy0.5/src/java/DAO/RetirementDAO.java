@@ -26,10 +26,10 @@ public class RetirementDAO {
     private Connection conn;
     private ResultSet result;
     private PreparedStatement stmt;
-    
-    public String retrieveRetirementAnalysis(int aid, String pName) {
+
+    public String retrieveRetirementAnalysisInputs(int aid, String pName) {
         JsonObject jsonObject = new JsonObject();
-        
+
         try {
             conn = ConnectionManager.getConnection();
             String query = "SELECT * from retirement where pName = '" + pName + "' and aid = '" + aid + "'";
@@ -63,12 +63,12 @@ public class RetirementDAO {
         }
         return jsonObject.toString();
     }
-    
+
     public void addRetirementAnalysis(Retirement r1) {
-        if(hasRetirementAnalysis(r1.getAid(), r1.getpName())) {
+        if (hasRetirementAnalysis(r1.getAid(), r1.getpName())) {
             deleteAnalysis(r1.getAid(), r1.getpName());
         }
-        
+
         try {
             conn = ConnectionManager.getConnection();
             stmt = conn.prepareStatement("INSERT INTO `retirement` (`aid`, `pName`, `age` , `rAge`, `eAge`, `dAnnualIncome`, `otherContribuitions`, `currentSavings`, `rateSavings`, `rateInflation`) VALUES"
@@ -99,8 +99,8 @@ public class RetirementDAO {
             }
         }
     }
-    
-    public boolean hasRetirementAnalysis(int aid , String pName) {
+
+    public boolean hasRetirementAnalysis(int aid, String pName) {
         boolean toReturn = false;
         try {
             conn = ConnectionManager.getConnection();
@@ -124,7 +124,7 @@ public class RetirementDAO {
         }
         return toReturn;
     }
-    
+
     public void deleteAnalysis(int aid, String pName) {
         try {
 
@@ -145,6 +145,72 @@ public class RetirementDAO {
             }
         }
     }
+
+    public String generateGraphAndTable(int age, int rAge, double amountOfSavings, double presentValueNeededFunds, double firstYearSavingContribuitions, double realDollarContribuition, double rateSavings, double rateInflation, double dAnnualIncome, double otherContribuition, double currentSavings) {
+        JsonArray jsonArray = new JsonArray();
+
+        ArrayList<double[]> list = new ArrayList<>();
+        ArrayList<double[]> output = new ArrayList<>();
+
+        int ageCounter = age;
+        int year = 1;
+        int counter = -1;
+
+        for (int i = ageCounter; i <= 90; i++) {
+            JsonObject jsonOutput = new JsonObject();
+            double[] temp = new double[4];
+            double[] outputList = new double[4];
+            //System.out.println("counter: " + counter);
+
+            // age
+            temp[0] = (double) i;
+            outputList[0] = temp[0];
+            jsonOutput.addProperty("age", outputList[0]);
+
+            //annual savings
+            if (year < (rAge - age + 1)) {
+                temp[1] = realDollarContribuition * java.lang.Math.pow((1 + rateInflation), year);
+                outputList[1] = Math.ceil(temp[1]);
+                jsonOutput.addProperty("annualSavings", outputList[1]);
+            } else {
+                temp[1] = 0;
+                outputList[1] = Math.ceil(temp[1]);
+                jsonOutput.addProperty("annualSavings", outputList[1]);
+            }
+
+            //Cumulative savings
+            if ((double) i == age) {
+                temp[2] = temp[1] + currentSavings * (1 + rateSavings);
+                outputList[2] = Math.ceil(temp[2]);
+                jsonOutput.addProperty("cumulativeSavings", outputList[2]);
+            } else {
+                if (year < (rAge - age + 1)) {
+                    temp[2] = list.get(counter)[2] * (1 + rateSavings) + temp[1];
+                    outputList[2] = Math.ceil(temp[2]);
+                    jsonOutput.addProperty("cumulativeSavings", outputList[2]);
+                } else if (list.get(counter)[2] * (1 + rateSavings) - ((dAnnualIncome - otherContribuition) * ((1 + java.lang.Math.pow((1 + rateInflation), year)))) > 0) {
+                    temp[2] = (list.get(counter)[2] * (1 + rateSavings) - ((dAnnualIncome - otherContribuition) * (java.lang.Math.pow((1 + rateInflation), year))));
+                    outputList[2] = Math.ceil(temp[2]);
+                    jsonOutput.addProperty("cumulativeSavings", outputList[2]);
+                } else {
+                    temp[2] = 0;
+                    outputList[2] = Math.ceil(temp[2]);
+                    jsonOutput.addProperty("cumulativeSavings", outputList[2]);
+                }
+            }
+
+            //Monthly Saving Goal
+            temp[3] = temp[1] / 12;
+            outputList[3] = Math.ceil(temp[3]);
+            jsonOutput.addProperty("monthlySavingGoal", outputList[3]);
+
+            list.add(temp);
+            output.add(outputList);
+
+            year++;
+            counter++;
+            jsonArray.add(jsonOutput);
+        }
+        return jsonArray.toString();
+    }
 }
-
-
