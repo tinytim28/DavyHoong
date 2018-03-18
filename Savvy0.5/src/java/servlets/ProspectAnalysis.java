@@ -80,8 +80,8 @@ public class ProspectAnalysis extends HttpServlet {
 
                 try {
                     pName = jsonObj.getString("pName");
-                    age = jsonObj.getInt("salesID");
-                    rAge = jsonObj.getInt("username");
+                    age = jsonObj.getInt("age");
+                    rAge = jsonObj.getInt("rAge");
                     eAge = jsonObj.getInt("eAge");
                     dAnnualIncome = jsonObj.getDouble("dAnnualIncome");
                     otherContribuition = jsonObj.getDouble("otherContribuition");
