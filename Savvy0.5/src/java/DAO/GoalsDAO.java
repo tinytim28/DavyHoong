@@ -1,4 +1,4 @@
- /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -24,30 +24,28 @@ import com.google.gson.JsonObject;
  * @author Timothy
  */
 public class GoalsDAO {
-    
+
     private ArrayList<Goal> goals;
     private Connection conn;
     private ResultSet result;
     private PreparedStatement stmt;
-    
-    
-    public String retrieveGoalByAgent(String username) {
+
+    public String retrieveGoalByAgent(int userid) {
         JsonArray toReturn = new JsonArray();
         JsonObject jsonObject = new JsonObject();
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Select * from goals where username like  '" + username + "'");
+            stmt = conn.prepareStatement("Select first,second,third,fourth,yearly,approved from user where userid like  '" + userid + "'");
             result = stmt.executeQuery();
             while (result.next()) {
-                jsonObject.addProperty("username", result.getString(1));
-                jsonObject.addProperty("first", result.getString(2));
-                jsonObject.addProperty("second", result.getString(3));
-                jsonObject.addProperty("third", result.getString(4));
-                jsonObject.addProperty("fourth", result.getString(5));
-                jsonObject.addProperty("yearly", result.getString(6));
-                jsonObject.addProperty("approved", result.getString(7));
+                jsonObject.addProperty("first", result.getString(1));
+                jsonObject.addProperty("second", result.getString(2));
+                jsonObject.addProperty("third", result.getString(3));
+                jsonObject.addProperty("fourth", result.getString(4));
+                jsonObject.addProperty("yearly", result.getString(5));
+                jsonObject.addProperty("approved", result.getString(6));
                 toReturn.add(jsonObject);
-    
+
             }
             if (conn != null) {
                 ConnectionManager.close(conn, stmt, result);
@@ -57,24 +55,16 @@ public class GoalsDAO {
         }
         return toReturn.toString();
     }
-    
+
     public void createGoal(String username, double first, double second, double third, double fourth) {
         //  lookupList = new ArrayList<String>();
         Goal toAdd = new Goal(username, first, second, third, fourth);
-        
+        double yearly = first + second + third + fourth;
         try {
-            conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO `goals` (`username`, `first`, `second` , `third`, `fourth`, `yearly`, `approved`) VALUES"
-                    + "(?,?,?,?,?,?,?)");
 
-            stmt.setString(1, toAdd.getUsername());
-            stmt.setDouble(2, toAdd.getFirst());
-            stmt.setDouble(3, toAdd.getSecond());
-            stmt.setDouble(4, toAdd.getThird());
-            stmt.setDouble(5, toAdd.getFourth());
-            stmt.setDouble(6, toAdd.getYearly());
-            stmt.setString(7, toAdd.getApproved());
-            stmt.execute();
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("Update `user` SET `first`='" + first + "', `second`='" + second + "', `third` = '" + third + "', `fourth` = '" + fourth + "', `yearly` = '" + yearly + "', `approved` = 'Pending Approval'  where `username` = '" + username + "'");
+            stmt.executeUpdate();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,11 +78,11 @@ public class GoalsDAO {
             }
         }
     }
-    
+
     public void changeGoal(double first, double second, double third, double fourth, String username) {
-        
+
         double yearly = first + second + third + fourth;
-        
+
         try {
 
             conn = ConnectionManager.getConnection();
@@ -111,28 +101,29 @@ public class GoalsDAO {
             }
         }
     }
-    
-    public String retrieveTeamGoals( String managerName ) {
-        
+
+    public String retrieveTeamGoals(String managerName) {
+
         JsonArray jsonArray = new JsonArray();
-        
+
         try {
             conn = ConnectionManager.getConnection();
-            String query = "SELECT * FROM goals g INNER JOIN user u ON g.username = u.username WHERE u.manager = '" + managerName + "'";
+            String query = "SELECT username,userid,first,second,third,fourth,yearly,approved FROM user WHERE manager = '" + managerName + "'";
             stmt = conn.prepareStatement(query);
             result = stmt.executeQuery();
             while (result.next()) {
-                
-                JsonObject toReturn = new JsonObject(); 
+
+                JsonObject toReturn = new JsonObject();
                 toReturn.addProperty("username", result.getString(1));
-                toReturn.addProperty("first", result.getString(2));
-                toReturn.addProperty("second", result.getString(3));
-                toReturn.addProperty("third", result.getString(4));
-                toReturn.addProperty("fourth", result.getString(5));
-                toReturn.addProperty("yearly", result.getString(6));
-                toReturn.addProperty("approved", result.getString(7));
+                toReturn.addProperty("userid", result.getString(2));
+                toReturn.addProperty("first", result.getString(3));
+                toReturn.addProperty("second", result.getString(4));
+                toReturn.addProperty("third", result.getString(5));
+                toReturn.addProperty("fourth", result.getString(6));
+                toReturn.addProperty("yearly", result.getString(7));
+                toReturn.addProperty("approved", result.getString(8));
                 jsonArray.add(toReturn);
-                
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,16 +136,16 @@ public class GoalsDAO {
                 Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         return jsonArray.toString();
     }
-    
-    public void approval(String username, String approval) {
-        
+
+    public void approval(String userid, String approval) {
+
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("Update `goals` SET `approved` = '" + approval + "' where `username` = '" + username + "'");
+            stmt = conn.prepareStatement("Update `user` SET `approved` = '" + approval + "' where `userid` = '" + userid + "'");
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -169,20 +160,19 @@ public class GoalsDAO {
             }
         }
     }
-    
+
     public Double getUserPastQuarterSales(String username, String startMonth, String endMonth) {
         Double total = 0.0;
 
         LocalDate now = LocalDate.now();
         String endYear = now.toString().substring(0, 4);
         String startYear = now.toString().substring(0, 4);
-        
+
         int temp = Integer.parseInt(endYear) + 1;
-        
+
         if (endYear.equals("1")) {
             endYear = "" + temp;
         }
-
 
         if (startMonth.length() < 2) {
             startMonth = "0" + startMonth;
@@ -216,7 +206,7 @@ public class GoalsDAO {
         }
         return total;
     }
-    
+
     public boolean checkRejected(String username) {
         Goal goal = null;
         try {
@@ -227,7 +217,7 @@ public class GoalsDAO {
                 String name = result.getString("username");
                 double first = result.getDouble("first");
                 double second = result.getDouble("second");
-                double third= result.getDouble("third");
+                double third = result.getDouble("third");
                 double fourth = result.getDouble("fourth");
                 String approved = result.getString("approved");
                 goal = new Goal(name, first, second, third, fourth, approved);
@@ -238,18 +228,18 @@ public class GoalsDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
-        if (goal != null ) {
+
+        if (goal != null) {
             return true;
         }
         return false;
     }
-    
+
     public void deleteGoal(String username) {
         try {
 
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("DELETE from goals where username ='" + username + "'" );
+            stmt = conn.prepareStatement("DELETE from goals where username ='" + username + "'");
 
             stmt.executeUpdate();
 
@@ -265,7 +255,7 @@ public class GoalsDAO {
             }
         }
     }
-    
+
 }
 
 

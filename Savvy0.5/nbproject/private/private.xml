@@ -3,14 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/classes/Notification.java</file>
-            <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/DAO/UserDAO.java</file>
-            <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/classes/User.java</file>
-            <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/servlets/UserServlet.java</file>
-            <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/DAO/SalesObjectDAO.java</file>
-            <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/DAO/NotificationDAO.java</file>
-            <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/servlets/SalesServlet.java</file>
-            <file>file:/C:/Users/tim/Desktop/FYPgit/DavyHoong/Savvy0.5/src/java/classes/SalesObject.java</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/src/java/DAO/GoalsDAO.java</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/home.jsp</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/managergoals.js</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/application.js</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/src/java/servlets/GoalServlet.java</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/managergoals.html</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/agentgoals.js</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/agentgoals.html</file>
         </group>
     </open-files>
 </project-private>

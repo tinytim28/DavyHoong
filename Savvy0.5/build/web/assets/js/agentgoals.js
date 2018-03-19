@@ -73,6 +73,7 @@ function getCurrent() {
                     document.getElementById("Q4new").disabled = true;
                     document.getElementById("CreateGoal").disabled = true;
                     $('#CreateGoal').removeClass('btn-primary');
+                    $('#formBox').hide();
                 }
                 $.ajax({
                     url: '/Savvy0.5/GoalServlet?type=showCurrentQuarterlySales',
@@ -218,7 +219,6 @@ $(document).ready(function () {
 
                     showSuccessAlert("Goal Set!");
                     getCurrent();
-                    getGoals();
                 } else {
                     showErrorAlert("Creation Failed.");
                 }

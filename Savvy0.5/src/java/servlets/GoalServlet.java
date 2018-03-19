@@ -12,7 +12,9 @@ import DAO.UserDAO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -100,7 +102,7 @@ public class GoalServlet extends HttpServlet {
 
             } else if (type.equals("goalApproval")) {
 
-                String username = request.getParameter("username");
+                String username = request.getParameter("userid");
                 String approval = request.getParameter("approved");
                 GoalsDAO gDAO = new GoalsDAO();
                 gDAO.approval(username, approval);
@@ -116,7 +118,18 @@ public class GoalServlet extends HttpServlet {
                 try {
                     GoalsDAO gDAO = new GoalsDAO();
                     User current = (User) session.getAttribute("loginUser");
-                    String json = gDAO.retrieveGoalByAgent(current.getUsername());
+                    String json = gDAO.retrieveGoalByAgent(current.getUserid());
+
+                    response.getWriter().write(json);
+
+                } finally {
+                    //  out.close();
+                }
+            } else if (type.equals("viewIndividualGoals")) {
+                try {
+                    int userid = Integer.parseInt(request.getParameter("userid"));
+                    GoalsDAO gDAO = new GoalsDAO();
+                    String json = gDAO.retrieveGoalByAgent(userid);
 
                     response.getWriter().write(json);
 
@@ -188,6 +201,63 @@ public class GoalServlet extends HttpServlet {
 
                 response.getWriter().write(jsonArray.toString());
 
+            } else if (type.equals("showCurrentQuarterlySalesManager")) {
+                UserDAO uDAO = new UserDAO();
+                User loginUser = (User) session.getAttribute("loginUser");
+                String teamRetrieve = "" + loginUser.getFirstName() + " " + loginUser.getLastName().toUpperCase();
+                String userInfoString = uDAO.retrieveUserInfo(teamRetrieve);
+                JsonParser parser = new JsonParser();
+                JsonElement tradeElement = parser.parse(userInfoString);
+                JsonArray userInfo = tradeElement.getAsJsonArray();
+                JsonArray jsonArray = new JsonArray();
+                for (int i = 0; i < userInfo.size(); i++) {
+                    JsonElement jsonUserElement = userInfo.get(i);
+                    JsonObject jsonUser = jsonUserElement.getAsJsonObject();
+                    String jsonUsername = jsonUser.get("username").getAsString();
+                    int jsonUserid = jsonUser.get("userid").getAsInt();
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("userid", jsonUserid);
+                    String firstQuarter = "0.0";
+                    String secondQuarter = "0.0";
+                    String thirdQuarter = "0.0";
+                    String fourthQuarter = "0.0";
+
+                    GoalsDAO gDAO = new GoalsDAO();
+                    LocalDate now = LocalDate.now();
+                    int currentMonth = now.getMonth().getValue();
+
+                    if (currentMonth < 4) {
+                        firstQuarter = "" + gDAO.getUserPastQuarterSales(jsonUsername, "1", "4");
+                        jsonObject.addProperty("first", firstQuarter);
+
+                    } else if (currentMonth >= 4 && currentMonth < 7) {
+                        firstQuarter = "" + gDAO.getUserPastQuarterSales(jsonUsername, "1", "4");
+                        secondQuarter = "" + gDAO.getUserPastQuarterSales(jsonUsername, "4", "7");
+                        jsonObject.addProperty("first", firstQuarter);
+                        jsonObject.addProperty("second", secondQuarter);
+
+                    } else if (currentMonth >= 7 && currentMonth < 10) {
+                        firstQuarter = "" + gDAO.getUserPastQuarterSales(jsonUsername, "1", "4");
+                        secondQuarter = "" + gDAO.getUserPastQuarterSales(jsonUsername, "4", "7");
+                        thirdQuarter = "" + gDAO.getUserPastQuarterSales(jsonUsername, "7", "10");
+                        jsonObject.addProperty("first", firstQuarter);
+                        jsonObject.addProperty("second", secondQuarter);
+                        jsonObject.addProperty("third", thirdQuarter);
+
+                    } else {
+                        firstQuarter = "" + gDAO.getUserPastQuarterSales(jsonUsername, "1", "4");
+                        secondQuarter = "" + gDAO.getUserPastQuarterSales(jsonUsername, "4", "7");
+                        thirdQuarter = "" + gDAO.getUserPastQuarterSales(jsonUsername, "7", "10");
+                        fourthQuarter = "" + gDAO.getUserPastQuarterSales(jsonUsername, "10", "1");
+                        jsonObject.addProperty("first", firstQuarter);
+                        jsonObject.addProperty("second", secondQuarter);
+                        jsonObject.addProperty("third", thirdQuarter);
+                        jsonObject.addProperty("fourth", fourthQuarter);
+
+                    }
+                    jsonArray.add(jsonObject);
+                }
+                response.getWriter().write(jsonArray.toString());
             }
         }
 
