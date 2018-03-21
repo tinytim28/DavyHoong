@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="assets/widgets/datatable/datatable.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/icons/fontawesome/fontawesome.css" rel="stylesheet" type="text/css"/>
+        <title></title>
+    </head>
+    <body>
+        <h1 class="page-header" style="color:#937851">User Control</h1>
+        <div class="col-md-3">
+            <div class="tile-box bg-white content-box">
+                <div class="tile-header">
+                    Choose Agent
+                </div>
+                <div class="tile-content-wrapper">
+                    <div class="tile-content">                            
+                        <select class="form-control" id="usernamelist" name="usernamelist">
+                        </select>                  
+                    </div>
+                </div>
+            </div>         
+        </div>
+        <div class="col-md-9">
+            <canvas id="smallMyChart2"></canvas>
+        </div>
+        <div class="col-md-12">
+            <table class="table table-striped col-md-12 well" id="trans_table">
+                <thead>
+                    <tr>
+                        <th>Prospect's Name</th>
+                        <th>Age</th>
+                        <th>Retirement Age</th>
+                        <th>Expected Age</th>
+                        <th>Annual Income</th>
+                        <th>Other Contributions</th>
+                        <th>Current Savings</th>
+                        <th>Rate Of Savings</th>
+                        <th>Rate Of Inflation</th>
+                        <th>View Chart</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>   
+
+
+        <!-- javascript libraries
+          ======================================== -->
+        <script src="assets/js/jquery.min.js"></script> 
+        <script src="assets/js/jquery-ui.min.js"></script> 
+        <script src="assets/js/jquery-1.11.1.min.js" type="text/javascript"></script> 
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/managertools.js"></script>
+        <script src="assets/js/Chart.js" type="text/javascript"></script>
+        <script src="assets/widgets/datatable/datatable.js" type="text/javascript"></script>
+        <script src="assets/widgets/datatable/datatable-responsive.js" type="text/javascript"></script>
+        <script src="assets/widgets/datatable/datatable-bootstrap.js" type="text/javascript"></script>
+    </body>
+</html>

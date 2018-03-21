@@ -64,6 +64,44 @@ public class RetirementDAO {
         return jsonObject.toString();
     }
 
+    public String retrieveRetirementAnalysisByAgent(int aid) {
+        JsonArray jsonArr = new JsonArray();
+
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT * from retirement where aid = '" + aid + "'";
+            stmt = conn.prepareStatement(query);
+            result = stmt.executeQuery();
+
+            while (result.next()) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("aid", result.getInt("aid"));
+                jsonObject.addProperty("pName", result.getString("pName"));
+                jsonObject.addProperty("age", result.getInt("age"));
+                jsonObject.addProperty("rAge", result.getInt("rAge"));
+                jsonObject.addProperty("eAge", result.getInt("eAge"));
+                jsonObject.addProperty("dAnnualIncome", result.getDouble("dAnnualIncome"));
+                jsonObject.addProperty("otherContribuition", result.getDouble("otherContribuition"));
+                jsonObject.addProperty("currentSavings", result.getDouble("currentSavings"));
+                jsonObject.addProperty("rateSavings", result.getDouble("rateSavings"));
+                jsonObject.addProperty("rateInflation", result.getDouble("rateInflation"));
+                jsonArr.add(jsonObject);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                result.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return jsonArr.toString();
+    }
+
     public void addRetirementAnalysis(Retirement r1) {
         if (hasRetirementAnalysis(r1.getAid(), r1.getpName())) {
             deleteAnalysis(r1.getAid(), r1.getpName());
@@ -71,7 +109,7 @@ public class RetirementDAO {
 
         try {
             conn = ConnectionManager.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO `retirement` (`aid`, `pName`, `age` , `rAge`, `eAge`, `dAnnualIncome`, `otherContribuitions`, `currentSavings`, `rateSavings`, `rateInflation`) VALUES"
+            stmt = conn.prepareStatement("INSERT INTO `retirement` (`aid`, `pName`, `age` , `rAge`, `eAge`, `dAnnualIncome`, `otherContribuition`, `currentSavings`, `rateSavings`, `rateInflation`) VALUES"
                     + "(?,?,?,?,?,?,?,?,?,?)");
             stmt.setInt(1, r1.getAid());
             stmt.setString(2, r1.getpName());

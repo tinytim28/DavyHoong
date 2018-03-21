@@ -8,6 +8,7 @@ package servlets;
 import classes.User;
 import DAO.UserDAO;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,6 +121,27 @@ public class UserServlet extends HttpServlet {
                     }
 
                     response.getWriter().write(list);
+
+                } finally {
+                    //  out.close();
+                }
+            } else if (type.equals("retrieve")) {
+                // this part i dont really understand, i just edit to make it no error first, 
+                // its not gonna affect our logging in anyway
+                try {
+                    /* TODO output your page here. You may use following sample code. */
+                    UserDAO userDAO = new UserDAO();
+                    User current = (User) session.getAttribute("loginUser");
+                    int userId = current.getUserid();
+
+                    User user = userDAO.retrieveById(userId);
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("firstName", user.getFirstName());
+                    jsonObject.addProperty("lastName", user.getLastName());
+                    jsonObject.addProperty("username", user.getUsername());
+                    jsonObject.addProperty("usertype", user.checkAdmin());
+
+                    response.getWriter().write(jsonObject.toString());
 
                 } finally {
                     //  out.close();

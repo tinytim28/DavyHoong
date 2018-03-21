@@ -101,30 +101,28 @@ public class ProspectAnalysis extends HttpServlet {
                 double presentValueNeededFunds = calculatePresentValueNeededFunds(r1, amountOfSavings);
                 double firstYearSavingContribuitions = calculateFirstYearSavingContribuitions(r1, presentValueNeededFunds, amountOfSavings);
                 double realDollarContribuition = calculateRealDollarContribuition(r1, firstYearSavingContribuitions);
-                
+
                 // PLEASE READ CLIFTON NGEOW.
                 //jsonArray to store jsonObjects with "Age", "Annual Savings", "Cumulative Savings", "Monthly Saving Goal"
                 // FOR THE GRAPH, YOU NEED TO PLOT CUMULATIVE SAVINGS on Y-AXIS, and AGE on X-AXIS
                 // Look at the DAO if you wanna know how the method works. its quite rabak btw.. hahaha
-                
                 String output = rDAO.generateGraphAndTable(age, rAge, amountOfSavings, presentValueNeededFunds, firstYearSavingContribuitions, realDollarContribuition, rateSavings, rateInflation, dAnnualIncome, otherContribuition, currentSavings);
-                
+
                 try {
                     response.getWriter().write(output);
                 } finally {
                     //out.close();
                 }
-                      
 
             } else if (type.equals("retrieveRetirementAnalysis")) {
                 HttpSession session = request.getSession();
                 User loginUser = (User) session.getAttribute("loginUser");
-                int userid= loginUser.getUserid();
+                int userid = loginUser.getUserid();
                 String pName = request.getParameter("pName");
 
                 RetirementDAO rDAO = new RetirementDAO();
                 String output = rDAO.retrieveRetirementAnalysisInputs(userid, pName);
-                
+
                 try {
                     response.getWriter().write(output);
                 } finally {
@@ -141,6 +139,72 @@ public class ProspectAnalysis extends HttpServlet {
                 User loginUser = (User) session.getAttribute("loginUser");
                 String username = loginUser.getUsername();
 
+            } else if (type.equals("performRetirementAnalysis1")) {
+                String output = "";
+                try {
+                    HttpSession session = request.getSession();
+                    User loginUser = (User) session.getAttribute("loginUser");
+                    RetirementDAO rDAO = new RetirementDAO();
+                    JSONObject jsonObj = new JSONObject();
+                    int userid = loginUser.getUserid();
+                    String pName = request.getParameter("pName");
+                    int age = Integer.parseInt(request.getParameter("age"));
+                    int rAge = Integer.parseInt(request.getParameter("rAge"));
+                    int eAge = Integer.parseInt(request.getParameter("eAge"));
+                    double dAnnualIncome = Double.parseDouble(request.getParameter("dAnnualIncome"));
+                    double otherContribuition = Double.parseDouble(request.getParameter("otherContribuition"));
+                    double currentSavings = Double.parseDouble(request.getParameter("currentSavings"));
+                    double rateSavings = Double.parseDouble(request.getParameter("rateSavings"));
+                    double rateInflation = Double.parseDouble(request.getParameter("rateInflation"));
+                    double amountOfSavings = Double.parseDouble(request.getParameter("amountOfSavings"));
+                    double presentValueNeededFunds = Double.parseDouble(request.getParameter("presentValueNeededFunds"));
+                    double firstYearSavingContribuitions = Double.parseDouble(request.getParameter("firstYearSavingContribuitions"));
+                    double realDollarContribuition = Double.parseDouble(request.getParameter("realDollarContribuition"));
+                    output = rDAO.generateGraphAndTable(age, rAge, amountOfSavings, presentValueNeededFunds, firstYearSavingContribuitions, realDollarContribuition, rateSavings, rateInflation, dAnnualIncome, otherContribuition, currentSavings);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                // PLEASE READ CLIFTON NGEOW.
+                //jsonArray to store jsonObjects with "Age", "Annual Savings", "Cumulative Savings", "Monthly Saving Goal"
+                // FOR THE GRAPH, YOU NEED TO PLOT CUMULATIVE SAVINGS on Y-AXIS, and AGE on X-AXIS
+                // Look at the DAO if you wanna know how the method works. its quite rabak btw.. hahaha
+                try {
+                    response.getWriter().write(output);
+                } finally {
+                    //out.close();
+                }
+
+            } else if (type.equals("addRetirementDataToProspect")) {
+                HttpSession session = request.getSession();
+                User loginUser = (User) session.getAttribute("loginUser");
+                int userid = loginUser.getUserid();
+                String pName = request.getParameter("pName");
+                int age = Integer.parseInt(request.getParameter("age"));
+                int rAge = Integer.parseInt(request.getParameter("rAge"));
+                int eAge = Integer.parseInt(request.getParameter("eAge"));
+                double dAnnualIncome = Double.parseDouble(request.getParameter("dAnnualIncome"));
+                double otherContribuition = Double.parseDouble(request.getParameter("otherContribuition"));
+                double currentSavings = Double.parseDouble(request.getParameter("currentSavings"));
+                double rateSavings = Double.parseDouble(request.getParameter("rateSavings"));
+                double rateInflation = Double.parseDouble(request.getParameter("rateInflation"));
+                Retirement r1 = new Retirement(userid, pName, age, rAge, eAge, dAnnualIncome, otherContribuition, currentSavings, rateSavings, rateInflation);
+                RetirementDAO rDAO = new RetirementDAO();
+                if (rDAO.hasRetirementAnalysis(userid, pName)) {
+                    rDAO.deleteAnalysis(userid, pName);
+                    rDAO.addRetirementAnalysis(r1);
+                } else {
+                    rDAO.addRetirementAnalysis(r1);
+                }
+            } else if (type.equals("retrieveRetirementAnalysisByAgent")) {
+                RetirementDAO rDAO = new RetirementDAO();
+                int aid = Integer.parseInt(request.getParameter("aid"));
+                String output = rDAO.retrieveRetirementAnalysisByAgent(aid);
+                try {
+                    response.getWriter().write(output);
+                } finally {
+                    //out.close();
+                }
             }
         }
 

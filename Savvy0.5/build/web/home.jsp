@@ -20,7 +20,7 @@
 
 
         <!-- HELPERS -->
-
+        <link href="assets/icons/linecons/linecons.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" type="text/css" href="assets/helpers/animate.css">
         <link rel="stylesheet" type="text/css" href="assets/helpers/backgrounds.css">
         <link rel="stylesheet" type="text/css" href="assets/helpers/boilerplate.css">
@@ -75,10 +75,12 @@
                     <div id="header-nav-left">
                     </div>
                     <div id="header-nav-right">
+                        <a class="header-btn loadPage" name="userprofile" title="Logout">
+                            <i class="glyph-icon icon-cog"></i>
+                        </a>
                         <a class="header-btn" id="logout-btn" href="logout.jsp" title="Logout">
                             <i class="glyph-icon icon-lock"></i>
                         </a>
-
                     </div>
                 </div>
 
@@ -95,6 +97,8 @@
                             <li id="sidebarlink3">                          
                             </li>
                             <li id="sidebarlink4">
+                            </li>
+                            <li id="sidebarlink5">
                             </li>
                         </ul>    
                     </div>

@@ -1,4 +1,4 @@
 <%
-    session.removeAttribute("loginUser");
+    session.invalidate();
     response.sendRedirect("index.html");
     %>    
