@@ -112,7 +112,7 @@ public class OverviewServlet extends HttpServlet {
                 LocalDate now = LocalDate.now();
                 String year = "" + now.getYear();
                 String yearStart = year + "-01-01";
-                
+
                 int endYear = Integer.parseInt(year) + 1;
                 String toPutForEnd = "" + endYear;
 
@@ -123,11 +123,21 @@ public class OverviewServlet extends HttpServlet {
                 String output = "";
                 response.getWriter().write(toShow);
 
+            } else if (type.equals("managerRetrieveTeamPerformance")) {
+
+                HttpSession session = request.getSession();
+                SalesObjectDAO sDAO = new SalesObjectDAO();
+                User loginUser = (User) session.getAttribute("loginUser");
+                String managerName = "" + loginUser.getFirstName() + " " + loginUser.getLastName().toUpperCase();
+                String json = sDAO.retrieveTeamPerformance(managerName);
+                
+                response.getWriter().write(json);
+
             } else if (type.equals("managerRetrieveCaseBreakdownMonth")) {
 
                 String month = "";
                 LocalDate now = LocalDate.now();
-                
+
                 if (request.getParameter("month") == null) {
                     Month currentMonth = now.getMonth();
                     month = "" + currentMonth.getValue();
@@ -167,10 +177,8 @@ public class OverviewServlet extends HttpServlet {
                 SalesObjectDAO sDAO = new SalesObjectDAO();
                 User loginUser = (User) session.getAttribute("loginUser");
                 String managerName = "" + loginUser.getFirstName() + " " + loginUser.getLastName().toUpperCase();
-                
+
                 String toShow = sDAO.getCaseBreakdownYTD(managerName, dateStart, dateEnd);
-
-
 
                 toReturn.put("success", "success");
                 response.getWriter().write(toShow);

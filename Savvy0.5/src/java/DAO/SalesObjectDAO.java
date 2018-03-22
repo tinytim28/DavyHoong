@@ -492,6 +492,8 @@ public class SalesObjectDAO {
         }
         return total;
     }
+    
+    
 
     //AGENT METHODS FOR HOUSEKEEPING
     public double getIndividualTotalSalesOneMonth(String username) {
@@ -657,7 +659,50 @@ public class SalesObjectDAO {
 
         return output;
     }
+    
+    public String retrieveTeamPerformance(String managerName) {
+        String output = "";
 
+        ArrayList<String> usernames = new ArrayList<>();
+        ArrayList<Double> fyc = new ArrayList<>();
+        double total = 0.0;
+        JsonArray jsonArr = new JsonArray();
+        
+
+        try {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("select username, dateClose, caseType, expectedFYC from sales where username in (select username from user where manager = '" + managerName + "') and dateClose IS NOT NULL");
+            result = stmt.executeQuery();
+            while (result.next()) {
+                JsonObject jsonOb = new JsonObject();
+                String username = result.getString("username");
+                jsonOb.addProperty("username",username);
+                String dateClose = result.getDate("dateClose").toString();
+                jsonOb.addProperty("dateClose",dateClose);
+                String caseType = result.getString("caseType");
+                jsonOb.addProperty("caseType",caseType);
+                double expectedFYC = result.getDouble("expectedFYC");
+                jsonOb.addProperty("expectedFYC",expectedFYC);
+                jsonArr.add(jsonOb);
+                
+
+
+
+            }
+            
+            output = jsonArr.toString();
+
+
+            if (conn != null) {
+                ConnectionManager.close(conn, stmt, result);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return output;
+    }
+    
     public ArrayList<String> retrieveTeamSalesMonthYTD(String managerName) {
         ArrayList<String> output = new ArrayList<>();
 

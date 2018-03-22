@@ -4688,13 +4688,14 @@ a.thumbnail.active {
 }
 .alert {
     position: fixed;
-    top: 80px; 
-    right:2%;
-    width: 10%;
+    bottom: 5px;
+    left:25%;
+    width: 50%;
     padding: 15px;
     margin-bottom: 20px;
     border: 1px solid transparent;
     border-radius: 4px;
+    font-size: 15px;
 }
 .alert h4 {
     margin-top: 0;

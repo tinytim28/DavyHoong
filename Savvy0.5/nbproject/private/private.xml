@@ -3,19 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/managerforecast.js</file>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/src/java/servlets/ForecastServlet.java</file>
             <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/managerusercontrol.js</file>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/managerusercontrol.html</file>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/managergoals.html</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/userprofile.js</file>
             <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/src/java/servlets/ProspectAnalysis.java</file>
             <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/agenttools.html</file>
             <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/managertools.html</file>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/managerperformance.js</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/userprofile.html</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/home.jsp</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/src/java/servlets/UserServlet.java</file>
             <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/application.js</file>
-            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/managergoals.js</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/src/java/DAO/UserDAO.java</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/src/java/servlets/GoalServlet.java</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/logout.jsp</file>
             <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/src/java/DAO/RetirementDAO.java</file>
             <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/agenttools.js</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/agentgoals.html</file>
+            <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/managertools.js</file>
         </group>
     </open-files>
 </project-private>

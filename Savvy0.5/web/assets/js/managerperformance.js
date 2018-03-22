@@ -5,6 +5,47 @@ var myChart2;
 var person;
 var month;
 var date = new Date().getMonth();
+var allInfo;
+var teamperf = {
+    type: "managerRetrieveTeamPerformance"
+};
+$.ajax({
+
+    type: "POST",
+    url: "/Savvy0.5/OverviewServlet",
+    datatype: 'json',
+    data: teamperf,
+    success: function (responseJson) {
+        allInfo = responseJson;
+        var i;
+        var lifecount = 0;
+        var investmentcount = 0;
+        var savingscount = 0;
+        var hospitalisationcount = 0;
+        var retirementcount = 0;
+        var otherscount = 0;
+        console.log(allInfo);
+        for (i in responseJson) {
+
+            if (responseJson[i].caseType === "Life") {
+                console.log(responseJson[i].caseType);
+                lifecount++;
+            } else if (responseJson[i].caseType === "Investment") {
+                investmentcount++;
+            } else if (responseJson[i].caseType === "Savings") {
+                savingscount++;
+            } else if (responseJson[i].caseType === "Hospitalisation") {
+                hospitalisationcount++;
+            } else if (responseJson[i].caseType === "Retirement") {
+                retirementcount++;
+            } else if (responseJson[i].caseType === "Others") {
+                otherscount++;
+            }
+        }
+        
+    }
+});
+
 
 var monthNames = ["Year-To-Date", "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
@@ -13,7 +54,170 @@ $("#monthlist").html("");
 for (var i = 0; i < date + 2; i++) {
     $("#monthlist").append("<option value='" + i + "'>" + monthNames[i] + "</option>");
 }
+$("#caselist").change(function () {
+    var info = $(this.value);
+    myChart2.destroy();
+    var caseType = info.selector;
+    alert(caseType);
+    if (caseType == "all") {
+        var data = {
+            type: "managerTeamOverviewYTD"
+        };
+        $.ajax({
+            type: "POST",
+            url: "/Savvy0.5/OverviewServlet",
+            datatype: 'json',
+            data: data,
+            success: function (responseJson) {
+                var strings = responseJson.split(",");
+                var index = (strings.length - 1) / 2;
+                var labels = [];
+                var dataPoints = [];
+                var totalYTDsales = strings[strings.length - 1];
+                var htmlcode = "<th>Total Year-to-Date Sales:  <\/th><td>" + totalYTDsales + "<\/td>";
+                $("#trans_table3").html(htmlcode);
+                for (var i = 0; i < index; i++) {
+                    labels[i] = strings[i];
+                }
+                for (var j = index; j < strings.length - 1; j++) {
+                    dataPoints[j - index] = strings[j];
+                }
+                ctx2 = document.getElementById('smallMyChart2').getContext('2d');
+                myChart2 = new Chart(ctx2, {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: 'Closed Sales',
+                                backgroundColor: [
+                                    "crimson",
+                                    "gold",
+                                    "yellowgreen",
+                                    "deepskyblue",
+                                    "crimson",
+                                    "gold",
+                                    "yellowgreen",
+                                    "deepskyblue",
+                                    "crimson",
+                                    "gold",
+                                    "yellowgreen",
+                                    "deepskyblue",
+                                    "crimson",
+                                    "gold",
+                                    "yellowgreen",
+                                    "deepskyblue",
+                                    "crimson",
+                                    "gold",
+                                    "yellowgreen",
+                                    "deepskyblue",
+                                    "crimson",
+                                    "gold",
+                                    "yellowgreen",
+                                    "deepskyblue",
+                                    "crimson",
+                                    "gold",
+                                    "yellowgreen",
+                                    "deepskyblue",
+                                    "crimson",
+                                    "gold",
+                                    "yellowgreen",
+                                    "deepskyblue"
+                                ],
+                                data: dataPoints
+                            }
+                        ]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [
+                                {
+                                    ticks: {
+                                        fontSize: 18
+                                    },
+                                    stacked: true,
+                                    scaleLabel: {
+                                        fontSize: 25,
+                                        display: true,
+                                        labelString: 'FYC per Individual'
+                                    }
+                                }
+                            ],
+                            yAxes: [
+                                {
+                                    ticks: {
+                                        fontSize: 18
+                                    },
+                                    stacked: true,
+                                    scaleLabel: {
+                                        fontSize: 20,
+                                        display: true,
+                                        labelString: 'Financial Agent'
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                });
 
+            },
+            error: function (xhr, status, error) {
+                alert(error);
+            }
+
+        });
+        $.ajax({
+            url: '/Savvy0.5/OverviewServlet?type=managerRetrieveCaseBreakdownYTD',
+            dataType: 'json',
+            success: function (data) {
+                if (data[0].Life) {
+                    $("#life").html("");
+                    $("#life").append(data[0].Life);
+                } else {
+                    $("#life").html("");
+                    $("#life").append("NIL");
+                }
+                if (data[0].Investment) {
+                    $("#investment").html("");
+                    $("#investment").append(data[0].Investment);
+                } else {
+                    $("#investment").html("");
+                    $("#investment").append("NIL");
+                }
+                if (data[0].Savings) {
+                    $("#savings").html("");
+                    $("#savings").append(data[0].Savings);
+                } else {
+                    $("#savings").html("");
+                    $("#savings").append("NIL");
+                }
+                if (data[0].Hospitalisation) {
+                    $("#hospitalisation").html("");
+                    $("#hospitalisation").append(data[0].Hospitalisation);
+                } else {
+                    $("#hospitalisation").html("");
+                    $("#hospitalisation").append("NIL");
+                }
+                if (data[0].Retirement) {
+                    $("#retirement").html("");
+                    $("#retirement").append(data[0].Retirement);
+                } else {
+                    $("#retirement").html("");
+                    $("#retirement").append("NIL");
+                }
+                if (data[0].Others) {
+                    $("#others").html("");
+                    $("#others").append(data[0].Others);
+                } else {
+                    $("#others").html("");
+                    $("#others").append("NIL");
+                }
+            }
+        });
+    }
+});
 
 $("#monthlist").change(function () {
     var info = $(this.value);

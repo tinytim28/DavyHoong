@@ -187,12 +187,12 @@ public class UserServlet extends HttpServlet {
             } else if (type.equals("updateUser")) {
                 try {
                     User user = (User) session.getAttribute("loginUser");
-                    String manager = user.getFirstName() + " " + user.getLastName().toUpperCase();
+                    int userid = user.getUserid();
                     //changed this part as well, same as above, chage the variable names accordingly and remove those thats not needed
                     String username = request.getParameter("username");
                     String firstName = request.getParameter("firstName");
                     String lastName = request.getParameter("lastName");
-                    int userid = Integer.parseInt(request.getParameter("userid"));
+                    String usertype = request.getParameter("usertype");
                     String password = request.getParameter("password");
 
                     UserDAO uDAO = new UserDAO();
@@ -200,11 +200,21 @@ public class UserServlet extends HttpServlet {
                         String pwHash = UserDAO.generateHash(password);
                         uDAO.updateUserWithNewPw(userid, username, firstName, lastName, pwHash);
                     } else {
-                        uDAO.updateUser(userid, username, firstName, lastName, manager);
+                        if(usertype.equals("Financial Adviser")){
+                            String manager = user.getManager();
+                            uDAO.updateUser(userid, username, firstName, lastName, manager);
+                        }else if(usertype.equals("Manager")){
+                            String manager = "" + user.getFirstName() + " " + user.getLastName().toUpperCase(); 
+                            uDAO.updateUser(userid, username, firstName, lastName, manager);
+                        }else{
+                            uDAO.updateUser(userid, username, firstName, lastName,"GOD");
+                        }
+                        
                     }
                     response.getWriter().write("updated user");
                     toReturn.put("success", "success");
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             } else if (type.equals("checkCurrentUserType")) {
                 try {
