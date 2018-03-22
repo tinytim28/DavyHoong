@@ -2,6 +2,7 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< Updated upstream
         <group>
             <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/managerusercontrol.js</file>
             <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/userprofile.js</file>
@@ -20,5 +21,8 @@
             <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/agentgoals.html</file>
             <file>file:/C:/Users/User/Documents/GitHub/DavyHoong/Savvy0.5/web/assets/js/managertools.js</file>
         </group>
+=======
+        <group/>
+>>>>>>> Stashed changes
     </open-files>
 </project-private>
