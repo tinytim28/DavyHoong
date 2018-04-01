@@ -3,58 +3,101 @@
 </head>  
 <body>  
     <h1 class="page-header" style="color:#937851">Performance</h1>
-    <div class="col-md-2">
-        <select class="form-control" id="monthlist" name="monthlist"> 
+    <div class="col-md-4">
+        <div class="tile-box bg-white content-box">
+            <div class="tile-header">
+                By Month
+            </div>
+            <select class="form-control" id="monthlist" name="monthlist"> 
 
-        </select>
+            </select>
+        </div>
+
     </div>
-    <div class="col-md-2">
-        <select class="form-control" id="caselist" name="caselist"> 
-            <option value="all">All</option>
-            <option value="life">Life</option>
-            <option value="investment">Investment</option>
-            <option value="savings">Savings</option>
-            <option value="hospitalisation">Hospitalisation</option>
-            <option value="retirement">Retirement</option>
-            <option value="others">Others</option>
-        </select>
-    </div>
-    <br></br><br></br>
-    <div class="col-md-12">
-        <div class="header col-md-12 bg-danger">
-            Case Types Sold
-        </div>
-        <div class="col-sm-2 bg-info">
-            Life
-            <p id="life"></p>
-        </div>
-        <div class="col-sm-2 bg-info">
-            Investment
-            <p id="investment"></p>
-        </div>
-        <div class="col-sm-2 bg-info">
-            Savings
-            <p id="savings"></p>
-        </div>
-        <div class="col-sm-2 bg-info">
-            Hospitalisation
-            <p id="hospitalisation"></p>
-        </div>
-        <div class="col-sm-2 bg-info">
-            Retirement
-            <p id="retirement"></p>
-        </div>
-        <div class="col-sm-2 bg-info">
-            Others
-            <p id="others"></p>
+    <div class="col-md-4">
+        <div class="tile-box bg-white content-box">
+            <div class="tile-header">
+                By User
+            </div>
+            <select class="form-control" id="usernamelist" name="usernamelist">
+            </select>
         </div>
     </div>
+
+    <div class="col-md-4">
+        <div class="tile-box bg-white content-box">
+            <div class="tile-header">
+                By Case Type (Year-To-Date)
+            </div>
+            <select class="form-control" id="caselist" name="caselist"> 
+                <option value="All">All</option>
+                <option value="Life">Life</option>
+                <option value="Investment">Investment</option>
+                <option value="Savings">Savings</option>
+                <option value="Hospitalisation">Hospitalisation</option>
+                <option value="Retirement">Retirement</option>
+                <option value="Others">Others</option>
+            </select>
+        </div>
+    </div>
+
 
 
     </br>
 
-    <div class="col-md-12">
+    <div class="col-md-9">
         <canvas id="smallMyChart2"></canvas>
+    </div>
+    <div class="col-md-3">
+
+        <div class="tile-box bg-white content-box">
+            <div class="tile-header">
+                Life Cases sold
+                <div class="tile-content">   
+                    <p id="life"></p>
+                </div>
+            </div>
+        </div>
+        <div class="tile-box bg-white content-box">
+            <div class="tile-header">
+                Investment Cases sold
+                <div class="tile-content">   
+                    <p id="investment"></p>
+                </div>
+            </div>
+        </div>
+        <div class="tile-box bg-white content-box">
+            <div class="tile-header">
+                Savings Cases sold
+                <div class="tile-content">   
+                    <p id="savings"></p>
+                </div>
+            </div>
+        </div>
+        <div class="tile-box bg-white content-box">
+            <div class="tile-header">
+                Hospitalisation Cases sold
+                <div class="tile-content">   
+                    <p id="hospitalisation"></p>
+                </div>
+            </div>
+        </div>
+        <div class="tile-box bg-white content-box">
+            <div class="tile-header">
+                Retirement Cases sold
+                <div class="tile-content">   
+                    <p id="retirement"></p>
+                </div>
+            </div>
+        </div>
+        <div class="tile-box bg-white content-box">
+            <div class="tile-header">
+                Other Cases sold
+                <div class="tile-content">   
+                    <p id="others"></p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src ="assets/js/Chart.js"></script>  

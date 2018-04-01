@@ -9,6 +9,7 @@ $.ajax({
     success: function (data) {
         $("#usernamelist").html("");
         var i;
+        $("#usernamelist").append("<option value=''>" + "Choose User" + "</option>");
         for (i in data) {
             $("#usernamelist").append("<option value='" + data[i].username + "'>" + data[i].username + "</option>");
         }
