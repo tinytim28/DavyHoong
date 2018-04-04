@@ -2,7 +2,6 @@
     <link href="assets/icons/fontawesome/fontawesome.css" rel="stylesheet" type="text/css"/>
 </head>  
 <body>  
-    <h1 class="page-header" style="color:#937851">Performance</h1>
     <div class="col-md-4">
         <div class="tile-box bg-white content-box">
             <div class="tile-header">
@@ -40,16 +39,37 @@
             </select>
         </div>
     </div>
-
-
-
-    </br>
-
-    <div class="col-md-9">
-        <canvas id="smallMyChart2"></canvas>
+    <div class="col-md-4">
+        <div class="tile-box bg-white content-box">
+            <div class="tile-header">
+                Average FYC
+                <div class="tile-content">   
+                    <p id="average"></p>
+                </div>
+            </div>
+        </div>     
+    </div>
+    <div class="col-md-4">
+        <div class="tile-box bg-white content-box">
+            <div class="tile-header">
+                Total FYC
+                <div class="tile-content">   
+                    <p id="total"></p>
+                </div>
+            </div>
+        </div>     
+    </div>
+    <div class="col-md-4">
+        <div class="tile-box bg-white content-box">
+            <div class="tile-header">
+                Median Performer
+                <div class="tile-content">   
+                    <p id="median"></p>
+                </div>
+            </div>
+        </div>     
     </div>
     <div class="col-md-3">
-
         <div class="tile-box bg-white content-box">
             <div class="tile-header">
                 Life Cases sold
@@ -57,7 +77,7 @@
                     <p id="life"></p>
                 </div>
             </div>
-        </div>
+        </div>  
         <div class="tile-box bg-white content-box">
             <div class="tile-header">
                 Investment Cases sold
@@ -99,6 +119,15 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-9">
+        <canvas id="smallMyChart2"></canvas>
+    </div>
+
+
+    
+
+
 
     <script src ="assets/js/Chart.js"></script>  
     <script src="assets/js/jquery.min.js"></script> 

@@ -450,56 +450,17 @@ public class SalesObjectDAO {
         return total;
     }
 
-    public JsonObject getTeamTotalAvgSalesYTD(String managerName) {
-        JsonObject jsonObj = new JsonObject();
-        LocalDate now = LocalDate.now();
-        String year = now.toString().substring(0, 4);
-        String endYear = now.toString().substring(0, 4);
-        Month currentMonth = now.getMonth();
-        String endMonth = "" + currentMonth.plus(1).getValue();
-
-        if (currentMonth.getValue() == 12) {
-            int tempYear = Integer.parseInt(year) + 1;
-            endYear = "" + tempYear;
-        }
-
-        if (endMonth.length() < 2) {
-            endMonth = "0" + endMonth;
-        }
-
-        String yearStart = "" + year + "-01-01";
-        String yearEnd = "" + endYear + "-" + endMonth + "-01";
-
-        try {
-            conn = ConnectionManager.getConnection();
-            String query = "SELECT sum(expectedFYC) as 'selected', avg(expectedFYC) as 'averageSales' FROM sales s INNER JOIN user u ON s.username = u.username WHERE u.manager = '" + managerName + "' and dateClose IS NOT NULL and '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "'";
-            stmt = conn.prepareStatement(query);
-            result = stmt.executeQuery();
-
-            while (result.next()) {
-                double total = result.getDouble("selected");
-                double averageSales = result.getDouble("averageSales");
-                jsonObj.addProperty("totalSales", total);
-                jsonObj.addProperty("averageSales", averageSales);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                result.close();
-                stmt.close();
-                conn.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return jsonObj;
-    }
-
     //AGENT METHODS FOR HOUSEKEEPING
-    public double getIndividualTotalSalesOneMonth(String username) {
-        double total = 0.0;
-        int yearInt = 0;
+    public JsonObject getIndividualTotalSalesOneMonth(String username) {
+        JsonObject jsonObj = new JsonObject();
+        double sum = 0.0;
+        double average = 0.0;
+        int lifeCount = 0;
+        int investmentCount = 0;
+        int savingsCount = 0;
+        int hospitalisationCount = 0;
+        int retirementCount = 0;
+        int othersCount = 0;
         LocalDate now = LocalDate.now();
         String year = now.toString().substring(0, 4);
         String endYear = now.toString().substring(0, 4);
@@ -524,12 +485,28 @@ public class SalesObjectDAO {
 
         try {
             conn = ConnectionManager.getConnection();
-            String query = "select sum(expectedFYC) as 'selected' from sales where username ='" + username + "' and '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "' and dateClose IS NOT NULL";
+            String query = "select sum(expectedFYC) as 'sum', avg(expectedFYC) as 'average',if((`caseType` = \"Life\"),1,0) as lifeCount, if((`caseType` = \"Investment\"),1,0) as investmentCount,if((`caseType` = \"Savings\"),1,0) as savingsCount,if((`caseType` = \"Hospitalisation\"),1,0) as hospitalisationCount, if((`caseType` = \"Retirement\"),1,0) as retirementCount,if((`caseType` = \"Others\"),1,0) as othersCount  from sales where username ='" + username + "' and '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "' and dateClose IS NOT NULL group by salesid";
             stmt = conn.prepareStatement(query);
             result = stmt.executeQuery();
 
             while (result.next()) {
-                total = result.getDouble("selected");
+                sum = result.getDouble("sum");
+                average = result.getDouble("average");
+                lifeCount = result.getInt("lifeCount");
+                investmentCount = result.getInt("investmentCount");
+                savingsCount = result.getInt("savingsCount");
+                hospitalisationCount = result.getInt("hospitalisationCount");
+                retirementCount = result.getInt("retirementCount");
+                othersCount = result.getInt("othersCount");
+                jsonObj.addProperty("sum", sum);
+                jsonObj.addProperty("average", average);
+                jsonObj.addProperty("lifeCount", lifeCount);
+                jsonObj.addProperty("investmentCount", investmentCount);
+                jsonObj.addProperty("savingsCount", savingsCount);
+                jsonObj.addProperty("hospitalisationCount", hospitalisationCount);
+                jsonObj.addProperty("retirementCount", retirementCount);
+                jsonObj.addProperty("othersCount", othersCount);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -542,38 +519,53 @@ public class SalesObjectDAO {
                 Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return total;
+        return jsonObj;
     }
 
-    public double getIndividualTotalSalesYTD(String username) {
-        double total = 0.0;
-        int yearInt = 0;
+    public JsonArray getIndividualTotalSalesYTD(String username) {
+
+        JsonArray jsonArr = new JsonArray();
+        String dateClose = "";
+        double expectedFYC = 0.0;
+        int lifeCount = 0;
+        int investmentCount = 0;
+        int savingsCount = 0;
+        int hospitalisationCount = 0;
+        int retirementCount = 0;
+        int othersCount = 0;
         LocalDate now = LocalDate.now();
         String year = now.toString().substring(0, 4);
-        String endYear = now.toString().substring(0, 4);
         Month currentMonth = now.getMonth();
-        String endMonth = "" + currentMonth.plus(1).getValue();
+        String endMonth = "" + currentMonth.getValue();
 
-        if (currentMonth.getValue() == 12) {
-            int tempYear = Integer.parseInt(year) + 1;
-            endYear = "" + tempYear;
-        }
-
-        if (endMonth.length() < 2) {
-            endMonth = "0" + endMonth;
-        }
-
-        String yearStart = "" + year + "-01-01";
-        String yearEnd = "" + endYear + "-" + endMonth + "-01";
+        String dateStart = "" + year + "-01-01";
+        String dateEnd = "" + year + "-" + endMonth + "-01";
 
         try {
             conn = ConnectionManager.getConnection();
-            String query = "select sum(expectedFYC) as 'selected' from sales where username ='" + username + "' and '" + yearStart + "' <= dateClose and dateClose < '" + yearEnd + "' and dateClose IS NOT NULL";
+            String query = "select dateClose,expectedFYC,if((`caseType` = \"Life\"),1,0) as lifeCount, if((`caseType` = \"Investment\"),1,0) as investmentCount,if((`caseType` = \"Savings\"),1,0) as savingsCount,if((`caseType` = \"Hospitalisation\"),1,0) as hospitalisationCount, if((`caseType` = \"Retirement\"),1,0) as retirementCount,if((`caseType` = \"Others\"),1,0) as othersCount  from sales where username ='" + username + "' and '" + dateStart + "' <= dateClose and dateClose < '" + dateEnd + "' and dateClose IS NOT NULL group by salesid order by dateClose";
             stmt = conn.prepareStatement(query);
             result = stmt.executeQuery();
 
             while (result.next()) {
-                total = result.getDouble("selected");
+                JsonObject jsonObj = new JsonObject();
+                dateClose = result.getString("dateClose");
+                expectedFYC = result.getDouble("expectedFYC");
+                lifeCount = result.getInt("lifeCount");
+                investmentCount = result.getInt("investmentCount");
+                savingsCount = result.getInt("savingsCount");
+                hospitalisationCount = result.getInt("hospitalisationCount");
+                retirementCount = result.getInt("retirementCount");
+                othersCount = result.getInt("othersCount");
+                jsonObj.addProperty("dateClose", dateClose);
+                jsonObj.addProperty("expectedFYC", expectedFYC);
+                jsonObj.addProperty("lifeCount", lifeCount);
+                jsonObj.addProperty("investmentCount", investmentCount);
+                jsonObj.addProperty("savingsCount", savingsCount);
+                jsonObj.addProperty("hospitalisationCount", hospitalisationCount);
+                jsonObj.addProperty("retirementCount", retirementCount);
+                jsonObj.addProperty("othersCount", othersCount);
+                jsonArr.add(jsonObj);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -586,7 +578,7 @@ public class SalesObjectDAO {
                 Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return total;
+        return jsonArr;
     }
 
     public String retrieveTeamSalesMonth(String managerName, String month) {
@@ -712,7 +704,7 @@ public class SalesObjectDAO {
 
         return returnArray.toString();
     }
-    
+
     public int retrieveTotalLifeCasesTeam(String managerName, String yearStart, String yearEnd) {
         int output = 0;
 

@@ -10,6 +10,7 @@ import DAO.SalesObjectDAO;
 import DAO.UserDAO;
 import classes.User;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -147,17 +148,17 @@ public class OverviewServlet extends HttpServlet {
                         response.getWriter().write(toShow);
                         break;
                     }
-                    case "managerTeamOverviewAverageTotal":
+                    case "managerIndividualViewPerformance":
                     {
                         HttpSession session = request.getSession();
                         SalesObjectDAO sDAO = new SalesObjectDAO();
-                        User loginUser = (User) session.getAttribute("loginUser");
-                        String managerName = "" + loginUser.getFirstName() + " " + loginUser.getLastName().toUpperCase();
-                        JsonObject toShow = sDAO.getTeamTotalAvgSalesYTD(managerName);
+                        String username = request.getParameter("username");
+                        JsonArray toShow = sDAO.getIndividualTotalSalesYTD(username);
                         toReturn.put("success", "success");
                         response.getWriter().write(toShow.toString());
                         break;
                     }
+                    
                 default:
                     break;
             }
