@@ -9,6 +9,7 @@ $.ajax({
         htmlcode3 = "";
         htmlcode4 = "";
         htmlcode5 = "";
+        htmlcode6 = "";
         var button = "";
         if (usertype === "Admin") {
             htmlcode1 += "<a href='#' title='Users'><i class='glyph-icon icon-group'><\/i><span>Managers<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'adminusercontrol' class = 'loadPage'> User Control <\/a><\/li><\/ul><\/div>";
@@ -40,6 +41,7 @@ $.ajax({
         $("#sidebarlink3").html(htmlcode3);
         $("#sidebarlink4").html(htmlcode4);
         $("#sidebarlink5").html(htmlcode5);
+        
     }
 
 });
