@@ -4689,8 +4689,8 @@ a.thumbnail.active {
 .alert {
     position: fixed;
     bottom: 5px;
-    left:25%;
-    width: 50%;
+    left:75%;
+    width: 25%;
     padding: 15px;
     margin-bottom: 20px;
     border: 1px solid transparent;

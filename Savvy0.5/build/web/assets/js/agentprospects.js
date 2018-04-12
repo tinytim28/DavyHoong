@@ -258,31 +258,28 @@ function fetch() {
 }
 
 function showSuccessAlert(successMessage) {
-    $("#successAlert").animate({
-        height: '+=72px'
-    }, 300);
     $('<div class="alert alert-success" id="successAlertWindow" hidden="hidden"><button type="button" class="close" data-hide="alert">&times;</button>' + successMessage + '</div>').hide().appendTo('#successAlert').fadeIn(1000);
+    $("#successAlertWindow").slideUp(5000);
     $(function () {
         $("[data-hide]").on("click", function () {
             $(this).closest("." + $(this).attr("data-hide")).hide();
-            $("#successAlert").height(0);
         });
     });
+
 
 }
 
 function showErrorAlert(errorMessage) {
-    $("#successAlert").animate({
-        height: '+=72px'
-    }, 300);
     $('<div class="alert alert-error" id="errorAlertWindow" hidden="hidden"><button type="button" class="close" data-hide="alert">&times;</button>' + errorMessage + '</div>').hide().appendTo('#errorAlert').fadeIn(1000);
+    $("#errorAlertWindow").slideUp(5000);
     $(function () {
         $("[data-hide]").on("click", function () {
             $(this).closest("." + $(this).attr("data-hide")).hide();
-            $("#errorAlert").height(0);
         });
     });
+
 }
+      
 
 function showUpdateProspectModal() {
     $('#showUpdateProspectModal').modal('show');

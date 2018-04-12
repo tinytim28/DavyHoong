@@ -199,7 +199,6 @@ $(document).ready(function () {
     //start of reject goal
     $("#rejectGoal").click(function () {
         var userid = $("#usernamelist").val();
-        alert(userid);
         $("#rejectModal").modal({// wire up the actual modal functionality and show the dialog
             "backdrop": "static",
             "keyboard": true,
@@ -268,24 +267,27 @@ $(document).ready(function () {
 
 function showSuccessAlert(successMessage) {
     $('<div class="alert alert-success" id="successAlertWindow" hidden="hidden"><button type="button" class="close" data-hide="alert">&times;</button>' + successMessage + '</div>').hide().appendTo('#successAlert').fadeIn(1000);
+    $("#successAlertWindow").slideUp(5000);
     $(function () {
         $("[data-hide]").on("click", function () {
             $(this).closest("." + $(this).attr("data-hide")).hide();
         });
     });
+
 
 }
 
 function showErrorAlert(errorMessage) {
     $('<div class="alert alert-error" id="errorAlertWindow" hidden="hidden"><button type="button" class="close" data-hide="alert">&times;</button>' + errorMessage + '</div>').hide().appendTo('#errorAlert').fadeIn(1000);
+    $("#errorAlertWindow").slideUp(5000);
     $(function () {
         $("[data-hide]").on("click", function () {
             $(this).closest("." + $(this).attr("data-hide")).hide();
-            $("#errorAlert").height(0);
         });
     });
-}
 
+}
+        
 
 
 
