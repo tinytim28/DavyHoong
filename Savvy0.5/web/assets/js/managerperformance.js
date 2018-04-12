@@ -53,12 +53,12 @@ $(document).ready(function () {
             }
             var average = parseInt(sum / data.length);
             if (average) {
-                $("#average").append(average);
+                $("#average").append("$" + average.toFixed());
             } else {
                 $("#average").append("NIL");
             }
             if (sum) {
-                $("#total").append(sum);
+                $("#total").append("$" + sum.toFixed());
             } else {
                 $("#total").append("NIL");
             }
@@ -202,14 +202,14 @@ $(document).ready(function () {
                     var colours = [];
                     if (average) {
                         $("#average").html("");
-                        $("#average").append(average);
+                        $("#average").append("$" + average.toFixed());
                     } else {
                         $("#average").html("");
                         $("#average").append("NIL");
                     }
                     if (sum) {
                         $("#total").html("");
-                        $("#total").append(sum);
+                        $("#total").append("$" + sum.toFixed());
                     } else {
                         $("#total").html("");
                         $("#total").append("NIL");
@@ -365,14 +365,14 @@ $(document).ready(function () {
                     }
                     if (average) {
                         $("#average").html("");
-                        $("#average").append(average);
+                        $("#average").append("$" + average.toFixed());
                     } else {
                         $("#average").html("");
                         $("#average").append("NIL");
                     }
                     if (sum) {
                         $("#total").html("");
-                        $("#total").append(sum);
+                        $("#total").append("$" + sum.toFixed());
                     } else {
                         $("#total").html("");
                         $("#total").append("NIL");
@@ -528,14 +528,14 @@ $(document).ready(function () {
                     }
                     if (average) {
                         $("#average").html("");
-                        $("#average").append(average);
+                        $("#average").append("$" + average.toFixed());
                     } else {
                         $("#average").html("");
                         $("#average").append("NIL");
                     }
                     if (sum) {
                         $("#total").html("");
-                        $("#total").append(sum);
+                        $("#total").append("$" + sum.toFixed());
                     } else {
                         $("#total").html("");
                         $("#total").append("NIL");
@@ -685,14 +685,14 @@ $(document).ready(function () {
                     }
                     if (average) {
                         $("#average").html("");
-                        $("#average").append(average);
+                        $("#average").append("$" + average.toFixed());
                     } else {
                         $("#average").html("");
                         $("#average").append("NIL");
                     }
                     if (sum) {
                         $("#total").html("");
-                        $("#total").append(sum);
+                        $("#total").append("$" + sum.toFixed());
                     } else {
                         $("#total").html("");
                         $("#total").append("NIL");
@@ -820,17 +820,17 @@ $(document).ready(function () {
                 }
                 if (average) {
                     $("#average").html("");
-                    $("#average").append(average);
+                    $("#average").append("$" + average.toFixed());
                 } else {
                     $("#average").html("");
-                    $("#average").append(0);
+                    $("#average").append("NIL");
                 }
                 if (sum) {
                     $("#total").html("");
-                    $("#total").append(sum);
+                    $("#total").append("$" + sum.toFixed());
                 } else {
                     $("#total").html("");
-                    $("#total").append(0);
+                    $("#total").append("NIL");
                 }
                 $("#median").html("");
                 $("#median").append("NIL");

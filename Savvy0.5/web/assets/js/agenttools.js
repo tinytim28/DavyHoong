@@ -153,15 +153,16 @@ $(document).ready(function () {
 
                     if (pName && age && rAge && eAge && dAnnualIncome && otherContribuition && currentSavings && rateSavings && rateInflation) {
                         var i;
-                        
+                        var htmlcode;
                         for (i in overall) {
-                            $('#trans_table').append('<tr>');
-                            $('#trans_table').append('<td>' + parseInt(overall[i][0]) + '<\/td>');
-                            $('#trans_table').append('<td>' + parseFloat(overall[i][1]).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) + '<\/td>');
-                            $('#trans_table').append('<td>' + parseFloat(overall[i][2]).toLocaleString('en-US', { style: 'currency', currency: 'USD' })+ '<\/td>');
-                            $('#trans_table').append('<td>' + parseFloat(overall[i][3]).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) + '<\/td>');
-                            $('#trans_table').append('<\/tr>');
+                            htmlcode += '<tr>';
+                            htmlcode += '<td>' + parseInt(overall[i][0]) + '<\/td>';
+                            htmlcode += '<td>' + parseFloat(overall[i][1]).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) + '<\/td>';
+                            htmlcode += '<td>' + parseFloat(overall[i][2]).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) + '<\/td>';
+                            htmlcode += '<td>' + parseFloat(overall[i][3]).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) + '<\/td>';
+                            htmlcode += '<\/tr>';
                         }
+                        $('#trans_table').html(htmlcode);
                         $("#StoreData").removeAttr('disabled');
 
                         ctx2 = document.getElementById('smallMyChart2').getContext('2d');

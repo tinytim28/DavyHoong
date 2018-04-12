@@ -5,7 +5,7 @@ $.ajax({
     dataType: 'json',
     success: function (data) {
         userlist = data;
-        $("#usernamelist").html("<option value=''>" + "Choose One" + "</option>");
+        $("#usernamelist").html("<option value='null'>" + "Choose One" + "</option>");
         var i;
         for (i in data) {
             $("#usernamelist").append("<option value='" + data[i].userid + "'>" + data[i].username + "</option>");
@@ -50,7 +50,8 @@ $(document).ready(function () {
         }
     });
     $("#usernamelist").change(function () {
-        if(myChart2){
+        $("option[value='null']").remove();
+        if (myChart2) {
             myChart2.destroy();
         }
         table.destroy();
@@ -58,63 +59,70 @@ $(document).ready(function () {
         var parameters = {
             aid: aid
         };
+
         $.ajax({
             url: '/Savvy0.5/ProspectAnalysis?type=retrieveRetirementAnalysisByAgent',
             dataType: 'json',
             data: parameters,
             success: function (data) {
-                table = $('#trans_table').DataTable({
-                    data: data,
-                    "columnDefs": [
-                        {
-                            "targets": 0,
-                            data: 'pName'
-                        },
-                        {
-                            "targets": 1,
-                            data: 'age'
-                        },
-                        {
-                            "targets": 2,
-                            data: 'rAge'
-                        },
-                        {
-                            "targets": 3,
-                            data: 'eAge'
-                        },
-                        {
-                            "targets": 4,
-                            data: 'dAnnualIncome'
-                        },
-                        {
-                            "targets": 5,
-                            data: 'otherContribuition'
-                        },
-                        {
-                            "targets": 6,
-                            data: 'currentSavings'
-                        },
-                        {
-                            "targets": 7,
-                            data: 'rateSavings'
-                        },
-                        {
-                            "targets": 8,
-                            data: 'rateInflation'
-                        },
-                        {
-                            "targets": 9,
-                            data: 'aid',
-                            render: function (data, type, row) {
-                                return "<button id='ViewChart' type='button' class='btn btn-xs btn-primary' name=' " + JSON.stringify(row) + "  '><span class='glyphicon glyphicon-eye-open' aria-hidden='true'><\/span>View Chart<\/button>";
+                if (data) {
+                    table = $('#trans_table').DataTable({
+                        data: data,
+                        "columnDefs": [
+                            {
+                                "targets": 0,
+                                data: 'pName'
+                            },
+                            {
+                                "targets": 1,
+                                data: 'age'
+                            },
+                            {
+                                "targets": 2,
+                                data: 'rAge'
+                            },
+                            {
+                                "targets": 3,
+                                data: 'eAge'
+                            },
+                            {
+                                "targets": 4,
+                                data: 'dAnnualIncome',
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                            },
+                            {
+                                "targets": 5,
+                                data: 'otherContribuition',
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                            },
+                            {
+                                "targets": 6,
+                                data: 'currentSavings',
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                            },
+                            {
+                                "targets": 7,
+                                data: 'rateSavings'
+                            },
+                            {
+                                "targets": 8,
+                                data: 'rateInflation'
+                            },
+                            {
+                                "targets": 9,
+                                data: 'aid',
+                                render: function (data, type, row) {
+                                    return "<button id='ViewChart' type='button' class='btn btn-xs btn-primary' name=' " + JSON.stringify(row) + "  '><span class='glyphicon glyphicon-eye-open' aria-hidden='true'><\/span>View Chart<\/button>";
+                                }
                             }
-                        }
 
-                    ]
-                });
+                        ]
+                    });
 
+                }
             }
         });
+
     });
 
     $("table").on('click', '#ViewChart', function () {
@@ -128,8 +136,8 @@ $(document).ready(function () {
         var dAnnualIncome = parseFloat(chartVar.dAnnualIncome);
         var otherContribuition = parseFloat(chartVar.otherContribuition);
         var currentSavings = parseFloat(chartVar.currentSavings);
-        var rateSavings = parseFloat(chartVar.rateSavings)/100;
-        var rateInflation = parseFloat(chartVar.rateInflation)/100;
+        var rateSavings = parseFloat(chartVar.rateSavings) / 100;
+        var rateInflation = parseFloat(chartVar.rateInflation) / 100;
         var amountOfSavings;
         var presentValueNeededFunds;
         var firstYearSavingContribuitions;
@@ -195,7 +203,8 @@ $(document).ready(function () {
             overall.push(peryear);
             year++;
             counter++;
-        };
+        }
+        ;
         ctx2 = document.getElementById('smallMyChart2').getContext('2d');
         myChart2 = new Chart(ctx2, {
             type: 'line',

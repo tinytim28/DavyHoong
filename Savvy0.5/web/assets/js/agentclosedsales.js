@@ -21,7 +21,8 @@ $.ajax({
                 },
                 {
                     "targets": 3,
-                    data: 'expectedFYC'
+                    data: 'expectedFYC',
+                    render: $.fn.dataTable.render.number(',', '.', 2, '$')
                 },
                 {
                     "targets": 4,

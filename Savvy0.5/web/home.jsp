@@ -56,17 +56,17 @@
             <div id="page-wrapper">
                 <div id="page-header" class="bg-gradient-9">
                     <div id="mobile-navigation">
-                        <button id="nav-toggle" class="collapsed" data-toggle="collapse" data-target="#page-sidebar"><span></span></button>
+                        <button id="nav-toggle" class="collapsed" data-toggle="collapse" data-target="#page-sidebar"></button>
                         <a href="home.jsp" class="logo-content-small" title="Savvy0.5"></a>
                     </div>
                     <div id="header-logo" class="logo-bg">
                         <a href="home.jsp" class="logo-content-big" title="Proto">
                             Savvy <i>0.5</i>
-                            <span>The perfect solution for financial team management</span>
+                            The perfect solution for financial team management
                         </a>
                         <a href="home.jsp" class="logo-content-small" title="Proto">
                             Savvy <i>0.5</i>
-                            <span>The perfect solution for financial team management</span>
+                            The perfect solution for financial team management
                         </a>
                         <a id="close-sidebar" href="#" title="Close sidebar">
                             <i class="glyph-icon icon-angle-left"></i>
@@ -88,7 +88,7 @@
                     <div class="scroll-sidebar">
                         <ul id="sidebar-menu">
                             <li class="header">
-                                <span>Components</span>
+                                Components
                             </li>
                             <li id="sidebarlink1">
                             </li>
@@ -120,62 +120,9 @@
                 </div>
             </div>
         </div>
-        <!--Login-->
-        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
 
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 id="myModalLabel">Login</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form id="loginForm" class="form-horizontal well" style="padding-bottom: 0px;">
-                            <input id="type" type="hidden" class="form-control" name="type" value="login"/>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Username</label>
-                                <div class="col-sm-7">
-                                    <input id="username" type="text" class="form-control" name="username"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Password</label>
-                                <div class="col-sm-7">
-                                    <input id="password" type="password" class="form-control" name="password"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label"> </label>
-                                <div class="col-sm-7">
-                                    <button id="loginButton" type="button" class="btn btn-primary">
-                                        Login
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- error modal
-            ======================================== -->
-        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-danger">
-                        <h2>Error</h2>
-                    </div>
-                    <div class="modal-body">
-                        <p id = "errorMsg">
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="CloseError" type="button" class="btn btn-danger"  data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <script src="assets/js/jquery.js"></script>
         <script src="assets/js/application.js"></script>
         <script src="assets/js/jquery-ui.min.js"></script>

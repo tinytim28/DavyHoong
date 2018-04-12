@@ -16,18 +16,18 @@ $.ajax({
             button += "<button type='button' class='btn btn-primary btn-xs navbar-btn' id='logout'>Logout<\/button>";
             $("#pageContent").load("adminusercontrol.html");
         } else if (usertype === "Manager") {
-            htmlcode1 += "<a href='#' title='Financial Agents'><i class='glyph-icon icon-group'><\/i><span>Financial Agents<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'managerusercontrol' class = 'loadPage'> Agent Control <\/a><\/li><\/ul><\/div>";
-            htmlcode2 += "<a href='#' title='Sales'><i class='glyph-icon icon-money'><\/i><span>Sales<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'managerviewsales' class = 'loadPage'> View Sales <\/a><\/li><\/ul><\/div>";
-            htmlcode3 += "<a href='#' title='Goals'><i class='glyph-icon icon-fire'><\/i><span>Goals<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'managergoals' class = 'loadPage'> Goals <\/a><\/li><\/ul><\/div>";
-            htmlcode4 += "<a href='#' title='Performance'><i class='glyph-icon icon-key'><\/i><span>Performance<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'managerperformance' class = 'loadPage'> Performance  <\/a><\/li><li> <a name='managerforecast' class = 'loadPage'> Forecast<\/a><\/li><\/ul><\/div>";
-            htmlcode5 += "<a href='#' title='Tools'><i class='glyph-icon icon-wrench'><\/i><span>Tools<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'managertools' class = 'loadPage'> Retirement Overview <\/a><\/li><\/ul><\/div>";
+            htmlcode1 += "<a href='#' title='Financial Agents'><i class='glyph-icon icon-group'><\/i>Financial Agents<\/a><div class='sidebar-submenu'><ul><li> <a id = 'managerusercontrol' class = 'loadPage'> Agent Control <\/a><\/li><\/ul><\/div>";
+            htmlcode2 += "<a href='#' title='Sales'><i class='glyph-icon icon-money'><\/i>Sales<\/a><div class='sidebar-submenu'><ul><li> <a id = 'managerviewsales' class = 'loadPage'> View Sales <\/a><\/li><\/ul><\/div>";
+            htmlcode3 += "<a href='#' title='Goals'><i class='glyph-icon icon-fire'><\/i>Goals<\/a><div class='sidebar-submenu'><ul><li> <a id = 'managergoals' class = 'loadPage'> Goals <\/a><\/li><\/ul><\/div>";
+            htmlcode4 += "<a href='#' title='Performance'><i class='glyph-icon icon-key'><\/i>Performance<\/a><div class='sidebar-submenu'><ul><li> <a id = 'managerperformance' class = 'loadPage'> Performance  <\/a><\/li><li> <a id='managerforecast' class = 'loadPage'> Forecast<\/a><\/li><\/ul><\/div>";
+            htmlcode5 += "<a href='#' title='Tools'><i class='glyph-icon icon-wrench'><\/i>Tools<\/a><div class='sidebar-submenu'><ul><li> <a id = 'managertools' class = 'loadPage'> Retirement Overview <\/a><\/li><\/ul><\/div>";
             button += "<button type='button' class='btn btn-primary btn-xs navbar-btn' id='logout'>Logout<\/button>";
             $("#pageContent").load("managerusercontrol.html");
         } else if (usertype === "Financial Adviser") {
-            htmlcode1 += "<a href='#' title='Clients'><i class='glyph-icon icon-group'><\/i><span>Clients<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'agentprospects' class = 'loadPage'> Prospects  <\/a><\/li><\/ul><\/div>";
-            htmlcode2 += "<a href='#' title='Sales'><i class='glyph-icon icon-money'><\/i><span>Sales<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'agentprogresssales' class = 'loadPage'> Sales in Progress <\/a><\/li><li> <a name='agentclosedsales' class = 'loadPage'> Closed Sales<\/a><\/li><\/ul><\/div>";
-            htmlcode3 += "<a href='#' title='Goals'><i class='glyph-icon icon-fire'><\/i><span>Goals<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'agentgoals' class = 'loadPage'> Goals <\/a><\/li><\/ul><\/div>";
-            htmlcode4 += "<a href='#' title='Tools'><i class='glyph-icon icon-wrench'><\/i><span>Tools<\/span><\/a><div class='sidebar-submenu'><ul><li> <a name = 'agenttools' class = 'loadPage'> Retirement <\/a><\/li><\/ul><\/div>";
+            htmlcode1 += "<a href='#' title='Clients'><i class='glyph-icon icon-group'><\/i>Clients<\/a><div class='sidebar-submenu'><ul><li> <a id = 'agentprospects' class = 'loadPage'> Prospects  <\/a><\/li><\/ul><\/div>";
+            htmlcode2 += "<a href='#' title='Sales'><i class='glyph-icon icon-money'><\/i>Sales<\/a><div class='sidebar-submenu'><ul><li> <a id = 'agentprogresssales' class = 'loadPage'> Sales in Progress <\/a><\/li><li> <a id='agentclosedsales' class = 'loadPage'> Closed Sales<\/a><\/li><\/ul><\/div>";
+            htmlcode3 += "<a href='#' title='Goals'><i class='glyph-icon icon-fire'><\/i>Goals<\/a><div class='sidebar-submenu'><ul><li> <a id = 'agentgoals' class = 'loadPage'> Goals <\/a><\/li><\/ul><\/div>";
+            htmlcode4 += "<a href='#' title='Tools'><i class='glyph-icon icon-wrench'><\/i>Tools<\/a><div class='sidebar-submenu'><ul><li> <a id = 'agenttools' class = 'loadPage'> Retirement <\/a><\/li><\/ul><\/div>";
 
             $("#pageContent").load("agentprospects.html");
             button += "<button type='button' class='btn btn-primary btn-xs navbar-btn' id='logout'>Logout<\/button>";
@@ -52,7 +52,7 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".loadPage", function () {
-        var pageTitle = this.name.trim();
+        var pageTitle = this.id.trim();
 
         var pageToLoad = null;
         if (pageTitle == "admin_control") {
